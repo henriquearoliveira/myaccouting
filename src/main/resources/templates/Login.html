@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout/LayoutSimples">
+
+<th:block layout:fragment="conteudo">
+	<div class="content">
+	
+		<form  th:action="@{/login}" method="POST">
+		
+			<div class="row" style="margin-bottom: 10px;">
+				<h2 class="text-center font-sans-serif">Bem vindo</h2>
+			</div>
+			
+			<div class="mat-in">
+				<input id="nome" type="text" name="username" required="true"></input>
+				<span class="bar" ></span>
+				<label>Username</label> <!-- th:field="*{nome}" -->
+			</div>
+			
+			<div class="mat-in">
+				<input id="password" type="password" name="password" required="true"></input>
+				<span class="bar"></span> <!-- value="password" -->
+				<label>Password</label>
+			</div>
+			
+			<button type="submit" name="submit" id="login">Login</button>
+
+			<div id="senhaIncorreta" style="color: red; text-align: center;">
+				<p th:if="${param.error}">Email ou senha inválidos</p>
+			</div>
+			
+			<!-- <span sec:authentication="name"></span> -->
+			
+		</form>
+			<!-- <div id="senhaIncorreta">
+				<h5 th:if="${#bools.isTrue(incorrect)}"
+					style="color: red; text-align: center">email ou senha
+					incorreta</h5>
+			</div> -->
+			<!-- )<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+			<h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>-->
+			<!--<span sec:authorize="hasRole('ROLE_ADMIN')">Teste</span> -->
+
+		<!--<form th:action="@{/logout}" method="POST">
+			<button type="submit" name="submit" id="logout">Logout</button>
+		</form>-->
+	</div>
+	
+</th:block>
+
+</html>

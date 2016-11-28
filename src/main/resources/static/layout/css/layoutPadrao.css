@@ -1,0 +1,17 @@
+@media screen and (min-width: 768px) {
+    #esconder {
+        display: none !important;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    #altaResolucao {
+        display: none !important;
+    }
+}
+
+@media screen and (min-width: 768px) { /* TUDO QUE FOR MENOR QUE :  ( DESSA FORMA QUE SE LÊ )*/
+    #baixaResolucao {
+        display: none !important;
+    }
+}

@@ -1,0 +1,18 @@
+package br.com.contability.business.repository;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import br.com.contability.business.Conta;
+
+public interface ContaRepository extends JpaRepository<Conta, Long> {
+
+	@Query("SELECT c FROM Conta c WHERE c.usuario.id = ?1")
+	public List<Conta> selecionaPelo(Long idUsuario);
+
+	@Query("SELECT c FROM Conta c WHERE c.usuario.id = ?1 AND c.id = ?2")
+	public Conta getConta(Long idUsuario, Long id);
+
+}
