@@ -37,7 +37,7 @@ public class ContaResources {
 		
 		auth.getAutenticacao();
 		
-		ModelAndView mv = new ModelAndView("/conta/Conta");
+		ModelAndView mv = new ModelAndView("conta/Conta");
 		
 		return mv;
 	}
@@ -48,7 +48,7 @@ public class ContaResources {
 		
 		Usuario usuario = auth.getAutenticacao();
 		
-		ModelAndView mv = new ModelAndView("/conta/Conta");
+		ModelAndView mv = new ModelAndView("conta/Conta");
 		
 		contaServices.atualizaConta(usuario, mv, id, model);
 		
@@ -77,7 +77,7 @@ public class ContaResources {
 		
 		List<Conta> contas = contaServices.seleciona(usuario);
 		
-		ModelAndView mv = new ModelAndView("/conta/Listagem");
+		ModelAndView mv = new ModelAndView("conta/Listagem");
 		mv.addObject("contas", contas);
 		
 		return mv;

@@ -40,7 +40,7 @@ public class CategoriaResources {
 		
 		
 		
-		ModelAndView mv = new ModelAndView("/categoria/Categoria");
+		ModelAndView mv = new ModelAndView("categoria/Categoria");
 		mv.addObject("tipoDeCategorias", TipoDeCategoria.values());
 		
 		return mv;
@@ -52,7 +52,7 @@ public class CategoriaResources {
 		
 		Usuario usuario = auth.getAutenticacao();
 		
-		ModelAndView mv = new ModelAndView("/categoria/Categoria");
+		ModelAndView mv = new ModelAndView("categoria/Categoria");
 		
 		categoriaServices.verificaCategoria(model, id, mv, usuario);
 		return mv;
@@ -82,7 +82,7 @@ public class CategoriaResources {
 		
 		List<Categoria> categorias = categoriaServices.seleciona(usuario);
 		
-		ModelAndView mv = new ModelAndView("/categoria/Listagem");
+		ModelAndView mv = new ModelAndView("categoria/Listagem");
 
 		mv.addObject("categorias", categorias);
 		
