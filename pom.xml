@@ -38,6 +38,7 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
@@ -86,7 +87,7 @@
 		</dependency>
 		<!-- … -->
 
-		<!-- Cloud Foundry -->
+		<!-- Cloud Foundry 
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-spring-service-connector</artifactId>
@@ -101,7 +102,7 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-cloudfoundry-connector</artifactId>
 		</dependency>
-		<!-- … -->
+		 … -->
 
 	</dependencies>
 
