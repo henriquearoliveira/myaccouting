@@ -3,11 +3,13 @@ $(document).ready(function() {
 
 	// on load
 	hideDiv();
+	
+	var sizeWidth = $(window).width();
 
 	// on resize
 	$(window).resize(function() {
 		hideDiv();
-		reloadPage();
+		reloadPage(sizeWidth);
 	});
 
 });
@@ -37,10 +39,14 @@ function slide() {
 			});
 }
 
-function reloadPage(){
+function reloadPage(sizeWidth){
 	
 	setTimeout(function() {
-		window.location.reload(true);
+		
+		if ($(window).width() != sizeWidth){
+			window.location.reload(true);
+		}
+		
 	}, 2000);
 	
 }
