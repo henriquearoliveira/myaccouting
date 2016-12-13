@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Index;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -42,6 +43,7 @@ public class Usuario extends BeanIdentificavel {
 	@NotNull(message = "O nome não pode ser null")
 	private String nome;
 	
+	@Column(nullable = true)
 	private String enderecoImagemPerfil;
 
 	@Column(nullable = true)
@@ -55,12 +57,16 @@ public class Usuario extends BeanIdentificavel {
 
 	//
 	@JsonIgnore
-	@OneToMany(mappedBy = "usuario", targetEntity = Categoria.class, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "usuario", targetEntity = Categoria.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Categoria> categorias;
 	
 	@JsonIgnore
-	@OneToMany(mappedBy = "usuario", targetEntity = Conta.class, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "usuario", targetEntity = Conta.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Conta> contas;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "usuario", targetEntity = Lancamento.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<Lancamento> lancamentos;
 	//
 
 	public String getEmail() {
@@ -141,6 +147,14 @@ public class Usuario extends BeanIdentificavel {
 	
 	public void setContas(List<Conta> contas) {
 		this.contas = contas;
+	}
+	
+	public List<Lancamento> getLancamentos() {
+		return lancamentos;
+	}
+	
+	public void setLancamentos(List<Lancamento> lancamentos) {
+		this.lancamentos = lancamentos;
 	}
 
 }

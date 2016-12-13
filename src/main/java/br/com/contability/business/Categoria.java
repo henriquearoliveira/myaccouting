@@ -1,11 +1,16 @@
 package br.com.contability.business;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.Index;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -21,6 +26,7 @@ import br.com.contability.comum.BeanIdentificavel;
 public class Categoria extends BeanIdentificavel {
 
 	@JsonIgnore
+	@NotNull(message = "O usuario não pode ser null")
 	@ManyToOne(optional = false)
 	private Usuario usuario;
 
@@ -35,6 +41,12 @@ public class Categoria extends BeanIdentificavel {
 
 	@Column(length = 200, nullable = true)
 	private String observacao;
+	
+	//
+	@JsonIgnore
+	@OneToMany(mappedBy = "usuario", targetEntity = Lancamento.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<Lancamento> lancamentos;
+	//
 
 	public Usuario getUsuario() {
 		return usuario;
@@ -68,4 +80,12 @@ public class Categoria extends BeanIdentificavel {
 		this.tipoDeCategoria = tipoDeCategoria;
 	}
 
+	public List<Lancamento> getLancamentos() {
+		return lancamentos;
+	}
+	
+	public void setLancamentos(List<Lancamento> lancamentos) {
+		this.lancamentos = lancamentos;
+	}
+	
 }

@@ -392,6 +392,27 @@
           </ul>
         </li>
         
+        <!-- Lançamento -->
+        <li th:class="${activeLiLancamento}">
+        
+          <a href="#">
+            <!-- <i class="fa fa-floppy-o" aria-hidden="true"></i> -->
+            <i class="fa fa-address-card" aria-hidden="true"></i> <span>Lançamento</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li th:class="${activeNovo}"><a th:href="@{/lancamento}">
+            	<i class="fa fa-floppy-o" aria-hidden="true"></i> Novo </a></li>
+          <!-- </ul>
+          
+          <ul class="treeview-menu"> -->
+            <li th:class="${activeListagem}"><a th:href="@{/lancamento/lista}">
+            	<i class="fa fa-list" aria-hidden="true"></i> Cadastrados </a></li>
+          </ul>
+        </li>
+        
         <li class="header">LABELS</li>
         <li><a href="#"><i class="fa fa-circle-o text-red"></i> <span>Important</span></a></li>
         <li><a href="#"><i class="fa fa-circle-o text-yellow"></i> <span>Warning</span></a></li>
@@ -453,15 +474,15 @@
   <div class="control-sidebar-bg"></div>
 <!-- ./wrapper -->
 
-<!-- jQuery 2.2.3 -->
-<script th:src="@{/layout/javascript/jquery-2.2.3.min.js}"></script>
-
-<!-- jQuery UI 1.11.4 -->
-<script th:src="@{https://code.jquery.com/ui/1.11.4/jquery-ui.min.js}"></script>
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
 <!-- <script>
   $.widget.bridge('uibutton', $.ui.button);
 </script> -->
+
+<!-- jQuery 2.2.3 -->
+<script th:src="@{/layout/javascript/jquery-2.2.3.min.js}"></script>
+<!-- jQuery UI 1.11.4 -->
+<script th:src="@{https://code.jquery.com/ui/1.11.4/jquery-ui.min.js}"></script>
 <!-- Bootstrap 3.3.6 -->
 <script th:src="@{/layout/bootstrap/js/bootstrap.min.js}"></script>
 <!-- Morris.js charts -->
@@ -477,8 +498,6 @@
 <!-- daterangepicker -->
 <script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js}"></script>
 <script th:src="@{/layout/plugins/daterangepicker/daterangepicker.js}"></script>
-<!-- datepicker -->
-<script th:src="@{/layout/plugins/datepicker/bootstrap-datepicker.js}"></script>
 <!-- Bootstrap WYSIHTML5 -->
 <script th:src="@{/layout/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js}"></script>
 <!-- Slimscroll -->
@@ -491,17 +510,20 @@
 <script th:src="@{/layout/dist/js/pages/dashboard.js}"></script>
 <!-- AdminLTE for demo purposes -->
 <script th:src="@{/layout/dist/js/demo.js}"></script>
-
+<!-- Jquery Mobile -->
 <script th:src="@{/layout/javascript/jquery.mobile.custom.min.js}"></script>
-
-<script th:src="@{/layout/javascript/layoutPadrao.js}"></script>
-
-<script th:src="@{/layout/javascript/funcoes.js}"></script>
-<script th:src="@{/layout/javascript/erroDivMessage.js}"></script>
-
 <!-- DataTables -->
 <script th:src="@{/layout/plugins/datatables/jquery.dataTables.min.js}"></script>
 <script th:src="@{/layout/plugins/datatables/dataTables.bootstrap.min.js}"></script>
+<!-- Datepicker -->
+<script th:src="@{/layout/plugins/datepicker/bootstrap-datepicker.js}"></script>
+<script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js}"></script>
+<script th:src="@{/layout/plugins/daterangepicker/daterangepicker.js}"></script>
+<!-- Pessoal -->
+<script th:src="@{http://cdn.acaodireta.info/mask-money/3.0.2/jquery.maskMoney.js}"></script>
+<script th:src="@{/layout/javascript/layoutPadrao.js}"></script>
+<script th:src="@{/layout/javascript/funcoes.js}"></script>
+<script th:src="@{/layout/javascript/erroDivMessage.js}"></script>
 
 </body>
 </html>

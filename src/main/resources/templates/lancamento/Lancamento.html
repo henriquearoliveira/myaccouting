@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout/LayoutPadrao">
+
+<th:block layout:fragment="conteudo">
+
+	<div class="content">
+
+		<div class="row">
+
+			<div class="col-md-12">
+
+				<div class="box box-warning">
+
+					<div class="box-header with-border">
+						<h3 class="box-title">Novo</h3>
+					</div>
+
+					<div class="box-body">
+					
+						<div layout:include="/mensagensutils/MensagensAlertas" th:remove="tag"></div>
+					
+						<form method="POST" th:object="${lancamento}" th:action="@{/lancamento}" role="form">
+						
+							<div layout:include="/mensagensutils/Erros" th:remove="tag"></div>
+							
+							<div class="row">
+							
+								<!-- Input -->
+								<div class="col-md-4">
+								
+									<div class="form-group hidden">
+										<label for="descricao" >Codigo</label>
+										<input id="id" type="text" class="form-control" th:value="${lancamento.id != null} ? ${lancamento.id}" th:field="*{id}" readonly="true"/>
+									</div>
+									
+									<div class="form-group">
+										<label for="descricao" >Descrição</label>
+										<input id="descricao" type="text" class="form-control" th:value="${lancamento.descricao != null} ? ${lancamento.descricao}" th:field="*{descricao}"/>
+									</div>
+
+								</div>
+								
+								<!-- select -->
+								<div class="col-md-4">
+					                <div class="form-group">
+					                  <label>Selecione: </label>
+					                  <select id="cat" class="form-control" th:field="*{categoria}">
+					                    <option value="">Seleciona a categoria</option>
+					                    <option th:each="categoria : ${categorias}" th:value="${categoria.id}" th:text="${categoria.descricao}"></option>
+					                  </select>
+					                </div>
+					            </div>
+					            
+					            <!-- date -->
+					            <div class="col-md-4">
+				              		<div class="form-group">
+				                	<label>Date:</label>
+				
+					                	<div class="input-group date">
+					                  		<div class="input-group-addon">
+					                    		<i class="fa fa-calendar"></i>
+					                  		</div>
+					                  		
+					                  		<input id="dataHoraLancamento" type="date" class="form-control pull-right" th:value="${dataHoraLancamento != null} ? ${lancamento.dataHoraLancamento}" th:field="*{dataHoraLancamento}" />
+						                </div>
+					              	</div>
+					              <!-- /.form group -->
+				             	</div>
+
+							</div>
+							
+							<div class="row">
+							
+								<!-- select -->
+								<div class="col-md-8">
+					                <div class="form-group">
+					                  <label>Selecione: </label>
+					                  <select id="conta" class="form-control" th:field="*{conta}">
+					                    <option value="">Seleciona a conta</option>
+					                    <option th:each="conta : ${contas}" th:value="${conta}" th:text="${conta.descricao}"></option>
+					                  </select>
+					                </div>
+					            </div>
+					            
+					            <div class="col-md-4">
+					            	<div class="form-group">
+										<label for="valorLancamento" >Valor</label>
+										<input id="valorLancamento" type="text" class="form-control" th:value="${lancamento.valorLancamento != null} ? ${lancamento.valorLancamento}" th:field="*{valorLancamento}"/>
+									</div>
+								</div>
+							
+							</div>
+							
+							<div class="row">
+								<div class="col-md-6">
+									<button class="btn  btn-primary" type="submit">Salvar</button>
+								</div>
+							</div>
+
+						</form>
+
+					</div>
+
+				</div>
+
+			</div>
+
+		</div>
+	</div>
+
+</th:block>
+
+</html>

@@ -50,3 +50,33 @@ function reloadPage(sizeWidth){
 	}, 2000);
 	
 }
+
+$(function() {
+	$("#valorLancamento").maskMoney({prefix:'R$ ', allowNegative: true, thousands:'.', decimal:',', affixesStay: false});
+});
+
+//Date picker
+$('#dataHoraLancamento').datepicker({
+	format: 'dd/mm/yyyy',
+    forceParse: false,
+	autoclose: true
+});
+
+// Month And Year Listagem Lancamento
+$('#monthYearListagem').datepicker({
+	format: 'MM yyyy',
+	startView: "months",
+	minViewMode: "months",
+    forceParse: false,
+	autoclose: true
+});
+
+$('#monthYearListagemm').datepicker({
+	format: 'MM yyyy',
+	startView: "months",
+	minViewMode: "months",
+    forceParse: false,
+	autoclose: true
+});
+
+

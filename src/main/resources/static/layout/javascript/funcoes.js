@@ -57,6 +57,20 @@ $(document).ready(function() {
 	});
 });
 
+$('#inputMonthYear').on("change", function(){
+	
+	var teste = $(this).val();
+	
+	
+});
+
+/*$(function(){
+	var teste = $('#inputMonthYear').val();
+	
+		
+		alert(teste);
+		
+});*/
 /*
  * function sendData() {
  * 
