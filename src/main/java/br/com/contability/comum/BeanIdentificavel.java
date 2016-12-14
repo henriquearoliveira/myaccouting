@@ -6,7 +6,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-import javax.validation.constraints.NotNull;
 
 @MappedSuperclass
 public class BeanIdentificavel {
@@ -18,7 +17,6 @@ public class BeanIdentificavel {
 //	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", locale = "pt-BR", timezone = "Brazil/East")
 //	@DateTimeFormat(pattern="dd-MM-yyyy HH:mm:ss")
 //	@Temporal(TemporalType.TIMESTAMP)
-	@NotNull(message = "A data bean não pode ser null")
 	private Calendar dataHoraCadastro, dataHoraAtualizacao;
 
 	public Long getId() {

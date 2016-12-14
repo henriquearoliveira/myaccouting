@@ -52,7 +52,7 @@ function reloadPage(sizeWidth){
 }
 
 $(function() {
-	$("#valorLancamento").maskMoney({prefix:'R$ ', allowNegative: true, thousands:'.', decimal:',', affixesStay: false});
+	$("#valorConversao").maskMoney({prefix:'R$ ', allowNegative: true, thousands:'.', decimal:',', affixesStay: false});
 });
 
 //Date picker

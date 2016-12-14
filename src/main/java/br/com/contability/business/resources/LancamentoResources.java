@@ -15,6 +15,7 @@ import br.com.contability.business.Lancamento;
 import br.com.contability.business.Usuario;
 import br.com.contability.business.services.CategoriaServices;
 import br.com.contability.business.services.ContaServices;
+import br.com.contability.business.services.LancamentoServices;
 import br.com.contability.comum.AuthenticationAbstract;
 import br.com.contability.comum.ModelConstruct;
 
@@ -30,6 +31,9 @@ public class LancamentoResources {
 	
 	@Autowired
 	private ContaServices contaServices;
+	
+	@Autowired
+	private LancamentoServices lancamentoServices;
 	
 	@RequestMapping()
 	public ModelAndView novo(Model model, Lancamento lancamento){
@@ -47,14 +51,15 @@ public class LancamentoResources {
 	
 	@RequestMapping(method = RequestMethod.POST)
 	public ModelAndView salvar(@Valid Lancamento lancamento, BindingResult result, RedirectAttributes attributes, Model model){
-		auth.getAutenticacao();
+		Usuario usuario = auth.getAutenticacao();
 		
 		if(result.hasErrors())
 			return novo(model, lancamento);
 		
-		System.out.println(lancamento.getDescricao() + " data: " + lancamento.getDataHoraLancamento());
+		lancamentoServices.grava(lancamento, usuario);
 		
-		return null;
+		attributes.addFlashAttribute("mensagem", "Lancamento gravado com sucesso");
+		return new ModelAndView("redirect:/lancamento");
 	}
 	
 	@RequestMapping("/lista")

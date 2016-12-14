@@ -81,15 +81,15 @@
 					                  <label>Selecione: </label>
 					                  <select id="conta" class="form-control" th:field="*{conta}">
 					                    <option value="">Seleciona a conta</option>
-					                    <option th:each="conta : ${contas}" th:value="${conta}" th:text="${conta.descricao}"></option>
+					                    <option th:each="conta : ${contas}" th:value="${conta.id}" th:text="${conta.descricao}"></option>
 					                  </select>
 					                </div>
 					            </div>
 					            
 					            <div class="col-md-4">
 					            	<div class="form-group">
-										<label for="valorLancamento" >Valor</label>
-										<input id="valorLancamento" type="text" class="form-control" th:value="${lancamento.valorLancamento != null} ? ${lancamento.valorLancamento}" th:field="*{valorLancamento}"/>
+										<label for="valorConversao" >Valor</label>
+										<input id="valorConversao" type="text" class="form-control" th:value="${valorConversao != null} ? ${lancamento.valorConversao}" th:field="*{valorConversao}"/>
 									</div>
 								</div>
 							

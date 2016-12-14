@@ -3,10 +3,11 @@ applications:
   # Fork of https://github.com/cloudfoundry/java-buildpack
   # For stability, keep your own fork.
   buildpack: https://github.com/cloudfoundry/java-buildpack.git
-  memory: 1000M
+  memory: 1G
   instances: 1
   # Because the URL will be http://super-mini.cfapps.io/
   # random-route: true
   host: accounting
   domain: cfapps.io
-  path: target/contability-1.0.1-SNAPSHOT.war
+  path: ./target/contability-1.0.1-SNAPSHOT.war
+  health-check-type: none

@@ -23,7 +23,6 @@ import br.com.contability.comum.BeanIdentificavel;
 public class Conta extends BeanIdentificavel{
 	
 	@JsonIgnore
-	@NotNull(message = "O usuario não pode ser null")
 	@ManyToOne(optional = false)
 	private Usuario usuario;
 	

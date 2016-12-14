@@ -1,5 +1,6 @@
 package br.com.contability.business;
 
+import java.math.BigDecimal;
 import java.util.Calendar;
 
 import javax.persistence.Column;
@@ -7,8 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.Index;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
@@ -23,12 +23,10 @@ import br.com.contability.comum.BeanIdentificavel;
 public class Lancamento extends BeanIdentificavel {
 	
 	@JsonIgnore
-	@NotNull(message = "O usuario não pode ser null")
 	@ManyToOne(optional = false)
 	private Usuario usuario;
 	
 	@JsonIgnore
-	@NotNull(message = "A categoria não pode ser null")
 	@ManyToOne(optional = false)
 	private Categoria categoria;
 	
@@ -46,8 +44,11 @@ public class Lancamento extends BeanIdentificavel {
 //	@Temporal(TemporalType.TIMESTAMP)
 	private Calendar dataHoraLancamento;
 	
+	@Transient
+	private String valorConversao;
+	
 	@Column(nullable = true)
-	private Double valorLancamento;
+	private BigDecimal valorLancamento;
 
 	public Usuario getUsuario() {
 		return usuario;
@@ -89,12 +90,20 @@ public class Lancamento extends BeanIdentificavel {
 		this.dataHoraLancamento = dataHoraLancamento;
 	}
 
-	public Double getValorLancamento() {
+	public BigDecimal getValorLancamento() {
 		return valorLancamento;
 	}
-
-	public void setValorLancamento(Double valorLançamento) {
-		this.valorLancamento = valorLançamento;
+	
+	public void setValorLancamento(BigDecimal valorLancamento) {
+		this.valorLancamento = valorLancamento;
+	}
+	
+	public String getValorConversao() {
+		return valorConversao;
+	}
+	
+	public void setValorConversao(String valorConversao) {
+		this.valorConversao = valorConversao;
 	}
 	
 }
