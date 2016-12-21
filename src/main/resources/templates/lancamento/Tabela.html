@@ -4,6 +4,8 @@
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
+<body>
+
 	<div th:fragment="tabelaLancamento" th:unless="${#lists.isEmpty(lancamentos)}">
 	
 		<table id="tabela1" class="table table-bordered table-striped">
@@ -30,36 +32,11 @@
 			</tbody>
 			
 		</table>
-		<!-- 
-		          <div class="box box-primary" id="baixaResolucao">
-		          
-		          	<div class="box-header">
-							<h3 class="box-title">Categorias</h3>
-					</div>
-		          
-		            <div class="box-body">
 		
-		              <ul class="list-group list-group-unbordered" id="tabela1">
-		                <li class="list-group-item" th:each="categoria : ${categorias}">
-		                  <div class="row">
-		                  
-			                  <div class="col-xs-9">
-			                  	<a th:href="@{/categoria/{id}(id=${categoria.id})}" th:text="${categoria.descricao}"></a> 	
-			                  </div> 
-			                  
-			                  <div class="col-xs-3">
-			                  	<button class="btn  btn-danger pull-right" th:id="${categoria.id}" th:value="${categoria.id}" type="submit" style="padding: 4px 8px;" >Remover</button>
-			                  </div>
-		                  
-		                  </div>
-		                </li>
-		              </ul>
+		<!-- JLIST HERE -->
 		
-		            </div>
-		            /.box-body
-		          </div>
-		          /.box
-	 -->
 	</div>
+	
+</body>
 
 </html>

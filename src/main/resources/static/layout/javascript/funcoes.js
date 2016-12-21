@@ -71,7 +71,6 @@ function enviaDataPost(){
 	var url = '/lancamento/tabela';
 	
 	if($('#inputMonthYear').val() != ''){
-		alert(url);
 		url = url + '/' + encodeURIComponent($('#inputMonthYear').val());
 	}
 	

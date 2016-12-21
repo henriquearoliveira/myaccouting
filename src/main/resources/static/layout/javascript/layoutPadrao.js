@@ -71,12 +71,12 @@ $('#monthYearListagem').datepicker({
 	autoclose: true
 });
 
-$('#monthYearListagemm').datepicker({
+/*$('#monthYearListagemm').datepicker({
 	format: 'MM yyyy',
 	startView: "months",
 	minViewMode: "months",
     forceParse: false,
 	autoclose: true
-});
+});*/
 
 
