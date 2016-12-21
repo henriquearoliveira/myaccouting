@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+	<div th:fragment="tabelaLancamento" th:unless="${#lists.isEmpty(lancamentos)}">
+	
+		<table id="tabela1" class="table table-bordered table-striped">
+		
+			<thead>
+				<tr>
+					<th class="text-center">Código</th>
+					<th class="text-center">Descrição</th>
+					<th class="text-center">Valor</th>
+				</tr>
+			</thead>
+			
+			<tbody>
+			
+				<tr th:each="lancamento : ${lancamentos}">
+					<td class="col-sm-1 text-center" th:text="${lancamento.id}"></td>
+					<!-- <td><a th:href="@{/categoria/{id}(id=${categoria.id})}" th:text="${categoria.descricao}"></a></td> -->
+					<td th:text="${lancamento.descricao}"></td>
+					<td class="col-sm-2" th:text="${'R$ ' + #numbers.formatDecimal(lancamento.valorLancamento, 0, 'POINT', 2, 'COMMA')}"></td>
+					<td class="col-xs-2 text-center"><a th:href="@{/categoria/} + ${lancamento.id}" style="padding: 6px 22px" class="btn btn-primary" role="button">Editar</a>
+						<button class="btn  btn-danger" th:id="${lancamento.id}" th:value="${lancamento.id}" type="submit">Remover</button></td>
+				</tr>
+				
+			</tbody>
+			
+		</table>
+		<!-- 
+		          <div class="box box-primary" id="baixaResolucao">
+		          
+		          	<div class="box-header">
+							<h3 class="box-title">Categorias</h3>
+					</div>
+		          
+		            <div class="box-body">
+		
+		              <ul class="list-group list-group-unbordered" id="tabela1">
+		                <li class="list-group-item" th:each="categoria : ${categorias}">
+		                  <div class="row">
+		                  
+			                  <div class="col-xs-9">
+			                  	<a th:href="@{/categoria/{id}(id=${categoria.id})}" th:text="${categoria.descricao}"></a> 	
+			                  </div> 
+			                  
+			                  <div class="col-xs-3">
+			                  	<button class="btn  btn-danger pull-right" th:id="${categoria.id}" th:value="${categoria.id}" type="submit" style="padding: 4px 8px;" >Remover</button>
+			                  </div>
+		                  
+		                  </div>
+		                </li>
+		              </ul>
+		
+		            </div>
+		            /.box-body
+		          </div>
+		          /.box
+	 -->
+	</div>
+
+</html>

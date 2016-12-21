@@ -1,6 +1,7 @@
 package br.com.contability.business.services;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 
@@ -29,6 +30,13 @@ public class LancamentoServices extends ServicesAbstract<Lancamento, LancamentoR
 		
 		super.insere(lancamento);
 		
+	}
+
+	public List<Lancamento> seleciona(Usuario usuario) {
+		
+		List<Lancamento> lancamentos = super.jpa.selecionaLancamentos(usuario.getId());
+		
+		return lancamentos;
 	}
 
 }

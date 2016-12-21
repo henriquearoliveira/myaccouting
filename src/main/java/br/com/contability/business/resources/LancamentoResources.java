@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -71,6 +72,17 @@ public class LancamentoResources {
 		ModelAndView mv = new ModelAndView("lancamento/Listagem");
 		
 		return mv;
+	}
+	
+	@RequestMapping("/tabela/{date}")
+	public String mostraTabelaCadastrados(Model model, @PathVariable("date") String calendar){
+		
+		Usuario usuario = auth.getAutenticacao();
+		
+		model.addAttribute("lancamentos", lancamentoServices.seleciona(usuario));
+		
+		return "lancamento/Tabela :: tabelaLancamento";
+		
 	}
 
 }

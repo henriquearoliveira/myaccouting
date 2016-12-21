@@ -61,8 +61,22 @@ $('#inputMonthYear').on("change", function(){
 	
 	var teste = $(this).val();
 	
+	enviaDataPost();
+	
 	
 });
+
+function enviaDataPost(){
+	
+	var url = '/lancamento/tabela';
+	
+	if($('#inputMonthYear').val() != ''){
+		alert(url);
+		url = url + '/' + encodeURIComponent($('#inputMonthYear').val());
+	}
+	
+	$("#tabelaBlock").load(url);
+}
 
 /*$(function(){
 	var teste = $('#inputMonthYear').val();
