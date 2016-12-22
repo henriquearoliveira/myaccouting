@@ -13,7 +13,7 @@
 
 			<div class="col-md-12">
 
-				<div class="box box-primary">
+				<div class="box">
 					<!-- id="altaResolucao"  NÃO ESQUECER DE CONTROLAR DEPOIS A RESOLUÇÃO -->
 					<div class="box-header">
 					
@@ -59,11 +59,18 @@
 
 						</form>
 
-						<div class="row">
-
-							<div id="tabelaBlock"></div>
-
+						<div id="altaResolucao" style="padding: 0px; ">
+						
+							<div id="tabelaBlock">
+								
+							</div>
+						
 						</div>
+						
+						<div id="baixaResolucao">
+							<p>Teste</p>
+						</div>
+
 					</div>
 
 				</div>
@@ -72,6 +79,38 @@
 
 		</div>
 	</div>
+	
+	<script th:inline="javascript">
+		/*<![CDATA[*/
+		/* 	
+		 $('#inputMonthYear').on("change", function(){
+			
+			var urlTeste = '/lancamento/tabela';
+			
+			if($('#inputMonthYear').val() != ''){
+				urlTeste = urlTeste + '/' + encodeURIComponent($('#inputMonthYear').val());
+			}
+			
+			/* $("#tabelaBlock").load(url, function(){
+				$.getScript('/layout/plugins/datatables/jquery.dataTables.min.js');
+				$.getScript('/layout/plugins/datatables/dataTables.bootstrap.min.js');
+				$.getScript('/layout/javascript/login.js');
+			}); */
+			
+		    /* $.ajax({
+		        type: "GET",
+		        url: urlTeste,
+		        datatype : "html",
+		        success: function(html) {
+		            console.log(html);
+		             $("#tabelaBlock").load(html);
+		            }
+		    });
+			
+		});  */
+		
+		/*]]>*/
+	</script>
 
 </th:block>
 

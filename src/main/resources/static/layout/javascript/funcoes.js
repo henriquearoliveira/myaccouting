@@ -68,13 +68,62 @@ $('#inputMonthYear').on("change", function(){
 
 function enviaDataPost(){
 	
-	var url = '/lancamento/tabela';
+	var urlTeste = '/lancamento/tabela';
 	
 	if($('#inputMonthYear').val() != ''){
-		url = url + '/' + encodeURIComponent($('#inputMonthYear').val());
+		urlTeste = urlTeste + '/' + encodeURIComponent($('#inputMonthYear').val());
 	}
 	
-	$("#tabelaBlock").load(url);
+	$("#tabelaBlock").load(urlTeste);
+
+	// TREINAMENTO.. RSRS
+	/*$jq.when(
+			$jq.getScript('/layout/javascript/jquery-2.2.3.min.js'),
+			$jq.getScript('https://code.jquery.com/ui/1.11.4/jquery-ui.min.js'),
+			$jq.getScript('/layout/bootstrap/js/bootstrap.min.js'),
+			$jq.getScript('/layout/plugins/datatables/jquery.dataTables.min.js'),
+			$jq.getScript('/layout/plugins/datatables/dataTables.bootstrap.min.js'),
+		    $jq.Deferred(function( deferred ){
+		    	$jq( deferred.resolve );
+		    })
+		).done(function(){
+
+			$jq("#tabelaBlock").load(urlTeste);
+
+		});
+	
+	
+	$.ajax({
+        
+		type: "GET",
+        url: urlTeste,
+        datatype : "html",
+        success: function(html) {
+            console.log(html);
+            alert('ddd');
+             $("#tabelaBlock").load(html);
+        },
+		error : function(e) {
+	
+			alert('sdf');
+	
+		}
+    });
+	
+	var urlSecond = '/lancamento/tabela';
+	
+	if($('#inputMonthYear').val() != ''){
+		urlSecond = urlSecond + '/' + encodeURIComponent($('#inputMonthYear').val());
+	}
+	
+	$.ajax({
+	    url: '/lancamento/Tabela.html',
+	    dataType: 'html',
+	    success: function(html) {
+	        var div = $('#tabelaBlock', $(html)).addClass('done');
+	        $('#targetDiv').html(div);
+	    }
+	});*/
 }
 
 /*$(function(){
@@ -83,19 +132,20 @@ function enviaDataPost(){
 		
 		alert(teste);
 		
-});*/
-/*
- * function sendData() {
- * 
- * alert('teste');
- * 
- * $('#tabela1 .btn').click(function(){ // var id = $(this).attr("id");
- * 
- * alert('haha');
- * 
- * });
- * 
- * var tr = $('#testee').closest("tr"); tr.css("background-color", "#000000");
- * tr.fadeIn(1000).fadeOut(200, function() { tr.remove(); }); };
- */
+});
+
+
+function sendData() {
+
+	alert('teste');
+	
+	$('#tabela1 .btn').click(function(){ // var id = $(this).attr("id");
+	
+	alert('haha');
+
+});
+
+var tr = $('#testee').closest("tr"); tr.css("background-color", "#000000");
+tr.fadeIn(1000).fadeOut(200, function() { tr.remove(); }); };*/
+
 

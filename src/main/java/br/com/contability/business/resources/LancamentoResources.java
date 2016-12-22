@@ -77,6 +77,7 @@ public class LancamentoResources {
 	@RequestMapping("/tabela/{date}")
 	public String mostraTabelaCadastrados(Model model, @PathVariable("date") String calendar){
 		
+		System.out.println("passou");
 		Usuario usuario = auth.getAutenticacao();
 		
 		model.addAttribute("lancamentos", lancamentoServices.seleciona(usuario));

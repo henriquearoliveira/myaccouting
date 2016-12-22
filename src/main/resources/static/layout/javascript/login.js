@@ -27,6 +27,7 @@ $(function(){
 		$('#senhaIncorreta').fadeOut('slow');
 	}, 5000);
 });
+
 /*
 ou
 setTimeout(function(){
