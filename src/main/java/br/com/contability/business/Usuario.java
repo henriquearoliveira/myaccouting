@@ -67,6 +67,10 @@ public class Usuario extends BeanIdentificavel {
 	@JsonIgnore
 	@OneToMany(mappedBy = "usuario", targetEntity = Lancamento.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Lancamento> lancamentos;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "usuario", targetEntity = Saldo.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<Lancamento> saldos;
 	//
 
 	public String getEmail() {
@@ -155,6 +159,14 @@ public class Usuario extends BeanIdentificavel {
 	
 	public void setLancamentos(List<Lancamento> lancamentos) {
 		this.lancamentos = lancamentos;
+	}
+	
+	public List<Lancamento> getSaldos() {
+		return saldos;
+	}
+	
+	public void setSaldos(List<Lancamento> saldos) {
+		this.saldos = saldos;
 	}
 
 }

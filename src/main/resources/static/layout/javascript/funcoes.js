@@ -64,7 +64,7 @@ $('#inputMonthYear').on("change", function(){
 	enviaDataPost();
 	
 	
-});
+}).change();
 
 function enviaDataPost(){
 	
@@ -75,6 +75,7 @@ function enviaDataPost(){
 	}
 	
 	$("#tabelaBlock").load(urlTeste);
+	$("#tabelaBlockMobile").load(urlTeste);
 
 	// TREINAMENTO.. RSRS
 	/*$jq.when(

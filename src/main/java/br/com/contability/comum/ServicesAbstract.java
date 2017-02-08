@@ -13,7 +13,7 @@ import br.com.contability.exceptions.ObjetoInexistenteException;
 public class ServicesAbstract<T extends BeanIdentificavel, E extends JpaRepository<T, Long>> implements IServices<T> {
 
 	@Autowired
-	public E jpa;
+	private E jpa;
 
 	@Override
 	public T atualiza(T objeto) {

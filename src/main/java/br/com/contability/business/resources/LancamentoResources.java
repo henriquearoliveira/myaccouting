@@ -1,5 +1,7 @@
 package br.com.contability.business.resources;
 
+import java.util.Calendar;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +19,10 @@ import br.com.contability.business.Usuario;
 import br.com.contability.business.services.CategoriaServices;
 import br.com.contability.business.services.ContaServices;
 import br.com.contability.business.services.LancamentoServices;
+import br.com.contability.business.services.SaldoServices;
 import br.com.contability.comum.AuthenticationAbstract;
 import br.com.contability.comum.ModelConstruct;
+import br.com.contability.utilitario.CaixaDeFerramentas;
 
 @Controller
 @RequestMapping("/lancamento")
@@ -35,6 +39,9 @@ public class LancamentoResources {
 	
 	@Autowired
 	private LancamentoServices lancamentoServices;
+	
+	@Autowired
+	private SaldoServices saldoServices;
 	
 	@RequestMapping()
 	public ModelAndView novo(Model model, Lancamento lancamento){
@@ -75,15 +82,22 @@ public class LancamentoResources {
 	}
 	
 	@RequestMapping("/tabela/{date}")
-	public String mostraTabelaCadastrados(Model model, @PathVariable("date") String calendar){
+	public String mostraTabelaCadastrados(Model model, @PathVariable("date") String calendarString){
 		
-		System.out.println("passou");
 		Usuario usuario = auth.getAutenticacao();
 		
-		model.addAttribute("lancamentos", lancamentoServices.seleciona(usuario));
+		Calendar calendar = CaixaDeFerramentas.calendarFromStringDate(calendarString);
+		
+		model.addAttribute("lancamentos", lancamentoServices.seleciona(usuario, calendar));
+		model.addAttribute("saldo", saldoServices.getSaldoDo(usuario, calendar));
 		
 		return "lancamento/Tabela :: tabelaLancamento";
 		
 	}
+	
+	/* APENAS TESTE MESMO
+	Teste teste = Teste.porString("Primeiro");
+	System.out.println(teste.name());
+	*/
 
 }

@@ -69,7 +69,7 @@ $('#monthYearListagem').datepicker({
 	minViewMode: "months",
     forceParse: false,
 	autoclose: true
-});
+}).datepicker("setDate", new Date());
 
 /*$('#monthYearListagemm').datepicker({
 	format: 'MM yyyy',
