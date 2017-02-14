@@ -22,7 +22,7 @@ public class CategoriaServices extends ServicesAbstract<Categoria, CategoriaRepo
 	 * @param usuario
 	 * @return
 	 */
-	public ModelAndView verificaCategoria(Model model, Long id, ModelAndView mv, Usuario usuario) {
+	public ModelAndView getCategoria(Model model, Long id, ModelAndView mv, Usuario usuario) {
 
 		if (id == 0 || id == null) {
 			model.addAttribute("erro", "Identificador incorreto");
@@ -48,16 +48,13 @@ public class CategoriaServices extends ServicesAbstract<Categoria, CategoriaRepo
 	 * @param usuario
 	 */
 	public void gravarCategoria(Categoria categoria, Usuario usuario) {
+
+		categoria.setUsuario(usuario);
+		
 		if (categoria.getId() == null) {
-
-			categoria.setUsuario(usuario);
 			super.insere(categoria);
-
 		} else {
-
-			categoria.setUsuario(usuario);
 			super.atualiza(categoria);
-
 		}
 	}
 
@@ -111,6 +108,14 @@ public class CategoriaServices extends ServicesAbstract<Categoria, CategoriaRepo
 
 		super.remove(id);
 
+	}
+
+	/**
+	 * @param idLancamento
+	 * @return Categoria
+	 */
+	public Categoria getPeloLancamento(Long idLancamento) {
+		return super.getJpa().getPeloLancamento(idLancamento);
 	}
 
 }

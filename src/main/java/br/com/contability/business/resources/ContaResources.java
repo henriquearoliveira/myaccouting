@@ -50,9 +50,8 @@ public class ContaResources {
 		
 		ModelAndView mv = new ModelAndView("conta/Conta");
 		
-		contaServices.atualizaConta(usuario, mv, id, model);
+		return contaServices.getConta(usuario, mv, id, model);
 		
-		return mv;
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)

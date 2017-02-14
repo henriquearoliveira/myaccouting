@@ -23,7 +23,11 @@ public class ContaServices extends ServicesAbstract<Conta, ContaRepository> {
 
 		conta.setUsuario(usuario);
 
-		super.insere(conta);
+		if (conta.getId() == null) {
+			super.insere(conta);
+		} else {
+			super.atualiza(conta);
+		}
 
 	}
 
@@ -45,7 +49,7 @@ public class ContaServices extends ServicesAbstract<Conta, ContaRepository> {
 	 * @param model
 	 * @return
 	 */
-	public ModelAndView atualizaConta(Usuario usuario, ModelAndView mv, Long id, Model model) {
+	public ModelAndView getConta(Usuario usuario, ModelAndView mv, Long id, Model model) {
 
 		if (id == 0 || id == null) {
 			model.addAttribute("erro", "Identificador incorreto");
@@ -55,7 +59,7 @@ public class ContaServices extends ServicesAbstract<Conta, ContaRepository> {
 
 		conta = super.getJpa().getConta(usuario.getId(), id);
 
-		if (conta == null){
+		if (conta == null) {
 			model.addAttribute("erro", "Impossível encontrar a conta desejada.");
 			return mv;
 		}
@@ -67,19 +71,23 @@ public class ContaServices extends ServicesAbstract<Conta, ContaRepository> {
 	}
 
 	public void removeConta(Usuario usuario, Long id) {
-		
+
 		if (id == null || confirmaVinculo(usuario, id))
 			throw new ObjetoInexistenteException();
-		
+
 		super.remove(id);
-		
+
 	}
 
 	private boolean confirmaVinculo(Usuario usuario, Long id) {
-		
+
 		Conta conta = super.getJpa().getConta(usuario.getId(), id);
-		
+
 		return conta == null;
+	}
+
+	public Conta getPeloLancamento(Long idLancamento) {
+		return super.getJpa().getPeloLancamento(idLancamento);
 	}
 
 }

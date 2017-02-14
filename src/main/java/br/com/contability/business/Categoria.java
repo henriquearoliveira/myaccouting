@@ -43,7 +43,7 @@ public class Categoria extends BeanIdentificavel {
 	
 	//
 	@JsonIgnore
-	@OneToMany(mappedBy = "usuario", targetEntity = Lancamento.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "categoria", targetEntity = Lancamento.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Lancamento> lancamentos;
 	//
 

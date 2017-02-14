@@ -10,41 +10,44 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <title>Compatibility</title>
-  <!-- Tell the browser to be responsive to screen width
-  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">-->
-  
-  <!-- Bootstrap 3.3.6 -->
-  <link rel="stylesheet" type="text/css" th:href="@{/layout/bootstrap/css/bootstrap.min.css}" />
-  <!-- Font Awesome -->  
-  <link rel="stylesheet" th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css}" />
-  <!-- Ionicons -->     
-  <link rel="stylesheet" th:href="@{https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css}" />
-  <!-- Theme style -->
-  <link rel="stylesheet" th:href="@{/layout/dist/css/AdminLTE.min.css}" />
-  <!-- AdminLTE Skins. Choose a skin from the css/skins
-       folder instead of downloading all of them to reduce the load. -->
-  <link rel="stylesheet" th:href="@{/layout/dist/css/skins/_all-skins.min.css}" />
-  <!-- iCheck -->              
-  <link rel="stylesheet" th:href="@{/layout/plugins/iCheck/flat/blue.css}" />
-  <!-- Morris chart -->  
-  <!-- <link rel="stylesheet" th:href="@{/layout/plugins/morris/morris.css}" /> -->
-  <!-- jvectormap --> 
-  <link rel="stylesheet" th:href="@{/layout/plugins/jvectormap/jquery-jvectormap-1.2.2.css}" />
-  <!-- Date Picker -->
-  <link rel="stylesheet" th:href="@{/layout/plugins/datepicker/datepicker3.css}" />
-  <!-- Daterange picker -->    
-  <link rel="stylesheet" th:href="@{/layout/plugins/daterangepicker/daterangepicker.css}" />
-  <!-- bootstrap wysihtml5 - text editor -->
-  <link rel="stylesheet" th:href="@{/layout/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css}" />
-  
-  <link rel="stylesheet" th:href="@{/layout/css/layoutPadrao.css}" />
+<title>Compatibility</title>
+<!-- Tell the browser to be responsive to screen width
+<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">-->
 
-  <link rel="stylesheet" th:href="@{/layout/css/index.css}" />
-  
-  <!-- DataTables -->
-  <link rel="stylesheet" th:href="@{/layout/plugins/datatables/dataTables.bootstrap.css}" />
-  
+<link rel="stylesheet" th:href="@{/layout/css/normalize.css}" />
+<link rel="stylesheet" th:href="@{/layout/css/main.css}" />
+
+<!-- Bootstrap 3.3.6 -->
+<link rel="stylesheet" type="text/css" th:href="@{/layout/bootstrap/css/bootstrap.min.css}" />
+<!-- Font Awesome -->  
+<link rel="stylesheet" th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css}" />
+<!-- Ionicons -->     
+<link rel="stylesheet" th:href="@{https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css}" />
+<!-- Theme style -->
+<link rel="stylesheet" th:href="@{/layout/dist/css/AdminLTE.min.css}" />
+<!-- AdminLTE Skins. Choose a skin from the css/skins
+     folder instead of downloading all of them to reduce the load. -->
+<link rel="stylesheet" th:href="@{/layout/dist/css/skins/_all-skins.min.css}" />
+<!-- iCheck -->              
+<link rel="stylesheet" th:href="@{/layout/plugins/iCheck/flat/blue.css}" />
+<!-- Morris chart -->  
+<!-- <link rel="stylesheet" th:href="@{/layout/plugins/morris/morris.css}" /> -->
+<!-- jvectormap --> 
+<link rel="stylesheet" th:href="@{/layout/plugins/jvectormap/jquery-jvectormap-1.2.2.css}" />
+<!-- Date Picker -->
+<link rel="stylesheet" th:href="@{/layout/plugins/datepicker/datepicker3.css}" />
+<!-- Daterange picker -->    
+<link rel="stylesheet" th:href="@{/layout/plugins/daterangepicker/daterangepicker.css}" />
+<!-- bootstrap wysihtml5 - text editor -->
+<link rel="stylesheet" th:href="@{/layout/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css}" />
+
+<link rel="stylesheet" th:href="@{/layout/css/layoutPadrao.css}" />
+
+<link rel="stylesheet" th:href="@{/layout/css/index.css}" />
+
+<!-- DataTables -->
+<link rel="stylesheet" th:href="@{/layout/plugins/datatables/dataTables.bootstrap.css}" />
+
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
@@ -57,6 +60,11 @@
 <script th:src="@{https://code.jquery.com/ui/1.11.4/jquery-ui.min.js}"></script>
 <!-- Bootstrap 3.3.6 -->
 <script th:src="@{/layout/bootstrap/js/bootstrap.min.js}"></script>
+
+<script th:src="@{/javascript/vendor/modernizr-2.6.2.min.js}"></script>
+<script th:src="@{/layout/javascript/main.js}"></script>
+
+
 <!-- Morris.js charts -->
 <script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js}"></script>
 <script th:src="@{/layout/plugins/morris/morris.min.js}"></script>
@@ -93,11 +101,30 @@
 <script th:src="@{/layout/javascript/erroDivMessage.js}"></script>
 
 </head>
-<body class="skin-blue sidebar-mini" id="navBarHide"> <!-- hold-transition --> 
+
+<body class="demo skin-blue sidebar-mini" id="navBarHide"> <!-- hold-transition --> 
+<!--[if lt IE 7]>
+<p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+<![endif]-->
+
+<!-- Demo content -->			
+	<div id="demo-content">
+	
+		<div id="loader-wrapper">
+		
+			<div id="loader"></div>
+		
+			<div class="loader-section section-left"></div>
+			<div class="loader-section section-right"></div>
+	
+		</div>
+
+	<div id="content"> 
+	
+	<div id="occult">
 
 <!-- <input type="hidden" name="_csrf_header" th:value="${_csrf.headerName}"/>
 <input type="hidden" name="_csrf" th:value="${_csrf.token}"/> -->
-
 <div class="wrapper">
 
   <header class="main-header">
@@ -106,10 +133,10 @@
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <!-- <span class="logo-mini"><b>A</b>LT</span> -->
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b>Compatibility</b></span>
+      <span class="logo-lg"><b>Accounting</b></span>
     </a>
     <!-- Header Navbar: style can be found in header.less -->
-    <nav class="navbar navbar-static-top">
+    <nav class="navbar navbar-static-top"> <!-- navbar-static-top -->
       <!-- Sidebar toggle button-->
       
       <div id="esconder">
@@ -361,6 +388,7 @@
       </div>
     </nav>
   </header>
+  
   <!-- Left side column. contains the logo and sidebar -->
   <aside class="main-sidebar">
     <!-- sidebar: style can be found in sidebar.less -->
@@ -458,13 +486,14 @@
         <li><a href="#"><i class="fa fa-circle-o text-red"></i> <span>Important</span></a></li>
         <li><a href="#"><i class="fa fa-circle-o text-yellow"></i> <span>Warning</span></a></li>
         <li><a href="#"><i class="fa fa-circle-o text-aqua"></i> <span>Information</span></a></li>
-      </ul>
+      </ul>div
     </section>
     <!-- /.sidebar -->
   </aside>
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
+  
     <!-- Content Header (Page header) -->
     <!-- <section class="content-header">
       <h1>
@@ -480,9 +509,14 @@
     <!-- Main content -->
     <section class="content blockconteudo">
     
+
+
+    
     <div>
 		<th:block layout:fragment="conteudo"/>
 	</div>
+	
+	
     
     <!-- 
       <div class="row">
@@ -497,10 +531,23 @@
       
 
     </section>
+    
+  
+	
+	
+	
     <!-- /.content -->
   </div>
+
+ 
+    
+   
+	
     <!-- /.content -->
   </div>
+  
+
+  
   <!-- /.content-wrapper -->
   <footer class="main-footer">
     <div class="pull-right hidden-xs">
@@ -520,6 +567,13 @@
   $.widget.bridge('uibutton', $.ui.button);
 </script> -->
   <!-- jQuery 2.2.3 -->
+  
+  </div>
+  
+     <!-- / .Demo content -->
+	</div>
+	<!-- ./ content personalized-->
+	</div>
 
 <!-- Datepicker -->
 <script th:src="@{/layout/plugins/datepicker/bootstrap-datepicker.js}"></script>
@@ -529,6 +583,7 @@
 <!-- Pessoal -->
 <script th:src="@{/layout/javascript/layoutPadrao.js}"></script>
 <script th:src="@{/layout/javascript/funcoes.js}"></script>
+
 
 </body>
 

@@ -29,4 +29,7 @@ public interface LancamentoRepository extends JpaRepository<Lancamento, Long> {
 			+ " GROUP BY resultado", nativeQuery = true)
 	public BigDecimal getSaldo(Long idUsuario, int month, int year);
 
+	@Query("SELECT l FROM Lancamento l WHERE l.usuario.id = ?1 AND l.id = ?2")
+	public Lancamento getLancamento(Long idUsuario, Long idLancamento);
+
 }

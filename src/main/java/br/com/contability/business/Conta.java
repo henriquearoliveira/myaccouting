@@ -32,7 +32,7 @@ public class Conta extends BeanIdentificavel{
 	private String descricao;
 	
 	@JsonIgnore
-	@OneToMany(mappedBy = "usuario", targetEntity = Lancamento.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "conta", targetEntity = Lancamento.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Lancamento> lancamentos;
 	
 	public Usuario getUsuario() {

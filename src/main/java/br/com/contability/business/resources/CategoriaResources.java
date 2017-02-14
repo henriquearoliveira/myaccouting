@@ -54,7 +54,7 @@ public class CategoriaResources {
 		
 		ModelAndView mv = new ModelAndView("categoria/Categoria");
 		
-		categoriaServices.verificaCategoria(model, id, mv, usuario);
+		categoriaServices.getCategoria(model, id, mv, usuario);
 		return mv;
 	}
 	
