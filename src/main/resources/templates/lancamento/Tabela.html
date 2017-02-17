@@ -5,7 +5,7 @@
 		<thead>
 		
 			<tr>
-				<th class="text-center">Código</th>
+				<th class="text-center">Data</th>
 				<th class="text-center">Descrição</th>
 				<th class="text-center">Valor</th>
 			</tr>
@@ -15,9 +15,8 @@
 		<tbody>
 		
 			<tr th:each="lancamento : ${lancamentos}">
-				<td class="col-sm-1 text-center" th:text="${lancamento.id}"></td>
-				<!-- <td><a th:href="@{/categoria/{id}(id=${categoria.id})}" th:text="${categoria.descricao}"></a></td> -->
-				<td th:text="${lancamento.descricao}"></td>
+				<td class="col-sm-2 text-center" th:text="${#calendars.format(lancamento.dataHoraLancamento,'dd/MM/yyyy')}"></td>
+				<td><a th:href="@{/lancamento/{id}(id=${lancamento.id})}" th:text="${lancamento.descricao}"></a></td>
 				<td class="col-sm-2" th:text="((${lancamento.categoria.tipoDeCategoria.name()} == 'DESPESA') ? '- ' : '') + ${'R$ ' + #numbers.formatDecimal(lancamento.valorLancamento, 0, 'POINT', 2, 'COMMA')}"></td>
 				<td class="col-xs-2 text-center">
 					<a th:href="@{/lancamento/} + ${lancamento.id}" style="padding: 6px 22px" class="btn btn-primary" role="button">Editar</a>
@@ -29,7 +28,6 @@
 	</table>
 	
 	<div class="row">
-	
 		<div class="col-md-offset-8 col-md-4">
 			<span style= "color: gray;">Saldo atual: </span>
 			<strong style= "font-size: 20px; color: #00C49D;" th:text="${saldo != null} ? ${saldo} : 0.00">0.00</strong>

@@ -71,11 +71,11 @@ function enviaDataPost(){
 	var urlTeste = '/lancamento/tabela';
 	
 	if($('#inputMonthYear').val() != ''){
-		urlTeste = urlTeste + '/' + encodeURIComponent($('#inputMonthYear').val());
+		urlTeste = urlTeste + '?date=' + encodeURIComponent($('#inputMonthYear').val());
 	}
 	
 	$("#tabelaBlock").load(urlTeste);
-	$("#tabelaBlockMobile").load(urlTeste);
+	$("#tabelaBlockMobile").load(urlTeste + '&mobile=mobile');
 
 	// TREINAMENTO.. RSRS
 	/*$jq.when(

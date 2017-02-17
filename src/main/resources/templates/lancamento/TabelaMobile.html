@@ -1,0 +1,33 @@
+<div th:fragment="tabelaLancamentoMobile"
+	xmlns:th="http://www.thymeleaf.org" th:remove="tag"
+	th:unless="${#lists.isEmpty(lancamentos)}">
+
+	<ul class="list-group list-group-unbordered" id="tabela1">
+		<li class="list-group-item" th:each="lancamento : ${lancamentos}">
+			<div class="row">
+
+				<div class="col-xs-9">
+					<a th:href="@{/lancamento/{id}(id=${lancamento.id})}"
+						th:text="${lancamento.descricao}"></a>
+				</div>
+
+				<div class="col-xs-3">
+					<button class="btn  btn-danger pull-right" th:id="${lancamento.id}"
+						th:value="${lancamento.id}" type="submit"
+						style="padding: 4px 8px;">Remover</button>
+				</div>
+
+			</div>
+
+		</li>
+		
+	</ul>
+	
+	<div class="row">
+		<div class="col-md-offset-8 col-md-4">
+			<span style="color: gray;">Saldo atual: </span> <strong style="font-size: 20px; color: #00C49D;"
+				th:text="${saldo != null} ? ${saldo} : 0.00">0.00</strong>
+		</div>
+	</div>
+
+</div>
