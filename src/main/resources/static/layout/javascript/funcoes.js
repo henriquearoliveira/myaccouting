@@ -18,7 +18,7 @@ $(function() {
 
 // EXCLUIR WITHOUT RELOAD PAGE
 $(document).ready(function() {
-	$(".btn-danger").click(function(e) {
+	$("body").on('click', '.btn-danger', function(e) {
 		var id = $(this).attr("id");
 
 		var endereco = "remover/";
