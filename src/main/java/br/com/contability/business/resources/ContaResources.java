@@ -9,9 +9,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -31,7 +33,7 @@ public class ContaResources {
 	@Autowired
 	private ContaServices contaServices;
 
-	@RequestMapping()
+	@GetMapping()
 	public ModelAndView novo(Model model, Conta conta){
 		model = ModelConstruct.setAttributes(model, "activeLiConta", "activeNovo");
 		
@@ -42,7 +44,7 @@ public class ContaResources {
 		return mv;
 	}
 	
-	@RequestMapping(value = "/{id}")
+	@GetMapping("/{id}")
 	public ModelAndView get(@PathVariable Long id, Model model, Conta conta){
 		model = ModelConstruct.setAttributes(model, "activeLiConta", "activeNovo");
 		
@@ -54,7 +56,7 @@ public class ContaResources {
 		
 	}
 	
-	@RequestMapping(method = RequestMethod.POST)
+	@PostMapping()
 	public ModelAndView novo(@Valid Conta conta, BindingResult result, RedirectAttributes attributes, Model model){
 		if(result.hasErrors())
 			return novo(model, conta);
@@ -67,7 +69,7 @@ public class ContaResources {
 		return new ModelAndView("redirect:/conta");
 	}
 	
-	@RequestMapping(value = "lista")
+	@GetMapping("lista")
 	public ModelAndView lista(Model model){
 		
 		model = ModelConstruct.setAttributes(model, "activeLiConta", "activeListagem");
@@ -82,7 +84,7 @@ public class ContaResources {
 		return mv;
 	}
 	
-	@RequestMapping(value="/remove/{id}", method = RequestMethod.DELETE)
+	@DeleteMapping("/remove/{id}")
 	public ResponseEntity<Void> remove(@PathVariable Long id){
 		
 		Usuario usuario = auth.getAutenticacao();

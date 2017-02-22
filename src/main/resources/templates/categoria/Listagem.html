@@ -40,8 +40,8 @@
 								<tr th:each="categoria : ${categorias}">
 									<td th:text="${categoria.id}"></td>
 									<td><a th:href="@{/categoria/{id}(id=${categoria.id})}" th:text="${categoria.descricao}"></a></td>
-									<td th:text="${categoria.observacao}"></td>
 									<td th:text="${categoria.tipoDeCategoria.descricao}"></td>
+									<td th:text="${categoria.observacao}"></td>
 									<td class="col-xs-2 text-center">
 									
 										<a th:href="@{/categoria/} + ${categoria.id}" style="padding: 6px 22px" class="btn btn-primary" role="button">Editar</a>

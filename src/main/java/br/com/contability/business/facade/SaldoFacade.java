@@ -21,6 +21,10 @@ public class SaldoFacade {
 	@Autowired
 	private SaldoServices saldoServices;
 
+	/**
+	 * @param usuario
+	 * @param lancamento
+	 */
 	public void atualizaSaldoUsuario(Usuario usuario, Lancamento lancamento) {
 		
 		BigDecimal saldoValor = lancamentoServices.getSaldo(usuario, lancamento.getDataHoraLancamento());

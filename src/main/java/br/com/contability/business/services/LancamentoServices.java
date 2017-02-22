@@ -15,6 +15,7 @@ import br.com.contability.business.facade.SaldoFacade;
 import br.com.contability.business.repository.LancamentoRepository;
 import br.com.contability.comum.IServices;
 import br.com.contability.comum.ServicesAbstract;
+import br.com.contability.exceptions.ObjetoInexistenteException;
 import br.com.contability.utilitario.CaixaDeFerramentas;
 
 @Service
@@ -94,6 +95,30 @@ public class LancamentoServices extends ServicesAbstract<Lancamento, LancamentoR
 		
 		return mv;
 		
+	}
+
+	/**
+	 * @param usuario
+	 * @param id
+	 */
+	public void remove(Usuario usuario, Long lancamentoId) {
+		
+		if(lancamentoId == null || confirmaVinculo(usuario, lancamentoId))
+			throw new ObjetoInexistenteException("Impossível encontrar o lançamento selecionado");
+		
+		Lancamento lancamento = super.get(lancamentoId);
+		
+		super.remove(lancamentoId);
+		saldoFacade.atualizaSaldoUsuario(usuario, lancamento);
+		
+		
+	}
+
+	private boolean confirmaVinculo(Usuario usuario, Long lancamentoId) {
+		
+		Lancamento lancamento = super.getJpa().getLancamento(usuario.getId(), lancamentoId);
+		
+		return lancamento == null;
 	}
 
 }

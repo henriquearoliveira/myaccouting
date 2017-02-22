@@ -4,23 +4,25 @@ $(function() {
 	}, 7000);
 });
 
+/*$(document).ready(*/
 $(function() {
-	$('#tabela1').DataTable();
-	$('#example2').DataTable({
+	$("#tabela1").DataTable();
+	/*$('#example2').DataTable({
 		"paging" : true,
 		"lengthChange" : false,
 		"searching" : false,
 		"ordering" : true,
 		"info" : true,
 		"autoWidth" : false
-	});
+	});*/
 });
 
 // EXCLUIR WITHOUT RELOAD PAGE
-$(document).ready(function() {
-	$(".btn-danger").click(function(e) {
+$(document).ready(function(e) {
+	$(".btn-danger").on("click", function(e) { /*-- Não funfa = Forma Padrão.*/
+	/*$("body").on("click", '.btn-danger', function() {*/
 		var id = $(this).attr("id");
-
+		
 		var endereco = "remover/";
 		
 		// teste
@@ -46,6 +48,8 @@ $(document).ready(function() {
 				li.fadeIn(1000).fadeOut(200,function(){
 					li.remove();
 				})
+				
+				$('#bodyteste').append(erroDiv); // VARIÁVEL LOCALIZADA EM OUTRO ARQUIVO -> erroDivMessage.js
 			},
 
 			error : function(e) {
@@ -74,7 +78,10 @@ function enviaDataPost(){
 		urlTeste = urlTeste + '?date=' + encodeURIComponent($('#inputMonthYear').val());
 	}
 	
-	$("#tabelaBlock").load(urlTeste);
+	$("#tabelaBlock").load(urlTeste/*, function(){
+		$.getScript("https://code.jquery.com/jquery-2.2.3.min.js");
+		$.getScript("/layout/javascript/funcoes.js");
+	}*/);
 	$("#tabelaBlockMobile").load(urlTeste + '&mobile=mobile');
 
 	// TREINAMENTO.. RSRS

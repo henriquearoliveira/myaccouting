@@ -9,9 +9,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -32,7 +34,7 @@ public class CategoriaResources {
 	@Autowired
 	private AuthenticationAbstract auth;
 	
-	@RequestMapping()
+	@GetMapping()
 	public ModelAndView novo(Model model, Categoria categoria) { // tem que haver no método para ele mapear depois
 		model = ModelConstruct.setAttributes(model,"activeLi", "activeNovo");
 		
@@ -46,7 +48,7 @@ public class CategoriaResources {
 		return mv;
 	}
 	
-	@RequestMapping("/{id}")
+	@GetMapping("/{id}")
 	public ModelAndView get(Model model, Categoria categoria, @PathVariable Long id) { // tem que haver no método para ele mapear depois
 		model = ModelConstruct.setAttributes(model,"activeLi", "activeNovo");
 		
@@ -60,7 +62,7 @@ public class CategoriaResources {
 	
 	
 
-	@RequestMapping(method = RequestMethod.POST)
+	@PostMapping
 	public ModelAndView salvar(@Valid Categoria categoria, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
 		
 		if(bindingResult.hasErrors())
@@ -74,7 +76,7 @@ public class CategoriaResources {
 		return new ModelAndView("redirect:/categoria");
 	}
 
-	@RequestMapping(value = "/lista")
+	@GetMapping(value = "/lista")
 	public ModelAndView lista(Model model) {
 		model = ModelConstruct.setAttributes(model,"activeLi", "activeListagem");
 		
@@ -89,7 +91,7 @@ public class CategoriaResources {
 		return mv;
 	}
 	
-	@RequestMapping(value = "/remover/{id}", method = RequestMethod.DELETE)
+	@DeleteMapping(value = "/remover/{id}")
 	public ResponseEntity<Void> remover(@PathVariable Long id) {
 		
 		auth.getAutenticacao();

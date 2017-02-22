@@ -2,6 +2,7 @@ package br.com.contability.business.resources;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import br.com.contability.business.Usuario;
@@ -14,7 +15,7 @@ public class LoginResources {
 	@Autowired
 	private AuthenticationAbstract auth;
 	
-	@RequestMapping
+	@GetMapping
 	public String login(){ // pode ser também. @AuthenticationPrincipal User user
 
 		Usuario usuario = auth.getAutenticacao();
