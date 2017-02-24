@@ -11,7 +11,7 @@
 		<form  th:action="@{/login}" method="POST">
 		
 			<div class="row" style="margin-bottom: 10px;">
-				<h2 class="text-center font-sans-serif">Bem vindo</h2>
+				<h2>Accounting System</h2>
 			</div>
 			
 			<div class="mat-in">
@@ -26,8 +26,18 @@
 				<label>Password</label>
 			</div>
 			
+			<div class="right">
+				<a th:href="@{/validacadastro}">Valida cadastro</a>
+			</div>
+			
 			<button type="submit" name="submit" id="login">Login</button>
 
+			<div class="right">
+				<a th:href="@{/esqueceusenha}">Esqueceu a senha</a>
+			</div>
+			
+			<button type="submit" name="submit" id="cadastrar">Cadastre-se</button>
+			
 			<div id="senhaIncorreta" style="color: red; text-align: center;">
 				<p th:if="${param.error}">Email ou senha inválidos</p>
 			</div>

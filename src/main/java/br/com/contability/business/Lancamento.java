@@ -40,7 +40,7 @@ public class Lancamento extends BeanIdentificavel {
 	private String descricao;
 	
 	@Column(nullable = true)
-	@DateTimeFormat(pattern="dd/MM/yyyy")
+	@DateTimeFormat(pattern="yyyy-MM-dd")
 //	@Temporal(TemporalType.TIMESTAMP)
 	private Calendar dataHoraLancamento;
 	

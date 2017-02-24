@@ -56,10 +56,16 @@ $(function() {
 });
 
 //Date picker
-$('#dataHoraLancamento').datepicker({
+/*$('#dataHoraLancamento').datepicker({
 	format: 'dd/mm/yyyy',
     forceParse: false,
 	autoclose: true
+}).datepicker("setDate", new Date());*/
+
+$("#dataHoraLancamento").datepicker({ 
+        format: 'yyyy-mm-dd',
+        forceParse: false,
+        autoclose: true
 });
 
 // Month And Year Listagem Lancamento
