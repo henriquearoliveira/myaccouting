@@ -16,6 +16,12 @@ html, body {
   min-height: 240px;
 }
 
+@media screen and (max-height: 700px) {
+    .scale {
+        display: none !important;
+    }
+}
+
 /*The form part*/
 .content {
 /*A box that the form resides in - centered vertically and horizontally based on the window. The max-width and % width combo allow it to resize for small devices*/  
@@ -547,7 +553,7 @@ body #logo {
   left: 50%;
   width: var(--width-logo);
   height: var(--height-logo);
-  margin: 50px 0 0 -130px;
+  margin: -270px 0 0 -130px;
   border-radius: 50%;
   background-color: #fff;
   -webkit-transform: scale(0);

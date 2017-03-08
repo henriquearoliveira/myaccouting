@@ -7,71 +7,74 @@
 
 <th:block layout:fragment="conteudo">
 
-	<div class="scale">
-		<div id="logo">
-			<div id="green-circle-1">
-				<div id="green-circle-2">
-					<span class="top char0">
-						<p></p>
-					</span><span class="top char1">
-						<p>A</p>
-					</span><span class="top char2">
-						<p>C</p>
-					</span><span class="top char3">
-						<p>C</p>
-					</span><span class="top char4">
-						<p>O</p>
-					</span><span class="top char5">
-						<p>U</p>
-					</span><span class="top char6">
-						<p>N</p>
-					</span><span class="top char7">
-						<p>T</p>
-					</span><span class="top char8">
-						<p></p>
-					</span><span class="bottom char0">
-						<p></p>
-					</span><span class="bottom char1">
-						<p></p>
-					</span><span class="bottom char2">
-						<p>$</p>
-					</span><span class="bottom char3">
-						<p>$</p>
-					</span><span class="bottom char4">
-						<p></p>
-					</span><span class="bottom char5">
-						<p></p>
-					</span>
-					<div id="white-circle-1">
-						<div id="box">
-							<div class="circle"></div>
-							<div class="circle"></div>
-							<div class="circle"></div>
-							<div class="circle"></div>
-							<div class="circle"></div>
-							<div class="circle"></div>
-							<div class="circle"></div>
-							<div class="circle"></div>
-							<div class="circle"></div>
-							<div class="circle"></div>
-							<div class="circle"></div>
-							<div class="circle"></div>
-							<div class="circle"></div>
-							<div class="circle"></div>
-							<div class="circle"></div>
-							<div class="circle"></div>
-							<div class="circle"></div>
-							<div class="circle"></div>
-							<div class="circle"></div>
+	<div class="content">
+
+		<div class="scale">
+			<div id="logo">
+				<div id="green-circle-1">
+					<div id="green-circle-2">
+						<span class="top char0">
+							<p></p>
+						</span><span class="top char1">
+							<p>A</p>
+						</span><span class="top char2">
+							<p>C</p>
+						</span><span class="top char3">
+							<p>C</p>
+						</span><span class="top char4">
+							<p>O</p>
+						</span><span class="top char5">
+							<p>U</p>
+						</span><span class="top char6">
+							<p>N</p>
+						</span><span class="top char7">
+							<p>T</p>
+						</span><span class="top char8">
+							<p></p>
+						</span><span class="bottom char0">
+							<p></p>
+						</span><span class="bottom char1">
+							<p></p>
+						</span><span class="bottom char2">
+							<p>$</p>
+						</span><span class="bottom char3">
+							<p>$</p>
+						</span><span class="bottom char4">
+							<p></p>
+						</span><span class="bottom char5">
+							<p></p>
+						</span>
+						<div id="white-circle-1">
+							<div id="box">
+								<div class="circle"></div>
+								<div class="circle"></div>
+								<div class="circle"></div>
+								<div class="circle"></div>
+								<div class="circle"></div>
+								<div class="circle"></div>
+								<div class="circle"></div>
+								<div class="circle"></div>
+								<div class="circle"></div>
+								<div class="circle"></div>
+								<div class="circle"></div>
+								<div class="circle"></div>
+								<div class="circle"></div>
+								<div class="circle"></div>
+								<div class="circle"></div>
+								<div class="circle"></div>
+								<div class="circle"></div>
+								<div class="circle"></div>
+								<div class="circle"></div>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
 
-	<div class="content">
-	
+
+
+
 		<!-- <div id="block-top">
 			<h4>Accounting</h4>
 		</div> -->
@@ -105,7 +108,7 @@
 			<div id="senhaIncorreta" style="color: red; text-align: center;">
 				<p th:if="${param.error}">Email ou senha inválidos</p>
 			</div>
-			
+
 			<!-- <div id="senhaIncorreta" layout:include="/mensagensutils/MensagensAlertas" th:remove="tag"></div> -->
 			<div th:replace="mensagensutils/MensagensAlertas :: alert"></div>
 
