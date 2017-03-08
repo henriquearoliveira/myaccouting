@@ -72,60 +72,30 @@
 
 	<div class="content">
 	
-		<!-- <div id="block-top">
-			<h4>Accounting</h4>
-		</div> -->
-
-		<form th:action="@{/login}" method="POST">
-
+		<form method="POST" th:object="${cadastro}" th:action="@{/cadastrar}" role="form">
+		
 			<div class="mat-in">
-				<input id="nome" type="text" name="username" required="true"></input>
-				<span class="bar"></span> <label>Username</label>
-				<!-- th:field="*{nome}" -->
-			</div>
-
-			<div class="mat-in">
-				<input id="password" type="password" name="password" required="true"></input>
-				<span class="bar"></span>
-				<!-- value="password" -->
-				<label>Password</label>
-			</div>
-
-			<button type="submit" name="submit" id="login">Login</button>
-
-			<div class="center">
-				<a class="esqueceuSenha" th:href="@{/esqueceusenha}">Esqueceu a
-					senha</a>
-			</div>
-
-			<div class="center button">
-				<a class="link" th:href="@{/cadastrar}">Cadastrar-se</a>
-			</div>
-
-			<div id="senhaIncorreta" style="color: red; text-align: center;">
-				<p th:if="${param.error}">Email ou senha inválidos</p>
+				<input id="nome" type="text" th:field="*{nome}" required="true"></input>
+				<span class="bar" ></span>
+				<label for="nome">Nome</label> <!-- th:field="*{nome}" -->
 			</div>
 			
-			<!-- <div id="senhaIncorreta" layout:include="/mensagensutils/MensagensAlertas" th:remove="tag"></div> -->
-			<div th:replace="mensagensutils/MensagensAlertas :: alert"></div>
-
-			<!-- <span sec:authentication="name"></span> -->
-
+			<div class="mat-in">
+				<input id="email" type="text" th:field="*{email}" required="true"></input>
+				<span class="bar"></span> <!-- value="password" -->
+				<label for="email">Email</label>
+			</div>
+			
+			<div class="mat-in">
+				<input id="senha" type="password" th:field="*{senha}" required="true"></input>
+				<span class="bar"></span> <!-- value="password" -->
+				<label for="senha">Senha</label>
+			</div>
+			
+			<button type="submit" value="submit" id="cadastrar" >Cadastrar-se</button>
+			
 		</form>
-		<!-- <div id="senhaIncorreta">
-				<h5 th:if="${#bools.isTrue(incorrect)}"
-					style="color: red; text-align: center">email ou senha
-					incorreta</h5>
-			</div> -->
-		<!-- )<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-			<h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>-->
-		<!--<span sec:authorize="hasRole('ROLE_ADMIN')">Teste</span> -->
 
-		<!--<form th:action="@{/logout}" method="POST">
-			<button type="submit" name="submit" id="logout">Logout</button>
-		</form>-->
 	</div>
-
 </th:block>
-
 </html>

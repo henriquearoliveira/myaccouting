@@ -1,4 +1,16 @@
-var $loginMsg = $('.loginMsg'),
+$(function(){
+	setTimeout(function(){
+		$('#senhaIncorreta').fadeOut('slow');
+	}, 5000);
+});
+
+$(function(){
+	setTimeout(function(){
+		$('#hideComponent').fadeOut('slow');
+	}, 5000);
+});
+
+/*var $loginMsg = $('.loginMsg'),
   $login = $('.login'),
   $signupMsg = $('.signupMsg'),
   $signup = $('.signup'),
@@ -20,13 +32,7 @@ $('#switch2').on('click', function() {
 
   $signup.toggleClass('hide');
   $login.toggleClass('hide');
-});
-
-$(function(){
-	setTimeout(function(){
-		$('#senhaIncorreta').fadeOut('slow');
-	}, 5000);
-});
+});*/
 
 /*
 ou

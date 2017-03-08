@@ -21,11 +21,11 @@
 
 					<div class="box-body">
 					
-						<div layout:include="/mensagensutils/MensagensAlertas" th:remove="tag"></div>
+						<div th:replace="mensagensutils/MensagensAlertas :: alert"></div>
 					
 						<form method="POST" th:object="${conta}" th:action="@{/conta}" role="form">
 						
-							<div layout:include="/mensagensutils/Erros" th:remove="tag"></div>
+							<div th:replace="mensagensutils/Erros :: erros" th:remove="tag"></div>
 							
 							<div class="row">
 

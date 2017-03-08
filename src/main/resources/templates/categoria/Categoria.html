@@ -21,11 +21,11 @@
 
 					<div class="box-body">
 					
-						<div layout:include="/mensagensutils/MensagensAlertas" th:remove="tag"></div>
+						<div th:replace="mensagensutils/MensagensAlertas :: alert" th:remove="tag"></div>
 					
 						<form method="POST" th:object="${categoria}" th:action="@{/categoria}" role="form">
 						
-							<div layout:include="/mensagensutils/Erros" th:remove="tag"></div>
+							<div th:replace="mensagensutils/Erros :: erros" th:remove="tag"></div>
 							
 							<div class="row">
 
@@ -57,8 +57,8 @@
 								<div class="col-md-4">
 
 									<div class="form-group">
-										<label for="observacao" >Observação</label> <input id="observacao" type="text"
-											class="form-control" th:field="*{observacao}" />
+										<label for="observacao" >Observação</label>
+										<input id="observacao" type="text" class="form-control" th:field="*{observacao}" />
 									</div>
 
 								</div>
