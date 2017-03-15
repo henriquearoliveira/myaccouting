@@ -10,9 +10,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import br.com.contability.business.Cadastro;
+import br.com.contability.comum.StringRedirecionamentoPaginas;
+
 @Controller
 @RequestMapping("/cadastrar")
 public class CadastrarResources {
+	
+	/*@Autowired
+	private UsuarioServices usuarioServices;*/
 
 	@GetMapping
 	public ModelAndView novo(Cadastro cadastro){
@@ -27,9 +33,13 @@ public class CadastrarResources {
 		if(result.hasErrors())
 			novo(cadastro);
 		
-		attributes.addFlashAttribute("mensagem", "Cadastro realizado com sucesso, por favor visualize o email enviado");
+//		usuarioServices.insere(cadastro);
 		
-		return new ModelAndView("redirect:/login");
+		//EnviaEmail
+		
+		attributes.addFlashAttribute("mensagem", "Cadastro realizado com sucesso, por favor visualize o email enviado para confirmar o cadastro");
+		
+		return new ModelAndView(StringRedirecionamentoPaginas.LOGIN);
 	}
 	
 }

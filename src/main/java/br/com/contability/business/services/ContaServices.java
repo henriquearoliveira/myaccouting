@@ -24,9 +24,9 @@ public class ContaServices extends ServicesAbstract<Conta, ContaRepository> {
 		conta.setUsuario(usuario);
 
 		if (conta.getId() == null) {
-			super.insere(conta);
+			super.insere(conta, null);
 		} else {
-			super.atualiza(conta);
+			super.atualiza(conta, null);
 		}
 
 	}
@@ -53,6 +53,7 @@ public class ContaServices extends ServicesAbstract<Conta, ContaRepository> {
 
 		if (id == 0 || id == null) {
 			model.addAttribute("erro", "Identificador incorreto");
+			return mv;
 		}
 
 		Conta conta = null;
@@ -75,7 +76,7 @@ public class ContaServices extends ServicesAbstract<Conta, ContaRepository> {
 		if (id == null || confirmaVinculo(usuario, id))
 			throw new ObjetoInexistenteException();
 
-		super.remove(id);
+		super.remove(id, null);
 
 	}
 

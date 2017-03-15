@@ -49,7 +49,7 @@ public class LancamentoResources {
 
 	@GetMapping()
 	public ModelAndView novo(Model model, Lancamento lancamento) {
-		model = ModelConstruct.setAttributes(model, "activeLiLancamento", "activeNovo");
+		ModelConstruct.setAttributes(model, "activeLiLancamento", "activeNovo");
 
 		Usuario usuario = auth.getAutenticacao();
 
@@ -63,7 +63,7 @@ public class LancamentoResources {
 
 	@GetMapping("/{id}")
 	public ModelAndView get(@PathVariable Long id, Model model) {
-		model = ModelConstruct.setAttributes(model, "activeLiLancamento", "activeNovo");
+		ModelConstruct.setAttributes(model, "activeLiLancamento", "activeNovo");
 
 		Usuario usuario = auth.getAutenticacao();
 
@@ -91,7 +91,7 @@ public class LancamentoResources {
 	public ModelAndView lista(Model model, Lancamento lancamento) {
 		auth.getAutenticacao();
 
-		model = ModelConstruct.setAttributes(model, "activeLiLancamento", "activeListagem");
+		ModelConstruct.setAttributes(model, "activeLiLancamento", "activeListagem");
 
 		ModelAndView mv = new ModelAndView("lancamento/Listagem");
 

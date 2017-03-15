@@ -1,70 +1,64 @@
 package br.com.contability.handler;
 
-//@ControllerAdvice
-public class ResourceExceptionHandlerModelAndView {/*
+import javax.servlet.http.HttpServletRequest;
 
-	@ExceptionHandler(ObjetoComDependenciaException.class)
-	public ModelAndView objetoComDependenciaException(ObjetoComDependenciaException e, HttpServletRequest request) {
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.ModelAndView;
 
-		DetalheErro detalheErro = new DetalheErro();
-		detalheErro.setStatus(401l);
-		detalheErro.setTimestamp(System.currentTimeMillis());
-		detalheErro.setMensagemDesenvolvedor(e.getMessage());
+import br.com.contability.exceptions.ObjetoComDependenciaExceptionModel;
+import br.com.contability.exceptions.ObjetoExistenteExceptionModel;
+import br.com.contability.exceptions.ObjetoInexistenteExceptionModel;
+import br.com.contability.exceptions.ObjetoNaoAutorizadoModel;
 
-		ModelAndView model = new ModelAndView(e.getPagina());
+@ControllerAdvice
+public class ResourceExceptionHandlerModelAndView {
+	
+	@ExceptionHandler(ObjetoComDependenciaExceptionModel.class)
+	public ModelAndView objetoComDependenciaExceptionModel(ObjetoComDependenciaExceptionModel e, HttpServletRequest request) {
 		
-		model.addObject("detalheErro", detalheErro);
-
-		return model;
-
-	}
-
-	@ExceptionHandler(ObjetoExistenteException.class)
-	public ModelAndView objetoExistenteException(ObjetoExistenteException e, HttpServletRequest request) {
-
-		DetalheErro detalheErro = new DetalheErro();
-		detalheErro.setStatus(401l);
-		detalheErro.setTimestamp(System.currentTimeMillis());
-		detalheErro.setMensagemDesenvolvedor(e.getMessage());
-
-		ModelAndView model = new ModelAndView(e.getPagina());
-
-		model.addObject("detalheErro", detalheErro);
-
-		return model;
-
-	}
-
-	@ExceptionHandler(ObjetoInexistenteException.class)
-	public ModelAndView objetoInexistenteException(ObjetoInexistenteException e, HttpServletRequest request) {
-
-		DetalheErro detalheErro = new DetalheErro();
-		detalheErro.setStatus(404l);
-		detalheErro.setTimestamp(System.currentTimeMillis());
-		detalheErro.setMensagemDesenvolvedor(e.getMessage());
-
-		ModelAndView model = new ModelAndView(e.getPagina());
+		/*RedirectAttributes redirect =  RedirectAttributesAbstract.getInstance().getRedirectAttributes();
+		redirect.addFlashAttribute("mensagem", "Categoria salvo com sucesso.");*/
 		
-		model.addObject("detalheErro", detalheErro);
-
-		return model;
+		/*redirect.getFlashAttributes().entrySet().forEach(r -> {
+			System.out.println(r.getKey() + " valor " + r.getValue());
+		});*/
+		
+		ModelAndView mv = new ModelAndView("error/401");
+		mv.addObject("mensagem", e.getMessage());
+		
+		return mv;
 
 	}
+	
+	@ExceptionHandler(ObjetoExistenteExceptionModel.class)
+	public ModelAndView objetoExistenteExceptionModel(ObjetoExistenteExceptionModel e, HttpServletRequest request) {
 
-	@ExceptionHandler(ObjetoNaoAutorizado.class)
-	public ModelAndView objetoNaoAutorizado(ObjetoNaoAutorizado e, HttpServletRequest request) {
+		ModelAndView mv = new ModelAndView("error/401");
+		mv.addObject("mensagem", e.getMessage());
+		
+		return mv;
 
-		DetalheErro detalheErro = new DetalheErro();
-		detalheErro.setStatus(401l);
-		detalheErro.setTimestamp(System.currentTimeMillis());
-		detalheErro.setMensagemDesenvolvedor(e.getMessage());
+	}
+	
+	@ExceptionHandler(ObjetoInexistenteExceptionModel.class)
+	public ModelAndView objetoInexistenteExceptionModel(ObjetoInexistenteExceptionModel e, HttpServletRequest request) {
 
-		ModelAndView model = new ModelAndView(e.getPagina());
+		ModelAndView mv = new ModelAndView("error/404");
+		mv.addObject("mensagem", e.getMessage());
+		
+		return mv;
 
-		model.addObject("detalheErro", detalheErro);
+	}
+	
+	@ExceptionHandler(ObjetoNaoAutorizadoModel.class)
+	public ModelAndView objetoNaoAutorizadoExceptionModel(ObjetoNaoAutorizadoModel e, HttpServletRequest request) {
 
-		return model;
+		ModelAndView mv = new ModelAndView("error/404");
+		mv.addObject("mensagem", e.getMessage());
+		
+		return mv;
 
-	}*/
-
+	}
+	
 }

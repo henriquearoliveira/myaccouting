@@ -42,7 +42,7 @@ public class LancamentoServices extends ServicesAbstract<Lancamento, LancamentoR
 		BigDecimal bigDecimal = CaixaDeFerramentas.converteStringToBidDecimal(lancamento.getValorConversao());
 		lancamento.setValorLancamento(bigDecimal);
 		
-		if (super.insere(lancamento) != null)
+		if (super.insere(lancamento, null) != null)
 			saldoFacade.atualizaSaldoUsuario(usuario, lancamento);
 		
 	}
@@ -106,9 +106,9 @@ public class LancamentoServices extends ServicesAbstract<Lancamento, LancamentoR
 		if(lancamentoId == null || confirmaVinculo(usuario, lancamentoId))
 			throw new ObjetoInexistenteException("Impossível encontrar o lançamento selecionado");
 		
-		Lancamento lancamento = super.get(lancamentoId);
+		Lancamento lancamento = super.get(lancamentoId, null);
 		
-		super.remove(lancamentoId);
+		super.remove(lancamentoId, null);
 		saldoFacade.atualizaSaldoUsuario(usuario, lancamento);
 		
 		

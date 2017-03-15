@@ -4,12 +4,18 @@ import org.springframework.ui.Model;
 
 public class ModelConstruct {
 	
-	public static Model setAttributes(Model model,String optionMenu, String optionSubMenu){
+	/**
+	 * @param model
+	 * @param optionMenu
+	 * @param optionSubMenu
+	 * 
+	 * Injeta no model da tela as informações do menu, deixando-o ativo.
+	 */
+	public static void setAttributes(Model model,String optionMenu, String optionSubMenu){
 		
 		model.addAttribute(optionMenu, "active treeview");
 		model.addAttribute(optionSubMenu, "active");
 		
-		return model;
 	}
 
 }

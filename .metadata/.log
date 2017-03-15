@@ -1,0 +1,87 @@
+!SESSION 2017-03-14 00:08:11.065 -----------------------------------------------
+eclipse.buildId=3.8.2.201610040743-RELEASE-e46
+java.version=1.8.0_121
+java.vendor=Oracle Corporation
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=pt_BR
+Framework arguments:  -product org.springsource.sts.ide
+Command-line arguments:  -os linux -ws gtk -arch x86_64 -product org.springsource.sts.ide
+
+!ENTRY org.eclipse.jface.text 2 0 2017-03-14 00:08:56.433
+!MESSAGE Duplicate template id: 'org.eclipse.wst.xslt.templates.xpath.number'
+
+!ENTRY org.eclipse.jface.text 2 0 2017-03-14 00:08:56.446
+!MESSAGE Duplicate template id: 'org.eclipse.wst.xslt.templates.xpath.round'
+
+!ENTRY com.vwmare.vfabric.ide.eclipse.tcserver.core 4 0 2017-03-14 00:09:05.830
+!MESSAGE Error creating server instance with command:
+ "/usr/local/sts-bundle/pivotal-tc-server-developer-3.1.4.RELEASE/tcruntime-instance.sh create base-instance -t base --force -v 8.0.33.A.RELEASE". Check access permission for the directory /usr/local/sts-bundle/pivotal-tc-server-developer-3.1.4.RELEASE and its files and subdirectories.
+!SUBENTRY 1 com.vwmare.vfabric.ide.eclipse.tcserver.core 4 0 2017-03-14 00:09:05.830
+!MESSAGE The instance creation command failed and returned code 1
+!SUBENTRY 1 com.vwmare.vfabric.ide.eclipse.tcserver.core 4 0 2017-03-14 00:09:05.830
+!MESSAGE Output of the instance creation command:
+Creating instance 'base-instance' ...
+  Using separate layout
+Exception in thread "main" java.lang.RuntimeException: java.io.IOException: Failed to create directory '/usr/local/sts-bundle/pivotal-tc-server-developer-3.1.4.RELEASE/base-instance'
+	at com.springsource.tcruntime.instance.internal.layout.LayoutUtils.createLayoutIdentifier(LayoutUtils.java:23)
+	at com.springsource.tcruntime.instance.internal.create.CreateCommandExecutor.execute(CreateCommandExecutor.java:87)
+	at com.springsource.tcruntime.instance.internal.create.CreateCommandExecutor.execute(CreateCommandExecutor.java:33)
+	at com.springsource.tcruntime.instance.internal.AbstractCommand.execute(AbstractCommand.java:24)
+	at com.springsource.tcruntime.instance.TcRuntimeInstance.run(TcRuntimeInstance.java:84)
+	at com.springsource.tcruntime.instance.TcRuntimeInstance.main(TcRuntimeInstance.java:159)
+Caused by: java.io.IOException: Failed to create directory '/usr/local/sts-bundle/pivotal-tc-server-developer-3.1.4.RELEASE/base-instance'
+	at com.springsource.tcruntime.instance.internal.util.FileUtils.writeFile(FileUtils.java:117)
+	at com.springsource.tcruntime.instance.internal.layout.LayoutUtils.createLayoutIdentifier(LayoutUtils.java:21)
+	... 5 more
+
+
+!ENTRY org.springsource.ide.eclipse.commons.configurator 4 0 2017-03-14 00:09:05.866
+!MESSAGE The server could not be created.
+!STACK 1
+org.eclipse.core.runtime.CoreException: Error creating server instance with command:
+ "/usr/local/sts-bundle/pivotal-tc-server-developer-3.1.4.RELEASE/tcruntime-instance.sh create base-instance -t base --force -v 8.0.33.A.RELEASE". Check access permission for the directory /usr/local/sts-bundle/pivotal-tc-server-developer-3.1.4.RELEASE and its files and subdirectories.
+	at com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServerUtil.handleResult(TcServerUtil.java:157)
+	at com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServerUtil.executeInstanceCreation(TcServerUtil.java:110)
+	at com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServer21ServerHandlerCallback.configureServer(TcServer21ServerHandlerCallback.java:48)
+	at org.springsource.ide.eclipse.commons.internal.configurator.server.ServerDescriptor$ServerHandlerCallbackDelegate.configureServer(ServerDescriptor.java:40)
+	at org.springsource.ide.eclipse.commons.configurator.ServerHandler.createServer(ServerHandler.java:318)
+	at org.springsource.ide.eclipse.commons.configurator.ServerHandler.createServer(ServerHandler.java:157)
+	at org.springsource.ide.eclipse.commons.internal.configurator.server.ConfigurableServerExtension.configure(ConfigurableServerExtension.java:70)
+	at org.springsource.ide.eclipse.commons.internal.configurator.ConfiguratorImporter$4.run(ConfiguratorImporter.java:439)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55)
+Contains: The instance creation command failed and returned code 1
+Contains: Output of the instance creation command:
+Creating instance 'base-instance' ...
+  Using separate layout
+Exception in thread "main" java.lang.RuntimeException: java.io.IOException: Failed to create directory '/usr/local/sts-bundle/pivotal-tc-server-developer-3.1.4.RELEASE/base-instance'
+	at com.springsource.tcruntime.instance.internal.layout.LayoutUtils.createLayoutIdentifier(LayoutUtils.java:23)
+	at com.springsource.tcruntime.instance.internal.create.CreateCommandExecutor.execute(CreateCommandExecutor.java:87)
+	at com.springsource.tcruntime.instance.internal.create.CreateCommandExecutor.execute(CreateCommandExecutor.java:33)
+	at com.springsource.tcruntime.instance.internal.AbstractCommand.execute(AbstractCommand.java:24)
+	at com.springsource.tcruntime.instance.TcRuntimeInstance.run(TcRuntimeInstance.java:84)
+	at com.springsource.tcruntime.instance.TcRuntimeInstance.main(TcRuntimeInstance.java:159)
+Caused by: java.io.IOException: Failed to create directory '/usr/local/sts-bundle/pivotal-tc-server-developer-3.1.4.RELEASE/base-instance'
+	at com.springsource.tcruntime.instance.internal.util.FileUtils.writeFile(FileUtils.java:117)
+	at com.springsource.tcruntime.instance.internal.layout.LayoutUtils.createLayoutIdentifier(LayoutUtils.java:21)
+	... 5 more
+
+!SUBENTRY 1 com.vwmare.vfabric.ide.eclipse.tcserver.core 4 0 2017-03-14 00:09:05.868
+!MESSAGE Error creating server instance with command:
+ "/usr/local/sts-bundle/pivotal-tc-server-developer-3.1.4.RELEASE/tcruntime-instance.sh create base-instance -t base --force -v 8.0.33.A.RELEASE". Check access permission for the directory /usr/local/sts-bundle/pivotal-tc-server-developer-3.1.4.RELEASE and its files and subdirectories.
+!SUBENTRY 2 com.vwmare.vfabric.ide.eclipse.tcserver.core 4 0 2017-03-14 00:09:05.868
+!MESSAGE The instance creation command failed and returned code 1
+!SUBENTRY 2 com.vwmare.vfabric.ide.eclipse.tcserver.core 4 0 2017-03-14 00:09:05.868
+!MESSAGE Output of the instance creation command:
+Creating instance 'base-instance' ...
+  Using separate layout
+Exception in thread "main" java.lang.RuntimeException: java.io.IOException: Failed to create directory '/usr/local/sts-bundle/pivotal-tc-server-developer-3.1.4.RELEASE/base-instance'
+	at com.springsource.tcruntime.instance.internal.layout.LayoutUtils.createLayoutIdentifier(LayoutUtils.java:23)
+	at com.springsource.tcruntime.instance.internal.create.CreateCommandExecutor.execute(CreateCommandExecutor.java:87)
+	at com.springsource.tcruntime.instance.internal.create.CreateCommandExecutor.execute(CreateCommandExecutor.java:33)
+	at com.springsource.tcruntime.instance.internal.AbstractCommand.execute(AbstractCommand.java:24)
+	at com.springsource.tcruntime.instance.TcRuntimeInstance.run(TcRuntimeInstance.java:84)
+	at com.springsource.tcruntime.instance.TcRuntimeInstance.main(TcRuntimeInstance.java:159)
+Caused by: java.io.IOException: Failed to create directory '/usr/local/sts-bundle/pivotal-tc-server-developer-3.1.4.RELEASE/base-instance'
+	at com.springsource.tcruntime.instance.internal.util.FileUtils.writeFile(FileUtils.java:117)
+	at com.springsource.tcruntime.instance.internal.layout.LayoutUtils.createLayoutIdentifier(LayoutUtils.java:21)
+	... 5 more
+

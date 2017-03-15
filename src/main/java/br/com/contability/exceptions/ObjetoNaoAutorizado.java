@@ -1,29 +1,35 @@
 package br.com.contability.exceptions;
 
+import org.springframework.web.servlet.ModelAndView;
+
 public class ObjetoNaoAutorizado extends RuntimeException {
 	private static final long serialVersionUID = -6939782211030477063L;
-	
-	private String pagina;
+
+	private ModelAndView modelAndView;
+
+	private Object object;
 
 	public ObjetoNaoAutorizado() {
 		super("O objeto nao esta autorizado");
 	}
-	
-	public ObjetoNaoAutorizado(String mensagem){
+
+	public ObjetoNaoAutorizado(String mensagem) {
 		super(mensagem);
 	}
 
-	public ObjetoNaoAutorizado(String mensagem, String pagina) {
+	public ObjetoNaoAutorizado(String mensagem, ModelAndView modelAndView, Object object) {
 		super(mensagem);
-		this.pagina = pagina;
+		this.modelAndView = modelAndView;
+		this.object = object;
+
+	}
+
+	public ModelAndView getModelAndView() {
+		return modelAndView;
 	}
 	
-	public String getPagina() {
-		return pagina;
+	public Object getObject() {
+		return object;
 	}
-	
-	public void setPagina(String pagina) {
-		this.pagina = pagina;
-	}
-	
+
 }

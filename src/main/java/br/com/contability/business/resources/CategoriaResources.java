@@ -1,6 +1,7 @@
 package br.com.contability.business.resources;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -23,6 +24,8 @@ import br.com.contability.business.Usuario;
 import br.com.contability.business.services.CategoriaServices;
 import br.com.contability.comum.AuthenticationAbstract;
 import br.com.contability.comum.ModelConstruct;
+import br.com.contability.comum.RedirectAttributesAbstract;
+import br.com.contability.comum.StringRedirecionamentoPaginas;
 
 @Controller
 @RequestMapping("/categoria")
@@ -34,13 +37,14 @@ public class CategoriaResources {
 	@Autowired
 	private AuthenticationAbstract auth;
 	
+	@Autowired
+	private RedirectAttributesAbstract redirectAttributesAbstract;
+	
 	@GetMapping()
 	public ModelAndView novo(Model model, Categoria categoria) { // tem que haver no método para ele mapear depois
-		model = ModelConstruct.setAttributes(model,"activeLi", "activeNovo");
-		
+		ModelConstruct.setAttributes(model,"activeLi", "activeNovo");
+	
 		auth.getAutenticacao();
-		
-		
 		
 		ModelAndView mv = new ModelAndView("categoria/Categoria");
 		mv.addObject("tipoDeCategorias", TipoDeCategoria.values());
@@ -49,37 +53,35 @@ public class CategoriaResources {
 	}
 	
 	@GetMapping("/{id}")
-	public ModelAndView get(Model model, Categoria categoria, @PathVariable Long id) { // tem que haver no método para ele mapear depois
-		model = ModelConstruct.setAttributes(model,"activeLi", "activeNovo");
+	public ModelAndView get(Model model, Categoria categoria, @PathVariable Long id, RedirectAttributes redirectAttributes) { // tem que haver no método para ele mapear depois
+		ModelConstruct.setAttributes(model,"activeLi", "activeNovo");
+		Optional<Long> idLong = Optional.ofNullable(id);
 		
 		Usuario usuario = auth.getAutenticacao();
+		redirectAttributesAbstract.setRedirectAttributes(redirectAttributes);
 		
 		ModelAndView mv = new ModelAndView("categoria/Categoria");
+		return categoriaServices.getCategoria(model, idLong, mv, usuario);
 		
-		categoriaServices.getCategoria(model, id, mv, usuario);
-		return mv;
 	}
-	
-	
 
 	@PostMapping
 	public ModelAndView salvar(@Valid Categoria categoria, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
+		Usuario usuario = auth.getAutenticacao();
 		
 		if(bindingResult.hasErrors())
 			return novo(model, categoria);
 		
-		Usuario usuario = auth.getAutenticacao();
-		
 		categoriaServices.gravarCategoria(categoria, usuario);
 		
 		redirectAttributes.addFlashAttribute("mensagem", "Categoria salvo com sucesso.");
-		return new ModelAndView("redirect:/categoria");
+		
+		return new ModelAndView(StringRedirecionamentoPaginas.CATEGORIA);
 	}
 
 	@GetMapping(value = "/lista")
 	public ModelAndView lista(Model model) {
-		model = ModelConstruct.setAttributes(model,"activeLi", "activeListagem");
-		
+		ModelConstruct.setAttributes(model,"activeLi", "activeListagem");
 		Usuario usuario = auth.getAutenticacao();
 		
 		List<Categoria> categorias = categoriaServices.seleciona(usuario);
@@ -93,7 +95,6 @@ public class CategoriaResources {
 	
 	@DeleteMapping(value = "/remover/{id}")
 	public ResponseEntity<Void> remover(@PathVariable Long id) {
-		
 		auth.getAutenticacao();
 		
 		categoriaServices.removeCategoria(id);

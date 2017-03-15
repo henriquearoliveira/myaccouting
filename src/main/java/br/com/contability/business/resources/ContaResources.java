@@ -35,7 +35,7 @@ public class ContaResources {
 
 	@GetMapping()
 	public ModelAndView novo(Model model, Conta conta){
-		model = ModelConstruct.setAttributes(model, "activeLiConta", "activeNovo");
+		ModelConstruct.setAttributes(model, "activeLiConta", "activeNovo");
 		
 		auth.getAutenticacao();
 		
@@ -46,7 +46,7 @@ public class ContaResources {
 	
 	@GetMapping("/{id}")
 	public ModelAndView get(@PathVariable Long id, Model model, Conta conta){
-		model = ModelConstruct.setAttributes(model, "activeLiConta", "activeNovo");
+		ModelConstruct.setAttributes(model, "activeLiConta", "activeNovo");
 		
 		Usuario usuario = auth.getAutenticacao();
 		
@@ -72,7 +72,7 @@ public class ContaResources {
 	@GetMapping("lista")
 	public ModelAndView lista(Model model){
 		
-		model = ModelConstruct.setAttributes(model, "activeLiConta", "activeListagem");
+		ModelConstruct.setAttributes(model, "activeLiConta", "activeListagem");
 		
 		Usuario usuario = auth.getAutenticacao();
 		

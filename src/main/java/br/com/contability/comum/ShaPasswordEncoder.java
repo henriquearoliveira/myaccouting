@@ -11,6 +11,14 @@ public class ShaPasswordEncoder implements PasswordEncoder{
 	public String encode(CharSequence rawPassword) {
 		return getSha512SecurePassword(rawPassword.toString());
 	}
+	
+	/**
+	 * @param senha
+	 * @return ShaPasswordEncoder String
+	 */
+	public static String getSha512Securit(String senha){
+		return new ShaPasswordEncoder().encode(senha);
+	}
 
 	@Override
 	public boolean matches(CharSequence rawPassword, String encodedPassword) {

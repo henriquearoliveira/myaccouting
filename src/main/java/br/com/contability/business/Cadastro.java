@@ -1,4 +1,4 @@
-package br.com.contability.business.resources;
+package br.com.contability.business;
 
 import javax.validation.constraints.NotNull;
 

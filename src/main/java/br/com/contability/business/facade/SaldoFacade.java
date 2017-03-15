@@ -39,10 +39,10 @@ public class SaldoFacade {
 			saldo.setSaldoAtual(saldoValor);
 			saldo.setUsuario(usuario);
 			
-			saldoServices.insere(saldo);
+			saldoServices.insere(saldo, null);
 		} else
 			saldo.setSaldoAtual(saldoValor);
-			saldoServices.atualiza(saldo);
+			saldoServices.atualiza(saldo, null);
 		
 	}
 

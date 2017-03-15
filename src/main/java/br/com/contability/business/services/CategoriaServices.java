@@ -1,7 +1,9 @@
 package br.com.contability.business.services;
 
 import java.util.List;
+import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.servlet.ModelAndView;
@@ -10,10 +12,15 @@ import br.com.contability.business.Categoria;
 import br.com.contability.business.Usuario;
 import br.com.contability.business.repository.CategoriaRepository;
 import br.com.contability.comum.ServicesAbstract;
+import br.com.contability.comum.StringRedirecionamentoPaginas;
+import br.com.contability.comum.ValorIncorreto;
 import br.com.contability.exceptions.ObjetoInexistenteException;
 
 @Service
 public class CategoriaServices extends ServicesAbstract<Categoria, CategoriaRepository> {
+	
+	@Autowired
+	private ValorIncorreto valorIncorreto;
 
 	/**
 	 * @param model
@@ -22,19 +29,18 @@ public class CategoriaServices extends ServicesAbstract<Categoria, CategoriaRepo
 	 * @param usuario
 	 * @return
 	 */
-	public ModelAndView getCategoria(Model model, Long id, ModelAndView mv, Usuario usuario) {
-
-		if (id == 0 || id == null) {
-			model.addAttribute("erro", "Identificador incorreto");
+	public ModelAndView getCategoria(Model model, Optional<Long> id, ModelAndView mv, Usuario usuario) {
+		
+		if (!id.filter(i -> i == null || i == 0).isPresent()) {
+			return valorIncorreto.defineRedirecionamentoComMensagem("Identificador incorreto", null, StringRedirecionamentoPaginas.CATEGORIA);
 		}
 
 		Categoria categoria = null;
 
-		categoria = super.getJpa().getCategorias(id, usuario.getId());
+		categoria = super.getJpa().getCategorias(id.get(), usuario.getId());
 
 		if (categoria == null) {
-			model.addAttribute("erro", "Impossível encontrar a categoria desejada");
-			return mv;
+			return valorIncorreto.defineRedirecionamentoComMensagem("Impossível encontrar a categoria desejada", null, StringRedirecionamentoPaginas.CATEGORIA);
 		}
 
 		mv.addObject("categoria", categoria);
@@ -52,9 +58,9 @@ public class CategoriaServices extends ServicesAbstract<Categoria, CategoriaRepo
 		categoria.setUsuario(usuario);
 		
 		if (categoria.getId() == null) {
-			super.insere(categoria);
+			super.insere(categoria, null);
 		} else {
-			super.atualiza(categoria);
+			super.atualiza(categoria, null);
 		}
 	}
 
@@ -69,33 +75,23 @@ public class CategoriaServices extends ServicesAbstract<Categoria, CategoriaRepo
 		return categorias;
 	}
 
-	/**
-	 * @param id
-	 * @param model
-	 */
-	public ModelAndView remove(Long id, Model model) {
+	/*public ModelAndView re/move(Long id, Model model) {
 
 		ModelAndView mv = new ModelAndView("/categoria/Categoria");
 
-		if (id == null || id == 0) {
-
-			model.addAttribute("erro", "O objeto não pode ser vazio");
-			return mv;
-
-		}
+		if (id == null || id == 0) 
+			return valorIncorreto.defineRedirecionamentoComMensagem("O obrigado não pode ser vazio", null, StringCaminhoPaginas.CATEGORIA);
 
 		Categoria categoria = super.get(id);
 
-		if (categoria == null) {
-			model.addAttribute("erro", "O objeto não existe");
-			return mv;
-		}
+		if (categoria == null)
+			return valorIncorreto.defineRedirecionamentoComMensagem("O objeto não existe", null, StringCaminhoPaginas.CATEGORIA);
 
 		super.remove(categoria.getId());
 
 		return mv;
 
-	}
+	}*/
 
 	/**
 	 * @param id
@@ -106,7 +102,7 @@ public class CategoriaServices extends ServicesAbstract<Categoria, CategoriaRepo
 			throw new ObjetoInexistenteException();
 		}
 
-		super.remove(id);
+		super.remove(id, null);
 
 	}
 

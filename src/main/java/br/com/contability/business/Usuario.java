@@ -18,6 +18,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import br.com.contability.comum.BeanIdentificavel;
+import br.com.contability.comum.ShaPasswordEncoder;
 
 @Entity
 @Table(indexes = { @Index(name = "index_usuario", columnList = "id", unique = false),
@@ -34,7 +35,7 @@ public class Usuario extends BeanIdentificavel {
 	@NotNull(message = "A senha não pode ser null")
 	private String senha;
 
-	@Column(length = 200, nullable = true)
+	@Column(length = 200)
 	@JsonInclude(Include.NON_NULL)
 	private String senhaMaster;
 
@@ -43,16 +44,16 @@ public class Usuario extends BeanIdentificavel {
 	@NotNull(message = "O nome não pode ser null")
 	private String nome;
 	
-	@Column(nullable = true)
+	@Column
 	private String enderecoImagemPerfil;
 
-	@Column(nullable = true)
+	@Column
 	private boolean ativo = true;
 
-	@Column(nullable = true)
+	@Column
 	private boolean administrador = true;
 
-	@Column(nullable = true)
+	@Column
 	private String fotoPerfil;
 
 	//
@@ -71,6 +72,26 @@ public class Usuario extends BeanIdentificavel {
 	@JsonIgnore
 	@OneToMany(mappedBy = "usuario", targetEntity = Saldo.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Lancamento> saldos;
+	//
+	
+	//
+	/**
+	 * @param cadastro
+	 * @return this instance
+	 */
+	public Usuario getUsuarioByCadastro(Cadastro cadastro){
+		
+		this.setAdministrador(true);
+		this.setAtivo(true);
+		this.setEmail(cadastro.getEmail());
+		this.setEnderecoImagemPerfil(null);
+		this.setNome(cadastro.getNome());
+		this.setSenha(ShaPasswordEncoder.getSha512Securit(cadastro.getSenha()));
+		this.setSenhaMaster(null);
+		
+		return this;
+	}
+	
 	//
 
 	public String getEmail() {
