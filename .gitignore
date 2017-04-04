@@ -1,5 +1,5 @@
 target/
-manifest.yml
+.znaovai/
 !.mvn/wrapper/maven-wrapper.jar
 
 ### STS ###
