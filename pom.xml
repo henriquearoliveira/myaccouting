@@ -7,7 +7,7 @@
 	<artifactId>contability</artifactId>
 	<version>1.0.1-SNAPSHOT</version>
 	<!-- <packaging>war</packaging> -->
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 
 	<name>Contability</name>
 	<description>Web site de controle financeiro pessoal</description>
