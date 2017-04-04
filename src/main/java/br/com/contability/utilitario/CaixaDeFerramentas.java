@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.UUID;
 
 public class CaixaDeFerramentas {
 	
@@ -48,6 +49,18 @@ public class CaixaDeFerramentas {
 		calendar.setTime(date);
 		
 		return calendar;
+	}
+	
+	/**
+	 * @param quatidadeCaracteres
+	 * @return codigo
+	 */
+	public static String geraCodigo(int quatidadeCaracteres){
+		
+		String codigo = UUID.randomUUID().toString().replaceAll("-", "").substring(0, (quatidadeCaracteres-1));
+		
+		return codigo;
+		
 	}
 
 }

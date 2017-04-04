@@ -34,7 +34,7 @@ public class IndexResources {
 	
 	/*@RequestMapping("/index/{id}")
 	public String loginSucesso(@ModelAttribute("id") Usuario usuario, Model model){ // ModelAttribute é muito bom
-		
+		// o model atribute já pega o usuario direto.
 		if (usuario.getNome() == null)
 			throw new ObjetoInexistenteException("Objeto não encontrado", "Index");
 		
