@@ -85,84 +85,53 @@
 			<artifactId>spring-boot-starter-mail</artifactId>
 		</dependency>
 		
-		<!-- War -->
-		<!-- <dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-tomcat</artifactId>
-			<scope>provided</scope>
-		</dependency> -->
-		<!-- … -->
-
-		<!-- Cloud Foundry <dependency> <groupId>org.springframework.cloud</groupId> 
-			<artifactId>spring-cloud-spring-service-connector</artifactId> </dependency> 
-			<dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-cloud-connectors</artifactId> 
-			</dependency> <dependency> <groupId>org.springframework.cloud</groupId> <artifactId>spring-cloud-cloudfoundry-connector</artifactId> 
-			</dependency> … -->
-
 	</dependencies>
-
-	<!-- <build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>copy</goal>
-						</goals>
-						<configuration>
-							<artifactItems>
-								<artifactItem>
-									<groupId>com.github.jsimone</groupId>
-									<artifactId>webapp-runner</artifactId>
-									<version>8.5.11.3</version>
-									<destFileName>webapp-runner.jar</destFileName>
-								</artifactItem>
-							</artifactItems>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build> -->
 	
-	<build>
+	<!-- <build>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
+	</build> -->
+	
+	<properties>
+		<java.version>1.8</java.version>
+	</properties>
+
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.3</version>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                    <outputDirectory>target</outputDirectory>
+              		  <warName>ROOT</warName>
+                </configuration>
+            </plugin>
+		</plugins>
 	</build>
+
+	<repositories>
+		<repository>
+			<id>spring-releases</id>
+			<url>https://repo.spring.io/libs-release</url>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>spring-releases</id>
+			<url>https://repo.spring.io/libs-release</url>
+		</pluginRepository>
+	</pluginRepositories>
 	
-	<!-- Teste para o OpenShift -->
-	
-	<profiles>
-		<profile>
-			<!--When built in OpenShift the 'openshift' profile will be used when 
-			    invoking mvn.
-			Use this profile for any OpenShift specific customization your app 
-			    will need. 
-			By default that is to put the resulting archive into the 'webapps' 
-			    folder.
-			http://maven.apache.org/guides/mini/guide-building-for-different-environments.html -->
-			<id>openshift</id>
-			<build>
-			    <finalName>yourAppName</finalName>
-			    <plugins>
-				<plugin>
-				    <artifactId>maven-war-plugin</artifactId>
-				    <version>2.1.1</version>
-				    <configuration>
-					<outputDirectory>webapps</outputDirectory>
-					<warName>ROOT</warName>
-				    </configuration>
-				</plugin>
-			    </plugins>
-			</build>
-		    </profile>
-	</profiles> 
 
 </project>
