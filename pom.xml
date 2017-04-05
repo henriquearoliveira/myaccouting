@@ -139,7 +139,7 @@
 	
 	<!-- Teste para o OpenShift -->
 	
-	<profiles>
+	<!-- <profiles>
 		<profile>
 			<!-- When built in OpenShift the 'openshift' profile will be used when 
 			    invoking mvn. -->
@@ -148,7 +148,7 @@
 			<!-- By default that is to put the resulting archive into the 'webapps' 
 			    folder. -->
 			<!-- http://maven.apache.org/guides/mini/guide-building-for-different-environments.html -->
-			<id>openshift</id>
+			<!--<id>openshift</id>
 			<build>
 			    <finalName>yourAppName</finalName>
 			    <plugins>
@@ -163,6 +163,6 @@
 			    </plugins>
 			</build>
 		    </profile>
-	</profiles>
+	</profiles> -->
 
 </project>
