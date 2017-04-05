@@ -124,7 +124,11 @@ $(function () {
 
   /* Morris.js Charts */
   // Sales chart
+<<<<<<< HEAD
   /*var area = new Morris.Area({
+=======
+  var area = new Morris.Area({
+>>>>>>> e26a122ee9dc5c68f0226a28f2329b8132d29c7c
     element: 'revenue-chart',
     resize: true,
     data: [
@@ -186,7 +190,11 @@ $(function () {
       {label: "Mail-Order Sales", value: 20}
     ],
     hideHover: 'auto'
+<<<<<<< HEAD
   });*/
+=======
+  });
+>>>>>>> e26a122ee9dc5c68f0226a28f2329b8132d29c7c
 
   //Fix for charts under tabs
   $('.box ul.nav a').on('shown.bs.tab', function () {

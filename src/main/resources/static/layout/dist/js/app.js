@@ -7,7 +7,11 @@
  * @Author  Almsaeed Studio
  * @Support <http://www.almsaeedstudio.com>
  * @Email   <abdullah@almsaeedstudio.com>
+<<<<<<< HEAD
  * @version 2.3.6
+=======
+ * @version 2.3.12
+>>>>>>> e26a122ee9dc5c68f0226a28f2329b8132d29c7c
  * @license MIT <http://opensource.org/licenses/MIT>
  */
 
@@ -40,7 +44,11 @@ $.AdminLTE.options = {
   navbarMenuSlimscrollWidth: "3px", //The width of the scroll bar
   navbarMenuHeight: "200px", //The height of the inner menu
   //General animation speed for JS animated elements such as box collapse/expand and
+<<<<<<< HEAD
   //sidebar treeview slide up/down. This options accepts an integer as milliseconds,
+=======
+  //sidebar treeview slide up/down. This option accepts an integer as milliseconds,
+>>>>>>> e26a122ee9dc5c68f0226a28f2329b8132d29c7c
   //'fast', 'normal', or 'slow'
   animationSpeed: 500,
   //Sidebar push menu toggle button selector
@@ -63,6 +71,11 @@ $.AdminLTE.options = {
   //choose to enable the plugin, make sure you load the script
   //before AdminLTE's app.js
   enableFastclick: false,
+<<<<<<< HEAD
+=======
+  //Control Sidebar Tree views
+  enableControlTreeView: true,
+>>>>>>> e26a122ee9dc5c68f0226a28f2329b8132d29c7c
   //Control Sidebar Options
   enableControlSidebar: true,
   controlSidebarOptions: {
@@ -160,7 +173,13 @@ $(function () {
   $.AdminLTE.layout.activate();
 
   //Enable sidebar tree view controls
+<<<<<<< HEAD
   $.AdminLTE.tree('.sidebar');
+=======
+  if (o.enableControlTreeView) {
+    $.AdminLTE.tree('.sidebar');
+  }
+>>>>>>> e26a122ee9dc5c68f0226a28f2329b8132d29c7c
 
   //Enable control sidebar
   if (o.enableControlSidebar) {
@@ -184,7 +203,12 @@ $(function () {
   //Activate Bootstrap tooltip
   if (o.enableBSToppltip) {
     $('body').tooltip({
+<<<<<<< HEAD
       selector: o.BSTooltipSelector
+=======
+      selector: o.BSTooltipSelector,
+      container: 'body'
+>>>>>>> e26a122ee9dc5c68f0226a28f2329b8132d29c7c
     });
   }
 
@@ -242,12 +266,17 @@ function _init() {
       var _this = this;
       _this.fix();
       _this.fixSidebar();
+<<<<<<< HEAD
+=======
+      $('body, html, .wrapper').css('height', 'auto');
+>>>>>>> e26a122ee9dc5c68f0226a28f2329b8132d29c7c
       $(window, ".wrapper").resize(function () {
         _this.fix();
         _this.fixSidebar();
       });
     },
     fix: function () {
+<<<<<<< HEAD
       //Get window height and the wrapper height
       var neg = $('.main-header').outerHeight() + $('.main-footer').outerHeight();
       var window_height = $(window).height();
@@ -256,6 +285,19 @@ function _init() {
       //the height of the document.
       if ($("body").hasClass("fixed")) {
         $(".content-wrapper, .right-side").css('min-height', window_height - $('.main-footer').outerHeight());
+=======
+      // Remove overflow from .wrapper if layout-boxed exists
+      $(".layout-boxed > .wrapper").css('overflow', 'hidden');
+      //Get window height and the wrapper height
+      var footer_height = $('.main-footer').outerHeight() || 0;
+      var neg = $('.main-header').outerHeight() + footer_height;
+      var window_height = $(window).height();
+      var sidebar_height = $(".sidebar").height() || 0;
+      //Set the min-height of the content and sidebar based on the
+      //the height of the document.
+      if ($("body").hasClass("fixed")) {
+        $(".content-wrapper, .right-side").css('min-height', window_height - footer_height);
+>>>>>>> e26a122ee9dc5c68f0226a28f2329b8132d29c7c
       } else {
         var postSetWidth;
         if (window_height >= sidebar_height) {
@@ -291,7 +333,11 @@ function _init() {
           //Destroy if it exists
           $(".sidebar").slimScroll({destroy: true}).height("auto");
           //Add slimscroll
+<<<<<<< HEAD
           $(".sidebar").slimscroll({
+=======
+          $(".sidebar").slimScroll({
+>>>>>>> e26a122ee9dc5c68f0226a28f2329b8132d29c7c
             height: ($(window).height() - $(".main-header").height()) + "px",
             color: "rgba(0,0,0,0.2)",
             size: "3px"
