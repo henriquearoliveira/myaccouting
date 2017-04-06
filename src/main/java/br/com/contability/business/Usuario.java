@@ -72,6 +72,10 @@ public class Usuario extends BeanIdentificavel {
 	@JsonIgnore
 	@OneToMany(mappedBy = "usuario", targetEntity = Saldo.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Lancamento> saldos;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "usuario", targetEntity = CodigoUsuario.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<CodigoUsuario> codigoUsuarios;
 	//
 	
 	//
@@ -79,10 +83,10 @@ public class Usuario extends BeanIdentificavel {
 	 * @param cadastro
 	 * @return this instance
 	 */
-	public Usuario getUsuarioByCadastro(Cadastro cadastro){
+	public Usuario getUsuarioByCadastro(Cadastro cadastro, boolean ativaUsuario){
 		
 		this.setAdministrador(true);
-		this.setAtivo(true);
+		this.setAtivo(ativaUsuario);
 		this.setEmail(cadastro.getEmail());
 		this.setEnderecoImagemPerfil(null);
 		this.setNome(cadastro.getNome());
@@ -188,6 +192,14 @@ public class Usuario extends BeanIdentificavel {
 	
 	public void setSaldos(List<Lancamento> saldos) {
 		this.saldos = saldos;
+	}
+	
+	public List<CodigoUsuario> getCodigoUsuarios() {
+		return codigoUsuarios;
+	}
+	
+	public void setCodigoUsuarios(List<CodigoUsuario> codigoUsuarios) {
+		this.codigoUsuarios = codigoUsuarios;
 	}
 
 }

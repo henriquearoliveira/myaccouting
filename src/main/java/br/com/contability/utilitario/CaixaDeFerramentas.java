@@ -8,6 +8,8 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.UUID;
 
+import javax.servlet.http.HttpServletRequest;
+
 public class CaixaDeFerramentas {
 	
 	/**
@@ -57,10 +59,18 @@ public class CaixaDeFerramentas {
 	 */
 	public static String geraCodigo(int quatidadeCaracteres){
 		
-		String codigo = UUID.randomUUID().toString().replaceAll("-", "").substring(0, (quatidadeCaracteres-1));
+		String codigo = UUID.randomUUID().toString().replaceAll("-", "").substring(0, (quatidadeCaracteres));
 		
 		return codigo;
 		
+	}
+	
+	/**
+	 * @param request
+	 * @return String PARA VINCULAR A CONFIRMAÇÃO DO LOGIN DE UM NOVO USUARIO
+	 */
+	public static String configuraURLlogin(HttpServletRequest request){
+		return request.getRequestURL().toString().replace(request.getRequestURI(), "/login/requestcode?codigo=");
 	}
 
 }

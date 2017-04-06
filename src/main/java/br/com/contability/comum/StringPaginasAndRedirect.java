@@ -1,6 +1,6 @@
 package br.com.contability.comum;
 
-public final class StringRedirecionamentoPaginas {
+public final class StringPaginasAndRedirect {
 	
 	public final static String CATEGORIA = "redirect:/categoria";
 	

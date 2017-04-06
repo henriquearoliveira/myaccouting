@@ -12,7 +12,7 @@ import br.com.contability.business.Categoria;
 import br.com.contability.business.Usuario;
 import br.com.contability.business.repository.CategoriaRepository;
 import br.com.contability.comum.ServicesAbstract;
-import br.com.contability.comum.StringRedirecionamentoPaginas;
+import br.com.contability.comum.StringPaginasAndRedirect;
 import br.com.contability.comum.ValorIncorreto;
 import br.com.contability.exceptions.ObjetoInexistenteException;
 
@@ -32,7 +32,7 @@ public class CategoriaServices extends ServicesAbstract<Categoria, CategoriaRepo
 	public ModelAndView getCategoria(Model model, Optional<Long> id, ModelAndView mv, Usuario usuario) {
 		
 		if (!id.filter(i -> i == null || i == 0).isPresent()) {
-			return valorIncorreto.defineRedirecionamentoComMensagem("Identificador incorreto", null, StringRedirecionamentoPaginas.CATEGORIA);
+			return valorIncorreto.defineRedirecionamentoComMensagem("Identificador incorreto", null, StringPaginasAndRedirect.CATEGORIA);
 		}
 
 		Categoria categoria = null;
@@ -40,7 +40,7 @@ public class CategoriaServices extends ServicesAbstract<Categoria, CategoriaRepo
 		categoria = super.getJpa().getCategorias(id.get(), usuario.getId());
 
 		if (categoria == null) {
-			return valorIncorreto.defineRedirecionamentoComMensagem("Impossível encontrar a categoria desejada", null, StringRedirecionamentoPaginas.CATEGORIA);
+			return valorIncorreto.defineRedirecionamentoComMensagem("Impossível encontrar a categoria desejada", null, StringPaginasAndRedirect.CATEGORIA);
 		}
 
 		mv.addObject("categoria", categoria);

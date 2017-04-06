@@ -18,11 +18,11 @@ public class ServicesAbstract<T extends BeanIdentificavel, E extends JpaReposito
 	private E jpa;
 	
 	@Override
-	public T atualiza(T objeto, Boolean webOrApi) {
-		Optional<Boolean> optional = Optional.ofNullable(webOrApi);
+	public T atualiza(T objeto, Boolean isApiProgram) {
+		Optional<Boolean> optional = Optional.ofNullable(isApiProgram);
 		
-		verificaExistencia(objeto, webOrApi);
-		Calendar dataCadastro = get(objeto.getId(), webOrApi).getDataHoraCadastro();
+		verificaExistencia(objeto, isApiProgram);
+		Calendar dataCadastro = get(objeto.getId(), isApiProgram).getDataHoraCadastro();
 		objeto.setDataHoraAtualizacao(Calendar.getInstance());
 		objeto.setDataHoraCadastro(dataCadastro);
 
@@ -35,8 +35,8 @@ public class ServicesAbstract<T extends BeanIdentificavel, E extends JpaReposito
 	}
 
 	@Override
-	public T get(Long id, Boolean webOrApi) {
-		Optional<Boolean> optional = Optional.ofNullable(webOrApi);
+	public T get(Long id, Boolean isApiProgram) {
+		Optional<Boolean> optional = Optional.ofNullable(isApiProgram);
 
 		T objeto = jpa.findOne(id);
 
@@ -51,8 +51,8 @@ public class ServicesAbstract<T extends BeanIdentificavel, E extends JpaReposito
 	}
 
 	@Override
-	public T insere(T objeto, Boolean webOrApi) {
-		Optional<Boolean> optional = Optional.ofNullable(webOrApi);
+	public T insere(T objeto, Boolean isApiProgram) {
+		Optional<Boolean> optional = Optional.ofNullable(isApiProgram);
 
 		objeto.setId(null);
 		objeto.setDataHoraCadastro(Calendar.getInstance());
@@ -69,9 +69,9 @@ public class ServicesAbstract<T extends BeanIdentificavel, E extends JpaReposito
 	}
 
 	@Override
-	public void remove(Long id, Boolean webOrApi) {
-		T objeto = get(id, webOrApi);
-		Optional<Boolean> optional = Optional.ofNullable(webOrApi);
+	public void remove(Long id, Boolean isApiProgram) {
+		T objeto = get(id, isApiProgram);
+		Optional<Boolean> optional = Optional.ofNullable(isApiProgram);
 
 		try {
 			jpa.delete(objeto);

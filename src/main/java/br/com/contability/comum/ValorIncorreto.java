@@ -21,8 +21,12 @@ public class ValorIncorreto {
 	public ModelAndView defineRedirecionamentoComMensagem(String textoMensagemErro, String textoMensagemSucesso, String redirecionamento){
 		if (textoMensagemErro == null){
 			redirectAttributesAbstract.getRedirectAttributes().addFlashAttribute("mensagem", textoMensagemSucesso);
-		} else
+		} else{
+			System.out.println("aqui");
+			System.out.println(redirectAttributesAbstract != null);
 			redirectAttributesAbstract.getRedirectAttributes().addFlashAttribute("erro", textoMensagemErro);
+		}
+		System.out.println("passou");
 		return new ModelAndView(redirecionamento);
 		
 	}

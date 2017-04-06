@@ -8,7 +8,7 @@ public class RedirectAttributesAbstract {
 	
 	private static RedirectAttributesAbstract instance = null;
 	
-	public static RedirectAttributesAbstract getInstance() {
+	public RedirectAttributesAbstract getInstance() {
 		
 		if (instance == null)
 			instance = new RedirectAttributesAbstract();

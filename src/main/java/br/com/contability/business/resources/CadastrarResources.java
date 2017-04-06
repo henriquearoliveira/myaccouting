@@ -13,9 +13,10 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.com.contability.business.Cadastro;
+import br.com.contability.business.Usuario;
 import br.com.contability.business.services.CadastrarServices;
 import br.com.contability.business.services.UsuarioServices;
-import br.com.contability.comum.StringRedirecionamentoPaginas;
+import br.com.contability.comum.StringPaginasAndRedirect;
 
 @Controller
 @RequestMapping("/cadastrar")
@@ -36,18 +37,17 @@ public class CadastrarResources {
 	}
 	
 	@PostMapping()
-	public ModelAndView cadastrar(@Valid Cadastro cadastro, BindingResult result, RedirectAttributes attributes, HttpServletRequest handler){
+	public ModelAndView cadastrar(@Valid Cadastro cadastro, BindingResult result, RedirectAttributes attributes, HttpServletRequest request){
 		if(result.hasErrors())
 			novo(cadastro);
 		
-		usuarioServices.insere(cadastro);
+		Usuario usuario = usuarioServices.insere(cadastro);
 		
-//		System.out.println(handler.getRequestURL().toString());/*
-		cadastrarServices.cadastraUsuario(cadastro);
+		cadastrarServices.confirmaUsuario(cadastro, usuario, request);
 		
 		attributes.addFlashAttribute("mensagem", "Cadastro realizado com sucesso, por favor visualize o email enviado para confirmar o cadastro");
-		
-		return new ModelAndView(StringRedirecionamentoPaginas.LOGIN);
+
+		return new ModelAndView(StringPaginasAndRedirect.LOGIN);
 	}
 	
 }

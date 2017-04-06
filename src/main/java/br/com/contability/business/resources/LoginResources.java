@@ -4,9 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.com.contability.business.Usuario;
+import br.com.contability.business.services.CodigoUsuarioServices;
 import br.com.contability.comum.AuthenticationAbstract;
+import br.com.contability.comum.RedirectAttributesAbstract;
+import br.com.contability.comum.StringPaginasAndRedirect;
 
 @Controller
 @RequestMapping(value = "/login")
@@ -14,6 +19,12 @@ public class LoginResources {
 	
 	@Autowired
 	private AuthenticationAbstract auth;
+	
+	@Autowired
+	private CodigoUsuarioServices services;
+	
+	@Autowired
+	private RedirectAttributesAbstract redirect;
 	
 	@GetMapping
 	public String login(){ // pode ser também. @AuthenticationPrincipal User user
@@ -24,6 +35,17 @@ public class LoginResources {
 			return "redirect:index";
 		
 		return "Login";
+		
+	}
+	
+	@GetMapping("/requestcode")
+	public String loginConfirmacao(@RequestParam("codigo") String codigo, RedirectAttributes attributes) {
+		redirect.setRedirectAttributes(attributes);
+		
+		services.confirmaCodigoUsuario(codigo);
+		attributes.addFlashAttribute("mensagem", "Usuario ativado, por favor digite o usuario e senha");
+		
+		return StringPaginasAndRedirect.LOGIN;
 		
 	}
 	

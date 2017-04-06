@@ -25,7 +25,7 @@ import br.com.contability.business.services.CategoriaServices;
 import br.com.contability.comum.AuthenticationAbstract;
 import br.com.contability.comum.ModelConstruct;
 import br.com.contability.comum.RedirectAttributesAbstract;
-import br.com.contability.comum.StringRedirecionamentoPaginas;
+import br.com.contability.comum.StringPaginasAndRedirect;
 
 @Controller
 @RequestMapping("/categoria")
@@ -76,7 +76,7 @@ public class CategoriaResources {
 		
 		redirectAttributes.addFlashAttribute("mensagem", "Categoria salvo com sucesso.");
 		
-		return new ModelAndView(StringRedirecionamentoPaginas.CATEGORIA);
+		return new ModelAndView(StringPaginasAndRedirect.CATEGORIA);
 	}
 
 	@GetMapping(value = "/lista")
