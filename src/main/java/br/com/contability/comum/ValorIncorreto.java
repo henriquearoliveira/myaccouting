@@ -22,11 +22,8 @@ public class ValorIncorreto {
 		if (textoMensagemErro == null){
 			redirectAttributesAbstract.getRedirectAttributes().addFlashAttribute("mensagem", textoMensagemSucesso);
 		} else{
-			System.out.println("aqui");
-			System.out.println(redirectAttributesAbstract != null);
 			redirectAttributesAbstract.getRedirectAttributes().addFlashAttribute("erro", textoMensagemErro);
 		}
-		System.out.println("passou");
 		return new ModelAndView(redirecionamento);
 		
 	}

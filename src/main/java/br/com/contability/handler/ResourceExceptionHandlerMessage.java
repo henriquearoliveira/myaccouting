@@ -4,63 +4,54 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.FlashMap;
+import org.springframework.web.servlet.support.RequestContextUtils;
+import org.springframework.web.servlet.view.RedirectView;
 
-import br.com.contability.exceptions.ObjetoComDependenciaExceptionModel;
-import br.com.contability.exceptions.ObjetoExistenteExceptionModel;
-import br.com.contability.exceptions.ObjetoInexistenteExceptionModel;
-import br.com.contability.exceptions.ObjetoNaoAutorizadoModel;
+import br.com.contability.exceptions.ObjetoExistenteExceptionMessage;
+import br.com.contability.exceptions.ObjetoInexistenteExceptionMessage;
+import br.com.contability.exceptions.ObjetoNaoAutorizadoMessage;
 
 @ControllerAdvice
 public class ResourceExceptionHandlerMessage {
 	
-	@ExceptionHandler(ObjetoComDependenciaExceptionModel.class)
-	public ModelAndView objetoComDependenciaExceptionModel(ObjetoComDependenciaExceptionModel e, HttpServletRequest request) {
-		
-		ModelAndView mv = new ModelAndView("error/401");
-		mv.addObject("mensagem", e.getMessage());
-		
-		return mv;
+	@ExceptionHandler(ObjetoExistenteExceptionMessage.class)
+	public RedirectView objetoExistenteExceptionMessage(ObjetoExistenteExceptionMessage e, HttpServletRequest request) {
+
+		RedirectView rw = new RedirectView(e.getRedirect());
+	    FlashMap outputFlashMap = RequestContextUtils.getOutputFlashMap(request);
+	    if (outputFlashMap != null){
+	        outputFlashMap.put("erro", e.getMessage());
+	    }
+	    
+	    return rw;
 
 	}
 	
-	@ExceptionHandler(ObjetoExistenteExceptionModel.class)
-	public ModelAndView objetoExistenteExceptionModel(ObjetoExistenteExceptionModel e, HttpServletRequest request) {
-
-		ModelAndView mv = new ModelAndView("error/401");
-		mv.addObject("mensagem", e.getMessage());
+	@ExceptionHandler(ObjetoInexistenteExceptionMessage.class)
+	public RedirectView objetoInexistenteExceptionMessage(ObjetoInexistenteExceptionMessage e, HttpServletRequest request) {
 		
-		return mv;
-
-	}
-	
-	@ExceptionHandler(ObjetoInexistenteExceptionModel.class)
-	public ModelAndView objetoInexistenteExceptionModel(ObjetoInexistenteExceptionModel e, HttpServletRequest request) {
-		
-		ModelAndView mv = new ModelAndView("error/404");
-		mv.addObject("mensagem", e.getMessage());
-		
-		return mv;
+		RedirectView rw = new RedirectView(e.getRedirect());
+	    FlashMap outputFlashMap = RequestContextUtils.getOutputFlashMap(request);
+	    if (outputFlashMap != null){
+	        outputFlashMap.put("erro", e.getMessage());
+	    }
+	    
+	    return rw;
 
 	}
 	
-	@ExceptionHandler(ObjetoNaoAutorizadoModel.class)
-	public ModelAndView objetoNaoAutorizadoExceptionModel(ObjetoNaoAutorizadoModel e, HttpServletRequest request) {
+	@ExceptionHandler(ObjetoNaoAutorizadoMessage.class)
+	public RedirectView objetoNaoAutorizadoExceptionMessage(ObjetoNaoAutorizadoMessage e, HttpServletRequest request) {
 		
-		ModelAndView mv = new ModelAndView("error/404");
-		mv.addObject("mensagem", e.getMessage());
-		
-		return mv;
+		RedirectView rw = new RedirectView(e.getRedirect());
+	    FlashMap outputFlashMap = RequestContextUtils.getOutputFlashMap(request);
+	    if (outputFlashMap != null){
+	        outputFlashMap.put("erro", e.getMessage());
+	    }
+	    
+	    return rw;
 
 	}
-	
-	/*@GetMapping("/teste/testandoo")
-	public ModelAndView error(RedirectAttributes redirect){
-		System.out.println("aqui");
-		redirect.addFlashAttribute("mensagem", "teste");
-		
-		return new ModelAndView(StringRedirecionamentoPaginas.LOGIN);
-		
-	}*/
 	
 }
