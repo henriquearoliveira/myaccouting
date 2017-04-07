@@ -6,8 +6,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 public class Cadastro {
 	
-	@NotEmpty
-	@NotNull
+	@NotEmpty(message = "Não pode ser null")
+	@NotNull(message = "Não pode ser vazio")
 	private String nome, email, senha;
 
 	public String getNome() {
