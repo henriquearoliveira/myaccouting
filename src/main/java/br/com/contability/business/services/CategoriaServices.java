@@ -3,7 +3,6 @@ package br.com.contability.business.services;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.servlet.ModelAndView;
@@ -12,16 +11,12 @@ import br.com.contability.business.Categoria;
 import br.com.contability.business.Usuario;
 import br.com.contability.business.repository.CategoriaRepository;
 import br.com.contability.comum.ServicesAbstract;
-import br.com.contability.comum.StringPaginasAndRedirect;
-import br.com.contability.comum.ValorIncorreto;
 import br.com.contability.exceptions.ObjetoInexistenteException;
+import br.com.contability.exceptions.ObjetoInexistenteExceptionMessage;
 
 @Service
 public class CategoriaServices extends ServicesAbstract<Categoria, CategoriaRepository> {
 	
-	@Autowired
-	private ValorIncorreto valorIncorreto;
-
 	/**
 	 * @param model
 	 * @param id
@@ -31,20 +26,16 @@ public class CategoriaServices extends ServicesAbstract<Categoria, CategoriaRepo
 	 */
 	public ModelAndView getCategoria(Model model, Optional<Long> id, ModelAndView mv, Usuario usuario) {
 		
-		if (!id.filter(i -> i == null || i == 0).isPresent()) {
-			return valorIncorreto.defineRedirecionamentoComMensagem("Identificador incorreto", null, StringPaginasAndRedirect.CATEGORIA);
-		}
-
-		Categoria categoria = null;
-
+		id.orElseThrow(() -> new ObjetoInexistenteExceptionMessage("/categoria", "Código inválido"));
+		
+		Optional<Categoria> categoria = null;
+		
 		categoria = super.getJpa().getCategorias(id.get(), usuario.getId());
 
-		if (categoria == null) {
-			return valorIncorreto.defineRedirecionamentoComMensagem("Impossível encontrar a categoria desejada", null, StringPaginasAndRedirect.CATEGORIA);
-		}
-
-		mv.addObject("categoria", categoria);
-		mv.addObject("tipoDeCategorias", categoria.getTipoDeCategoria());
+		categoria.orElseThrow(() -> new ObjetoInexistenteExceptionMessage("/categoria", "Categoria não encontrada"));
+		
+		mv.addObject("categoria", categoria.get());
+		mv.addObject("tipoDeCategorias", categoria.get().getTipoDeCategoria());
 
 		return mv;
 	}

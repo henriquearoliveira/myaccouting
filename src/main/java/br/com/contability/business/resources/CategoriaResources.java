@@ -24,7 +24,6 @@ import br.com.contability.business.Usuario;
 import br.com.contability.business.services.CategoriaServices;
 import br.com.contability.comum.AuthenticationAbstract;
 import br.com.contability.comum.ModelConstruct;
-import br.com.contability.comum.RedirectAttributesAbstract;
 import br.com.contability.comum.StringPaginasAndRedirect;
 
 @Controller
@@ -36,9 +35,6 @@ public class CategoriaResources {
 	
 	@Autowired
 	private AuthenticationAbstract auth;
-	
-	@Autowired
-	private RedirectAttributesAbstract redirectAttributesAbstract;
 	
 	@GetMapping()
 	public ModelAndView novo(Model model, Categoria categoria) { // tem que haver no método para ele mapear depois
@@ -53,12 +49,11 @@ public class CategoriaResources {
 	}
 	
 	@GetMapping("/{id}")
-	public ModelAndView get(Model model, Categoria categoria, @PathVariable Long id, RedirectAttributes redirectAttributes) { // tem que haver no método para ele mapear depois
+	public ModelAndView get(Model model, Categoria categoria, @PathVariable Long id) { // tem que haver no método para ele mapear depois
 		ModelConstruct.setAttributes(model,"activeLi", "activeNovo");
 		Optional<Long> idLong = Optional.ofNullable(id);
 		
 		Usuario usuario = auth.getAutenticacao();
-		redirectAttributesAbstract.setRedirectAttributes(redirectAttributes);
 		
 		ModelAndView mv = new ModelAndView("categoria/Categoria");
 		return categoriaServices.getCategoria(model, idLong, mv, usuario);
