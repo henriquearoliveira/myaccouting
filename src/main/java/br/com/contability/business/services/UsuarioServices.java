@@ -17,11 +17,11 @@ public class UsuarioServices extends ServicesAbstract<Usuario, UsuarioRepository
 	 * @param email
 	 * @return
 	 */
-	public Usuario getPelo(String email) {
+	public Usuario getPelo(String email, String paginaRedirecionamento) {
 
-		Usuario usuario = super.getJpa().getPelo(email);
+		Optional<Usuario> usuario = super.getJpa().getPelo(email);
 
-		return usuario;
+		return usuario.orElseThrow(() -> new ObjetoInexistenteExceptionMessage(paginaRedirecionamento, "Usuario inexistente para o email"));
 	}
 
 	/**

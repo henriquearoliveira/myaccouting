@@ -40,8 +40,13 @@ html, body {
   z-index: 2;
 }
 
-#hideComponent {
+#hideComponent, .alert-success {
 	color:#006752;
+	text-align:center;
+}
+
+#hideComponent, .alert-danger {
+	color:#ef2929;
 	text-align:center;
 }
 
@@ -79,6 +84,10 @@ form {
 .mat-in {
   position: relative;
   margin-bottom: 32px;
+}
+
+.hidden {
+	display: none;
 }
 
 input {

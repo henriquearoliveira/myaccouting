@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import br.com.contability.business.Cadastro;
 import br.com.contability.business.Usuario;
 import br.com.contability.utilitario.CaixaDeFerramentas;
+import br.com.contability.utilitario.email.EmailParameters;
 import br.com.contability.utilitario.email.IEnviaEmail;
 
 @Service
@@ -25,11 +26,17 @@ public class CadastrarServices {
 	 */
 	public void confirmaUsuario(Cadastro cadastro, Usuario usuario, HttpServletRequest request) {
 
-		String codigo = CaixaDeFerramentas.geraCodigo(6);
-		services.insere(usuario, codigo);
+		String codigo = CaixaDeFerramentas.geraCodigo(20);
+		services.insereCodigoUsuario(usuario, codigo);
+		
+		EmailParameters email = new EmailParameters.EmailParametersBuilder().setAssunto("Ativação de cadastro no My Accounting")
+				.setPara(cadastro.getEmail())
+				.setCodigo(codigo)
+				.setUrl(CaixaDeFerramentas.configureURLdesired(request, "/login/requestcode?codigo="))
+				.setUrl("mail/CadastroUsuario")
+				.build();
 
-		enviaEmail.envia("Ativação de cadastro no My Accounting", cadastro.getEmail(), codigo,
-				CaixaDeFerramentas.configuraURLlogin(request));
+		enviaEmail.envia(email);
 
 	}
 

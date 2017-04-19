@@ -20,7 +20,7 @@
 				<td class="col-sm-2" th:text="((${lancamento.categoria.tipoDeCategoria.name()} == 'DESPESA') ? '- ' : '') + ${'R$ ' + #numbers.formatDecimal(lancamento.valorLancamento, 0, 'POINT', 2, 'COMMA')}"></td>
 				<td class="col-xs-2 text-center">
 					<a th:href="@{/lancamento/} + ${lancamento.id}" style="padding: 6px 22px" class="btn btn-primary" role="button">Editar</a>
-					<button class="btn  btn-danger" th:id="${lancamento.id}" th:value="${lancamento.id}" type="submit">Remover</button></td>
+					<button class="btn  btn-danger" th:id="${lancamento.id}" th:value="${lancamento.id}" type="button" data-toggle="modal" data-target="#confirmaExclusaoModal">Remover</button></td>
 			</tr>
 			
 		</tbody>

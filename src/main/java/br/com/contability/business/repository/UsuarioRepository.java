@@ -10,7 +10,7 @@ import br.com.contability.business.Usuario;
 public interface UsuarioRepository extends JpaRepository<Usuario, Long>{
 
 	@Query("SELECT u FROM Usuario u WHERE u.email = ?1")
-	public Usuario getPelo(String email);
+	public Optional<Usuario> getPelo(String email);
 
 	@Query("SELECT u FROM Usuario u"
 			+ " JOIN u.codigoUsuarios cu"

@@ -84,7 +84,7 @@ public class ContaResources {
 		return mv;
 	}
 	
-	@DeleteMapping("/remove/{id}")
+	@DeleteMapping("/remover/{id}")
 	public ResponseEntity<Void> remove(@PathVariable Long id){
 		
 		Usuario usuario = auth.getAutenticacao();

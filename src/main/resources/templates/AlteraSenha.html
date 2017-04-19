@@ -72,17 +72,36 @@
 			</div>
 		</div>
 
-		<form method="POST" th:object="${esqueceuSenha}" th:action="@{/esqueceusenha}"
+		<form method="POST" th:object="${alteraSenha}" th:action="@{/alterasenha}"
 			role="form">
+			
+			<div class="mat-in hidden">
+				<input id="email" type="text" th:value="${alteraSenha.email}" th:field="*{email}" required="true"></input>
+				<span class="bar"></span>
+				<label for="email">Email</label>
+			</div>
+			
+			<div class="mat-in hidden">
+				<input id="codigo" type="text" th:value="${alteraSenha.codigo}" th:field="*{codigo}" required="true"></input>
+				<span class="bar"></span>
+				<label for="email">Codigo</label>
+			</div>
 
 			<div class="mat-in">
-				<input id="email" type="text" th:field="*{email}" required="true"></input>
+				<input id="password" type="password" th:field="*{password}" required="true"></input>
 				<span class="bar"></span>
-				<!-- value="password" -->
-				<label for="email">Email</label>
+				<label for="email">Senha</label>
+			</div>
+			
+			<div class="mat-in">
+				<input id="confirmPassword" type="password" th:field="*{confirmPassword}" required="true"></input>
+				<span class="bar"></span>
+				<label for="email">Confirmar senha</label>
 			</div>
 
 			<button type="submit" value="submit" id="cadastrar">Enviar</button>
+			
+			<div th:replace="mensagensutils/MensagensAlertas :: alert"></div>
 
 		</form>
 

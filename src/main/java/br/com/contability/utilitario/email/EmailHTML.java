@@ -24,22 +24,22 @@ public class EmailHTML implements IEnviaEmail {
 	private SpringTemplateEngine thymeleaf;
 	
 	@Override
-	public void envia(String assunto, String para, String codigo, String url) {
+	public void envia(EmailParameters emailParameters) {
 		
 		Locale locale = new Locale("pt", "BR");
 		
 		Context ctx = new Context(locale);
-		ctx.setVariable("codigo", codigo);
-		ctx.setVariable("teste", url); //"http://localhost:9090"
+		ctx.setVariable("codigo", emailParameters.getCodigo());
+		ctx.setVariable("urlPagina", emailParameters.getUrl()); //"http://localhost:9090"
 		MimeMessage mensagem = mailSender.createMimeMessage();
 		
 		try {
 			
 			MimeMessageHelper mensagemAjuda = new MimeMessageHelper(mensagem, false, "UTF-8");
-			mensagemAjuda.setSubject(assunto);
+			mensagemAjuda.setSubject(emailParameters.getAssunto());
 			mensagemAjuda.setFrom("henrique_skatebord@hotmail.com");
-			mensagemAjuda.setTo(para);
-			String corpoHtml = thymeleaf.process("mail/recuperarSenha", ctx);
+			mensagemAjuda.setTo(emailParameters.getPara());
+			String corpoHtml = thymeleaf.process(emailParameters.getTemplateEmail(), ctx);
 			mensagemAjuda.setText(corpoHtml, true);
 			
 			mailSender.send(mensagem);

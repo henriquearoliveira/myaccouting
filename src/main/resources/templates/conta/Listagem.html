@@ -45,7 +45,7 @@
 										<a th:href="@{/conta/} + ${conta.id}" style="padding: 6px 22px" class="btn btn-primary" role="button">Editar</a>
 										<!-- <a th:href="@{/categoria/remove/} + ${categoria.id}" style="padding: 6px 8px" class="btn btn-danger" role="button">Remover</a> -->
 										<!-- <a th:href="@{/categoria/remove/} + ${categoria.id}" style="padding: 6px 8px" class="btn btn-danger" role="button">Remover</a> -->
-										<button class="btn  btn-danger" th:id="${conta.id}" th:value="${conta.id}" type="submit" >Remover</button>
+										<button class="btn  btn-danger" th:id="${conta.id}" th:value="${conta.id}" type="button" data-toggle="modal" data-target="#confirmaExclusaoModal" >Remover</button>
 										
 									</td>
 								</tr>
@@ -83,7 +83,7 @@
 		                  </div> 
 		                  
 		                  <div class="col-xs-3">
-		                  	<button class="btn  btn-danger pull-right" th:id="${conta.id}" th:value="${conta.id}" type="submit" style="padding: 4px 8px;" >Remover</button>
+		                  	<button class="btn  btn-danger pull-right" th:id="${conta.id}" th:value="${conta.id}" type="button" data-toggle="modal" data-target="#confirmaExclusaoModal" style="padding: 4px 8px;" >Remover</button>
 		                  </div>
 	                  
 	                  </div>
@@ -105,6 +105,8 @@
 
 		</div>
 	</div>
+	
+	<div th:replace="modals/Exclusao :: alert" th:remove="tag"></div>
 
 </th:block>
 

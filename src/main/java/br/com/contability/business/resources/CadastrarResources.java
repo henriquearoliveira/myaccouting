@@ -45,7 +45,8 @@ public class CadastrarResources {
 		
 		cadastrarServices.confirmaUsuario(cadastro, usuario, request);
 		
-		attributes.addFlashAttribute("mensagem", "Cadastro realizado com sucesso, por favor visualize o email enviado para confirmar o cadastro");
+		attributes.addFlashAttribute("mensagem", "Cadastro realizado com sucesso, por favor visualize o email enviado"
+				+ "para confirmar o cadastro");
 
 		return new ModelAndView(StringPaginasAndRedirect.LOGIN);
 	}

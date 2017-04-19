@@ -26,7 +26,7 @@ public class AuthenticationAbstract {
 		if(email.equals("anonymousUser"))
 			return null;
 		
-		Usuario usuario = usuarioServices.getPelo(email);
+		Usuario usuario = usuarioServices.getPelo(email, "/login");
 		
 		return usuario;
 	}

@@ -5,10 +5,12 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.contability.business.AlteraSenha;
 import br.com.contability.business.CodigoUsuario;
 import br.com.contability.business.Usuario;
 import br.com.contability.business.repository.CodigoUsuarioRepository;
 import br.com.contability.comum.ServicesAbstract;
+import br.com.contability.comum.ShaPasswordEncoder;
 
 @Service
 public class CodigoUsuarioServices extends ServicesAbstract<CodigoUsuario, CodigoUsuarioRepository> {
@@ -20,17 +22,29 @@ public class CodigoUsuarioServices extends ServicesAbstract<CodigoUsuario, Codig
 	 * @param usuario
 	 * @param codigo
 	 */
-	public void insere(Usuario usuario, String codigo) {
+	public void insereCodigoUsuario(Usuario usuario, String codigo) {
 
 		verificaCodigosAtivos(usuario);
 		verificaCodigoJaExistente(usuario, codigo);
 
-		CodigoUsuario codigoUsuario = new CodigoUsuario();
-		codigoUsuario.setCodigo(codigo);
-		codigoUsuario.setUsuario(usuario);
+		CodigoUsuario codigoUsuario = geraCodigoUsuario(codigo, usuario);
 
 		super.insere(codigoUsuario, null);
 
+	}
+	
+	/**
+	 * @param codigo
+	 * @param usuario
+	 * @return FACILITA A REUTILIZAÇÃO
+	 */
+	public CodigoUsuario geraCodigoUsuario(String codigo, Usuario usuario){
+		
+		CodigoUsuario codigoUsuario = new CodigoUsuario();
+		codigoUsuario.setCodigo(codigo);
+		codigoUsuario.setUsuario(usuario);
+		
+		return codigoUsuario;
 	}
 
 	/**
@@ -44,7 +58,7 @@ public class CodigoUsuarioServices extends ServicesAbstract<CodigoUsuario, Codig
 		Optional<CodigoUsuario> codigoUsuario = super.getJpa().verificaJaExistente(codigo);
 		
 		codigoUsuario.ifPresent(i -> {
-			insere(usuario, codigo);
+			insereCodigoUsuario(usuario, codigo);
 		});
 		
 	}
@@ -91,6 +105,19 @@ public class CodigoUsuarioServices extends ServicesAbstract<CodigoUsuario, Codig
 		
 		return codigoUsuario;
 		
+	}
+
+	/**
+	 * @param alteraSenha
+	 */
+	public void alteraSenha(AlteraSenha alteraSenha) {
+		Usuario usuario = usuarioServices.getPelo(alteraSenha.getEmail(), "/alterasenha?email=" + alteraSenha.getEmail()
+													+ "&codigo=" + alteraSenha.getCodigo());
+		
+		usuario.setSenha(ShaPasswordEncoder.getSha512Securit(alteraSenha.getPassword()));
+
+		usuarioServices.atualiza(usuario, null);
+		setFalseCodigoUsuario(usuario, alteraSenha.getCodigo());
 	}
 
 }

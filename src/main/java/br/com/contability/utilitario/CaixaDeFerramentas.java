@@ -69,8 +69,8 @@ public class CaixaDeFerramentas {
 	 * @param request
 	 * @return String PARA VINCULAR A CONFIRMAÇÃO DO LOGIN DE UM NOVO USUARIO
 	 */
-	public static String configuraURLlogin(HttpServletRequest request){
-		return request.getRequestURL().toString().replace(request.getRequestURI(), "/login/requestcode?codigo=");
+	public static String configureURLdesired(HttpServletRequest request, String urlParametersDesired){
+		return request.getRequestURL().toString().replace(request.getRequestURI(), urlParametersDesired);
 	}
 
 }
