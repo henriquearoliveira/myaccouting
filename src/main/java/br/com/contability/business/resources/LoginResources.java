@@ -2,7 +2,6 @@ package br.com.contability.business.resources;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,7 +13,7 @@ import br.com.contability.business.services.CodigoUsuarioServices;
 import br.com.contability.comum.AuthenticationAbstract;
 import br.com.contability.comum.RedirectAttributesAbstract;
 import br.com.contability.comum.StringPaginasAndRedirect;
-import net.sf.jasperreports.engine.JREmptyDataSource;
+import br.com.contability.relatorios.Relatorio;
 
 @Controller
 @RequestMapping(value = "/login")
@@ -41,12 +40,13 @@ public class LoginResources {
 		
 	}
 	
+	@Autowired
+	private Relatorio relatorio;
+	
 	@GetMapping("/testando")
-	public ModelAndView getRpt4(ModelMap modelMap, ModelAndView modelAndView) {
-	  modelMap.put("datasource", new JREmptyDataSource()); // AQUI COM CERTEZA VEM MINHA CONEXÃO
-	  modelMap.put("format", "pdf");
-	  modelAndView = new ModelAndView("rpt_HelloWorld", modelMap);
-	  return modelAndView;
+	public ModelAndView getRpt4() {
+		relatorio.putParam("ID", 3);
+		return relatorio.criaRelatorio("rpt_HelloWorld");
 	}
 	
 	@GetMapping("/requestcode")
@@ -61,14 +61,28 @@ public class LoginResources {
 	}
 	
 	//	APRENDIZAGEM ABAIXO. NADA FUNCIONOU
-	/*@RequestMapping(value = "/login")
+
+	/*@Autowired
+	private DataSource dataSource;
+	
+	@GetMapping("/testando")
+	public ModelAndView getRpt4() {
+		Map<String, Object> modelMap = new HashMap<>();
+	  modelMap.put("datasource", dataSource);
+	  modelMap.put("format", "pdf");
+	  modelMap.put("ID", 3);
+	  ModelAndView modelAndView = new ModelAndView("rpt_HelloWorld", modelMap);
+	  return modelAndView;
+	}
+	
+	@RequestMapping(value = "/login")
 	public ModelAndView paginLogin(){
 		
 		ModelAndView mv = new ModelAndView("Login");
 		return mv;
 		
-	}*/
-	/*@RequestMapping(value = "/autorizado")
+	}
+	@RequestMapping(value = "/autorizado")
 	public String loginSucesso(){
 		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -76,33 +90,33 @@ public class LoginResources {
 		
 		return "Login";
 		
-	}*/
+	}
 	
-	//RequestMapping(value = "/login", method = RequestMethod.POST)
-	//public ModelAndView loginn(LoginUsuario loginUsuario){ // pode ser também. @AuthenticationPrincipal User user
+	RequestMapping(value = "/login", method = RequestMethod.POST)
+	public ModelAndView loginn(LoginUsuario loginUsuario){ // pode ser também. @AuthenticationPrincipal User user
 		
-		//System.out.println("passei");
+		System.out.println("passei");
 		
-		//if(result.hasErrors()){
+		if(result.hasErrors()){
 			//return login(loginUsuario);
-		//}
+		}
 		
-		//System.out.println(loginUsuario.getNome());
+		System.out.println(loginUsuario.getNome());
 		
-		//Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		//ModelAndView mv = new ModelAndView();
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		ModelAndView mv = new ModelAndView();
 		
-		//System.out.println(auth.getName());
+		System.out.println(auth.getName());
 		
-//		if(auth == null){
+		if(auth == null){
 			//mv = new ModelAndView("/Login"); //caminho
 			//return mv.addObject("incorrect", true);
-//		}	
-//		return mv = new ModelAndView("/usuario");
+		}	
+		return mv = new ModelAndView("/usuario");
 		
-	//}
+	}
 	
-	/*@RequestMapping("/usuario")
+	@RequestMapping("/usuario")
 	public String login(){
 		
 		
