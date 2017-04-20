@@ -41,12 +41,27 @@ public class LoginResources {
 		
 	}
 	
+	/*@Autowired private ApplicationContext appContext;
+	@Autowired private DataSource dataSource;*/
+	
 	@GetMapping("/testando")
 	public ModelAndView getRpt4(ModelMap modelMap, ModelAndView modelAndView) {
-	  modelMap.put("datasource", new JREmptyDataSource()); // AQUI COM CERTEZA VEM MINHA CONEXÃO
-	  modelMap.put("format", "pdf");
-	  modelAndView = new ModelAndView("rpt_HelloWorld", modelMap);
-	  return modelAndView;
+		
+		modelMap.put("datasource", new JREmptyDataSource()); // AQUI COM CERTEZA VEM MINHA CONEXÃO
+		modelMap.put("format", "pdf");
+		modelAndView = new ModelAndView("rpt_HelloWorld", modelMap);
+		return modelAndView;
+		/*
+		JasperReportsPdfView view = new JasperReportsPdfView();
+	    view.setJdbcDataSource(dataSource);
+	    view.setUrl("classpath:/jasperreports/rpt_HelloWorld.jrxml");
+	    Map<String, Object> params = new HashMap<>();
+	    params.put("param1", "param1 value");
+	    params.put("datasource", new JREmptyDataSource());
+	    params.put("datasource", "pdf");
+	    view.setApplicationContext(appContext);
+	    
+	    return new ModelAndView(view, params);*/
 	}
 	
 	@GetMapping("/requestcode")
