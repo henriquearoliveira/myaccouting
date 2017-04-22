@@ -1,6 +1,6 @@
 package br.com.contability.comum;
 
-import java.util.Calendar;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +22,8 @@ public class ServicesAbstract<T extends BeanIdentificavel, E extends JpaReposito
 		Optional<Boolean> optional = Optional.ofNullable(isApiProgram);
 		
 		verificaExistencia(objeto, isApiProgram);
-		Calendar dataCadastro = get(objeto.getId(), isApiProgram).getDataHoraCadastro();
-		objeto.setDataHoraAtualizacao(Calendar.getInstance());
+		LocalDateTime dataCadastro = get(objeto.getId(), isApiProgram).getDataHoraCadastro();
+		objeto.setDataHoraAtualizacao(LocalDateTime.now());
 		objeto.setDataHoraCadastro(dataCadastro);
 
 		try {
@@ -55,7 +55,7 @@ public class ServicesAbstract<T extends BeanIdentificavel, E extends JpaReposito
 		Optional<Boolean> optional = Optional.ofNullable(isApiProgram);
 
 		objeto.setId(null);
-		objeto.setDataHoraCadastro(Calendar.getInstance());
+		objeto.setDataHoraCadastro(LocalDateTime.now());
 
 		try {
 

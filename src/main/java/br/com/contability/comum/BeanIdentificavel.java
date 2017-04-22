@@ -1,6 +1,6 @@
 package br.com.contability.comum;
 
-import java.util.Calendar;
+import java.time.LocalDateTime;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -9,15 +9,17 @@ import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
 public class BeanIdentificavel {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-//	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", locale = "pt-BR", timezone = "Brazil/East")
-//	@DateTimeFormat(pattern="dd-MM-yyyy HH:mm:ss")
-//	@Temporal(TemporalType.TIMESTAMP)
-	private Calendar dataHoraCadastro, dataHoraAtualizacao;
+
+	// @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd
+	// HH:mm:ss", locale = "pt-BR", timezone = "Brazil/East")
+	// @DateTimeFormat(pattern="dd-MM-yyyy HH:mm:ss")
+	// @Temporal(TemporalType.TIMESTAMP) ACREDITO QUE NÃO FUNCIONA DEVIDO ISSO FORMATAR O JSON
+	// E NÃO O FORMATO NO FRONT END
+	private LocalDateTime dataHoraCadastro, dataHoraAtualizacao;
 
 	public Long getId() {
 		return id;
@@ -27,19 +29,19 @@ public class BeanIdentificavel {
 		this.id = id;
 	}
 
-	public Calendar getDataHoraCadastro() {
+	public LocalDateTime getDataHoraCadastro() {
 		return dataHoraCadastro;
 	}
 
-	public void setDataHoraCadastro(Calendar dataHoraCadastro) {
+	public void setDataHoraCadastro(LocalDateTime dataHoraCadastro) {
 		this.dataHoraCadastro = dataHoraCadastro;
 	}
 
-	public Calendar getDataHoraAtualizacao() {
+	public LocalDateTime getDataHoraAtualizacao() {
 		return dataHoraAtualizacao;
 	}
 
-	public void setDataHoraAtualizacao(Calendar dataHoraAtualizacao) {
+	public void setDataHoraAtualizacao(LocalDateTime dataHoraAtualizacao) {
 		this.dataHoraAtualizacao = dataHoraAtualizacao;
 	}
 

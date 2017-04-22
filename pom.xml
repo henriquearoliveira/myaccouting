@@ -86,12 +86,16 @@
 		</dependency>
 
 		<!-- JasperReport -->
-		<!-- <dependency> <groupId>org.springframework</groupId> <artifactId>spring-context-support</artifactId> 
-			</dependency> -->
 		<dependency>
 			<groupId>net.sf.jasperreports</groupId>
 			<artifactId>jasperreports</artifactId>
 			<version>6.3.0</version>
+		</dependency>
+
+		<!-- Java 8 LocalDate -->
+		<dependency>
+			<groupId>org.thymeleaf.extras</groupId>
+			<artifactId>thymeleaf-extras-java8time</artifactId>
 		</dependency>
 
 	</dependencies>

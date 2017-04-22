@@ -1,7 +1,8 @@
 package br.com.contability.business.services;
 
 import java.math.BigDecimal;
-import java.util.Calendar;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,8 +53,8 @@ public class LancamentoServices extends ServicesAbstract<Lancamento, LancamentoR
 	 * @param calendar
 	 * @return
 	 */
-	public List<Lancamento> seleciona(Usuario usuario, Calendar calendar) {
-		return super.getJpa().selecionaLancamentos(usuario.getId(), calendar.get(Calendar.MONTH), calendar.get(Calendar.YEAR));
+	public List<Lancamento> seleciona(Usuario usuario, LocalDate localDate) {
+		return super.getJpa().selecionaLancamentos(usuario.getId(), localDate.getMonthValue(), localDate.getYear());
 	}
 
 	/**
@@ -61,9 +62,19 @@ public class LancamentoServices extends ServicesAbstract<Lancamento, LancamentoR
 	 * @param dataHoraLancamento
 	 * @return saldo
 	 */
-	public BigDecimal getSaldo(Usuario usuario, Calendar calendar) {
-		return super.getJpa().getSaldo(usuario.getId(), calendar.get(Calendar.MONTH), calendar.get(Calendar.YEAR));
+	public BigDecimal getSaldo(Usuario usuario, LocalDateTime localDateTime) {
+		return super.getJpa().getSaldo(usuario.getId(), localDateTime.getMonthValue(), localDateTime.getYear());
 	}
+	
+	/* FAZENDO COM STREAM (PARTICULAMENTE ACHO MUITA COISA KKKKK) FUNCIONA PERFEITAMENTE
+	// TESTE SALDO
+		Usuario usuario = auth.getAutenticacao();
+		List<Lancamento> lancamentos = lancamentoServices.getJpa()
+				.selecionaLancamentosPuroStream(usuario.getId(), calendar.get(Calendar.MONTH), calendar.get(Calendar.YEAR));
+		Double saldo = lancamentos.stream().mapToDouble(f -> f.getCategoria().getTipoDeCategoria() == TipoDeCategoria.RECEITA ?
+				f.getValorLancamento().doubleValue() : (-f.getValorLancamento().doubleValue())).sum();
+		
+		System.out.println(saldo);*/
 
 	/**
 	 * @param usuario

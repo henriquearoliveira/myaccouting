@@ -38,7 +38,7 @@
 							<tbody>
 								<tr th:each="conta : ${contas}">
 									<td class="col-sm-1 text-center" th:text="${conta.id}"></td>
-									<td class="col-sm-2" th:text="${#calendars.format(conta.dataHoraCadastro,'dd/MM/yyyy HH:mm:ss')}"></td>
+									<td class="col-sm-2" th:text="${#temporals.format(conta.dataHoraCadastro,'dd/MM/yyyy HH:mm')}"></td>
 									<td><a th:href="@{/conta/{id}(id=${conta.id})}" th:text="${conta.descricao}"></a></td>
 									<td class="col-xs-2 text-center">
 									

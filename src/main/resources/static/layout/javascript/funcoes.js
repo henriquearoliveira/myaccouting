@@ -116,10 +116,9 @@ $('#confirmaExclusaoModal').on('show.bs.modal', function (event) {
 	$('.idValueModal').val(id);
 });
 
-$('.inputMonthYear').on("change", function(){
+$('#inputMonthYear').on("change", function(){
 	
 	var teste = $(this).val();
-	
 	enviaDataPost();
 	
 	

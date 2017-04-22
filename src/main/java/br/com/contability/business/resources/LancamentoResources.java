@@ -1,6 +1,6 @@
 package br.com.contability.business.resources;
 
-import java.util.Calendar;
+import java.time.LocalDate;
 
 import javax.validation.Valid;
 
@@ -104,11 +104,11 @@ public class LancamentoResources {
 		
 		Usuario usuario = auth.getAutenticacao();
 
-		Calendar calendar = CaixaDeFerramentas.calendarFromStringDate(calendarString);
+		LocalDate localDate = CaixaDeFerramentas.calendarFromStringDate(calendarString);
 
-		model.addAttribute("lancamentos", lancamentoServices.seleciona(usuario, calendar));
-		model.addAttribute("saldo", saldoServices.getSaldoDo(usuario, calendar));
-
+		model.addAttribute("lancamentos", lancamentoServices.seleciona(usuario, localDate));
+		model.addAttribute("saldo", saldoServices.getSaldoDo(usuario, localDate));
+		
 		return mobile == null ? "lancamento/Tabela :: tabelaLancamento"
 				: "lancamento/TabelaMobile :: tabelaLancamentoMobile";
 

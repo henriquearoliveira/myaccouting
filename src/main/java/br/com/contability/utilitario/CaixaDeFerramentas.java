@@ -3,7 +3,8 @@ package br.com.contability.utilitario;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.Locale;
 import java.util.UUID;
@@ -36,9 +37,7 @@ public class CaixaDeFerramentas {
 	 * @param dateToFormat
 	 * @return
 	 */
-	public static Calendar calendarFromStringDate(String dateToFormat){
-		
-		Calendar calendar = Calendar.getInstance();
+	public static LocalDate calendarFromStringDate(String dateToFormat){
 		
 		Date date = new Date();
 		
@@ -48,9 +47,9 @@ public class CaixaDeFerramentas {
 			e.printStackTrace();
 		}
 		
-		calendar.setTime(date);
+		LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 		
-		return calendar;
+		return localDate;
 	}
 	
 	/**

@@ -36,7 +36,6 @@ public class ContaResources {
 	@GetMapping()
 	public ModelAndView novo(Model model, Conta conta){
 		ModelConstruct.setAttributes(model, "activeLiConta", "activeNovo");
-		
 		auth.getAutenticacao();
 		
 		ModelAndView mv = new ModelAndView("conta/Conta");

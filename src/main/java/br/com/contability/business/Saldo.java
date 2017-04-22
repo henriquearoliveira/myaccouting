@@ -1,7 +1,7 @@
 package br.com.contability.business;
 
 import java.math.BigDecimal;
-import java.util.Calendar;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -28,8 +28,7 @@ public class Saldo extends BeanIdentificavel {
 	
 	@Column(nullable = true)
 	@DateTimeFormat(pattern="dd/MM/yyyy")
-//	@Temporal(TemporalType.TIMESTAMP)
-	private Calendar dataHoraLancamento;
+	private LocalDateTime dataHoraLancamento;
 
 	public Usuario getUsuario() {
 		return usuario;
@@ -47,11 +46,11 @@ public class Saldo extends BeanIdentificavel {
 		this.saldoAtual = saldoAtual;
 	}
 
-	public Calendar getDataHoraLancamento() {
+	public LocalDateTime getDataHoraLancamento() {
 		return dataHoraLancamento;
 	}
 
-	public void setDataHoraLancamento(Calendar dataHoraLancamento) {
+	public void setDataHoraLancamento(LocalDateTime dataHoraLancamento) {
 		this.dataHoraLancamento = dataHoraLancamento;
 	}
 	

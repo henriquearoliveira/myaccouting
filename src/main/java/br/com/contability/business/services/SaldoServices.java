@@ -1,7 +1,8 @@
 package br.com.contability.business.services;
 
 import java.math.BigDecimal;
-import java.util.Calendar;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import org.springframework.stereotype.Service;
 
@@ -18,15 +19,15 @@ public class SaldoServices extends ServicesAbstract<Saldo, SaldoRepository> impl
 	 * @param usuario
 	 * @return
 	 */
-	public Object getSaldoDo(Usuario usuario, Calendar calendar) {
+	public Object getSaldoDo(Usuario usuario, LocalDate localDate) {
 		
-		BigDecimal saldoUsuario = super.getJpa().getSaldoDo(usuario.getId(), calendar.get(Calendar.MONTH), calendar.get(Calendar.YEAR));
+		BigDecimal saldoUsuario = super.getJpa().getSaldoDo(usuario.getId(), localDate.getMonthValue(), localDate.getYear());
 		
 		return saldoUsuario;
 	}
 
-	public Saldo getSaldo(Long idUsuario, Calendar calendar) {
-		return super.getJpa().getSaldo(idUsuario, calendar.get(Calendar.MONTH), calendar.get(Calendar.YEAR));
+	public Saldo getSaldo(Long idUsuario, LocalDateTime localDateTime) {
+		return super.getJpa().getSaldo(idUsuario, localDateTime.getMonthValue(), localDateTime.getYear());
 	}
 
 }
