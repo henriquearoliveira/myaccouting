@@ -2,7 +2,6 @@ package br.com.contability.business.services;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 import org.springframework.stereotype.Service;
 
@@ -26,8 +25,8 @@ public class SaldoServices extends ServicesAbstract<Saldo, SaldoRepository> impl
 		return saldoUsuario;
 	}
 
-	public Saldo getSaldo(Long idUsuario, LocalDateTime localDateTime) {
-		return super.getJpa().getSaldo(idUsuario, localDateTime.getMonthValue(), localDateTime.getYear());
+	public Saldo getSaldo(Long idUsuario, LocalDate localDate) {
+		return super.getJpa().getSaldo(idUsuario, localDate.getMonthValue(), localDate.getYear());
 	}
 
 }

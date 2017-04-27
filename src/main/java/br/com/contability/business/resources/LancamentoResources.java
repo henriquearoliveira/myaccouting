@@ -50,7 +50,7 @@ public class LancamentoResources {
 	@GetMapping()
 	public ModelAndView novo(Model model, Lancamento lancamento) {
 		ModelConstruct.setAttributes(model, "activeLiLancamento", "activeNovo");
-
+		
 		Usuario usuario = auth.getAutenticacao();
 
 		ModelAndView mv = new ModelAndView("lancamento/Lancamento");
@@ -77,7 +77,7 @@ public class LancamentoResources {
 	public ModelAndView salvar(@Valid Lancamento lancamento, BindingResult result, RedirectAttributes attributes,
 			Model model) {
 		Usuario usuario = auth.getAutenticacao();
-
+		
 		if (result.hasErrors())
 			return novo(model, lancamento);
 

@@ -2,7 +2,6 @@ package br.com.contability.business.services;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +38,6 @@ public class LancamentoServices extends ServicesAbstract<Lancamento, LancamentoR
 	public void grava(Lancamento lancamento, Usuario usuario) {
 		
 		lancamento.setUsuario(usuario);
-		
 		BigDecimal bigDecimal = CaixaDeFerramentas.converteStringToBidDecimal(lancamento.getValorConversao());
 		lancamento.setValorLancamento(bigDecimal);
 		
@@ -62,8 +60,8 @@ public class LancamentoServices extends ServicesAbstract<Lancamento, LancamentoR
 	 * @param dataHoraLancamento
 	 * @return saldo
 	 */
-	public BigDecimal getSaldo(Usuario usuario, LocalDateTime localDateTime) {
-		return super.getJpa().getSaldo(usuario.getId(), localDateTime.getMonthValue(), localDateTime.getYear());
+	public BigDecimal getSaldo(Usuario usuario, LocalDate localDate) {
+		return super.getJpa().getSaldo(usuario.getId(), localDate.getMonthValue(), localDate.getYear());
 	}
 	
 	/* FAZENDO COM STREAM (PARTICULAMENTE ACHO MUITA COISA KKKKK) FUNCIONA PERFEITAMENTE
