@@ -28,13 +28,11 @@ public class CadastrarServices {
 
 		String codigo = CaixaDeFerramentas.geraCodigo(20);
 		services.insereCodigoUsuario(usuario, codigo);
-		
-		EmailParameters email = new EmailParameters.EmailParametersBuilder().setAssunto("Ativação de cadastro no My Accounting")
-				.setPara(cadastro.getEmail())
-				.setCodigo(codigo)
+
+		EmailParameters email = new EmailParameters.EmailParametersBuilder()
+				.setAssunto("Ativação de cadastro no My Accounting").setPara(cadastro.getEmail()).setCodigo(codigo)
 				.setUrl(CaixaDeFerramentas.configureURLdesired(request, "/login/requestcode?codigo="))
-				.setUrl("mail/CadastroUsuario")
-				.build();
+				.setTemplateEmail("mail/CadastroUsuario").build();
 
 		enviaEmail.envia(email);
 
