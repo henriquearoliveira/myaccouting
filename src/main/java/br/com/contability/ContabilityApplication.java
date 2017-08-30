@@ -6,12 +6,12 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 
 // Mexi Aqui
-@Configuration
+/*@Configuration
 @ComponentScan
-@EnableAutoConfiguration
-@SpringBootApplication
+//@EnableAutoConfiguration
+*/@SpringBootApplication
 public class ContabilityApplication extends SpringBootServletInitializer {
-	
+
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
 		return builder.sources(ContabilityApplication.class);

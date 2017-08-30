@@ -2,6 +2,7 @@
 <section name="Workbench">
 	<section name="MavenProjectImportWizardPage">
 		<list key="rootDirectory">
+			<item value="/home/eliel/Downloads/myprojectgit/myaccouting"/>
 			<item value="/home/henrique/Projects/Eclipse STS Contability/Contability"/>
 		</list>
 		<list key="projectNameTemplate">
