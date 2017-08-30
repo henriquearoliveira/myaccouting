@@ -27,6 +27,13 @@
 
 	<dependencies>
 
+		<!-- COLOQUEI -->
+		<!-- <dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-tomcat</artifactId>
+			<scope>provided</scope>
+		</dependency> -->
+
 		<!-- WebStarter -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -115,17 +122,42 @@
 
 	</dependencies>
 
-	<!-- EXCLUIR -->
-	<!-- <build> <plugins> <plugin> <groupId>org.springframework.boot</groupId> 
-		<artifactId>spring-boot-maven-plugin</artifactId> </plugin> </plugins> </build> 
-		TEST <profiles> <profile> When built in OpenShift the 'openshift' profile 
-		will be used when invoking mvn. Use this profile for any OpenShift specific 
-		customization your app will need. By default that is to put the resulting 
-		archive into the 'webapps' folder. http://maven.apache.org/guides/mini/guide-building-for-different-environments.html 
-		<id>openshift</id> <build> <finalName>yourAppName</finalName> <plugins> <plugin> 
-		<artifactId>maven-war-plugin</artifactId> <version>2.1.1</version> <configuration> 
-		<outputDirectory>webapps</outputDirectory> <warName>ROOT</warName> </configuration> 
-		</plugin> </plugins> </build> </profile> </profiles> -->
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
+	<!-- TEST -->
+
+	<!-- <profiles>
+		<profile>
+			When built in OpenShift the 'openshift' profile will be used when 
+				invoking mvn.
+			Use this profile for any OpenShift specific customization your app 
+				will need.
+			By default that is to put the resulting archive into the 'webapps' 
+				folder.
+			http://maven.apache.org/guides/mini/guide-building-for-different-environments.html
+			<id>openshift</id>
+			<build>
+				<finalName>yourAppName</finalName>
+				<plugins>
+					<plugin>
+						<artifactId>maven-war-plugin</artifactId>
+						<version>2.1.1</version>
+						<configuration>
+							<outputDirectory>webapps</outputDirectory>
+							<warName>ROOT</warName>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles> -->
 
 	<!-- ADICINEI ABAIXO TAMBM. E COMENTEI ACIMA -->
 	<!-- <build> <plugins> <plugin> <groupId>org.springframework.boot</groupId> 
@@ -136,94 +168,5 @@
 		<repository> <id>spring-releases</id> <url>https://repo.spring.io/libs-release</url> 
 		</repository> </repositories> <pluginRepositories> <pluginRepository> <id>spring-releases</id> 
 		<url>https://repo.spring.io/libs-release</url> </pluginRepository> </pluginRepositories> -->
-
-	<!-- COLOQUEI AQUI -->
-	<scm>
-		<url>https://github.com/codecentric/springboot-sample-app</url>
-		<connection>scm:git:git://github.com/codecentric/springboot-sample-app.git</connection>
-		<developerConnection>scm:git:ssh://git@github.com/codecentric/springboot-sample-app.git</developerConnection>
-		<tag>HEAD</tag>
-	</scm>
-
-	<build>
-		<finalName>app</finalName>
-		<resources>
-			<resource>
-				<directory>src/main/resources</directory>
-				<filtering>true</filtering>
-			</resource>
-		</resources>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</build>
-
-	<profiles>
-		<profile>
-			<id>travis</id>
-			<activation>
-				<property>
-					<name>env.TRAVIS</name>
-					<value>true</value>
-				</property>
-			</activation>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.jacoco</groupId>
-						<artifactId>jacoco-maven-plugin</artifactId>
-						<version>0.7.5.201505241946</version>
-						<configuration>
-							<excludes>
-								<exclude>**/Application.class</exclude>
-							</excludes>
-						</configuration>
-						<executions>
-							<!-- Prepares the property pointing to the JaCoCo runtime agent which 
-								is passed as VM argument when Maven the Surefire plugin is executed. -->
-							<execution>
-								<id>pre-unit-test</id>
-								<goals>
-									<goal>prepare-agent</goal>
-								</goals>
-							</execution>
-
-							<!-- Ensures that the code coverage report for unit tests is created 
-								after unit tests have been run. -->
-							<execution>
-								<id>post-unit-test</id>
-								<phase>test</phase>
-								<goals>
-									<goal>report</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-					<plugin>
-						<groupId>org.eluder.coveralls</groupId>
-						<artifactId>coveralls-maven-plugin</artifactId>
-						<version>4.1.0</version>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
-
-	<repositories>
-		<repository>
-			<id>spring-milestone</id>
-			<url>https://repo.spring.io/libs-release</url>
-		</repository>
-	</repositories>
-
-	<pluginRepositories>
-		<pluginRepository>
-			<id>spring-milestone</id>
-			<url>https://repo.spring.io/libs-release</url>
-		</pluginRepository>
-	</pluginRepositories>
 
 </project>
