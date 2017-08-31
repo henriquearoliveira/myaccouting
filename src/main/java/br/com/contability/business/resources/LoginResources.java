@@ -30,6 +30,8 @@ public class LoginResources {
 	
 	@GetMapping
 	public String login(){ // pode ser também. @AuthenticationPrincipal User user
+		
+		System.err.println("Entrei");
 
 		Usuario usuario = auth.getAutenticacao();
 		

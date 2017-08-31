@@ -10,6 +10,33 @@ $(function(){
 	}, 5000);
 });
 
+
+setInterval(function() {
+	$.ajax({
+	    type: 'get',
+	    url: 'http://localhost:8080/login',
+	    context: this,
+	    success: this.mySuccess,
+	    error: this.myError,
+	    cache: false,
+	});
+}, 300000);
+
+/*setInterval(function(){
+	alert("teste");
+}, 10000);*/
+
+/*setInterval(function(request){
+	  request({
+	      url: "http://localhost:8080/log",
+	      method: "GET",
+	      timeout: 600,
+	      followRedirect: true,
+	      maxRedirects: 10
+	  });
+	}, 600);*/
+
+
 /*var $loginMsg = $('.loginMsg'),
   $login = $('.login'),
   $signupMsg = $('.signupMsg'),
