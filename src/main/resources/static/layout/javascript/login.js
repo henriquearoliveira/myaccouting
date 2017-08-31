@@ -14,7 +14,7 @@ $(function(){
 setInterval(function() {
 	$.ajax({
 	    type: 'get',
-	    url: 'http://localhost:8080/login',
+	    url: 'https://myaccounting.herokuapp.com/login',
 	    context: this,
 	    success: this.mySuccess,
 	    error: this.myError,
