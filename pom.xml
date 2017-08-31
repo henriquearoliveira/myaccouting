@@ -147,6 +147,10 @@
 		</plugins>
 	</build>
 
+	<!-- FORMA ANTIGA -->
+	<!-- <build> <plugins> <plugin> <groupId>org.springframework.boot</groupId> 
+		<artifactId>spring-boot-maven-plugin</artifactId> </plugin> </plugins> </build> -->
+
 	<!-- TEST -->
 
 	<!-- <profiles> <profile> When built in OpenShift the 'openshift' profile 
