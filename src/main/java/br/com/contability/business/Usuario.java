@@ -36,7 +36,7 @@ public class Usuario extends BeanIdentificavel {
 	private String senha;
 
 	@Column(length = 200)
-	@JsonInclude(Include.NON_NULL)
+	@JsonInclude(Include.NON_NULL) // TIRA DO JSON
 	private String senhaMaster;
 
 	@Column(nullable = false)
