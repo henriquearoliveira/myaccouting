@@ -77,6 +77,36 @@ $('#monthYearListagem').datepicker({
 	autoclose: true
 }).datepicker("setDate", new Date());
 
+
+function readURL(input) {
+
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            $('#myImg').attr('src', e.target.result);
+        }
+
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+$("#imgInput").change(function(){
+    readURL(this);
+    alteraUrl();
+});
+
+var imagem = null;
+
+function alteraUrl(){
+	imagem = $('#myImg').attr('src');
+}
+
+$('#myModal').on('shown.bs.modal', function (e) {
+	alteraUrl();
+	$('#imgModal').attr('src', imagem);
+});
+
 /*$('#monthYearListagemm').datepicker({
 	format: 'MM yyyy',
 	startView: "months",
