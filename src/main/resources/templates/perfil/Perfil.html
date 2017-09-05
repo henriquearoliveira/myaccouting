@@ -23,7 +23,7 @@
 					
 						<div th:replace="mensagensutils/MensagensAlertas :: alert"></div>
 					
-						<form method="POST" th:object="${usuario}" th:action="@{/usuario}" role="form">
+						<form method="POST" th:object="${usuario}" th:action="@{/perfil}" enctype="multipart/form-data">
 						
 							<div th:replace="mensagensutils/Erros :: erros" th:remove="tag"></div>
 							
