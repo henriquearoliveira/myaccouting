@@ -1,89 +1,69 @@
 package br.com.contability.business.resources;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.util.HashMap;
-import java.util.Map;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.cloudinary.Cloudinary;
-
+import br.com.contability.business.UploadImage;
 import br.com.contability.business.Usuario;
+import br.com.contability.business.services.UploadImageServices;
+import br.com.contability.business.services.UsuarioServices;
+import br.com.contability.comum.AuthenticationAbstract;
+import br.com.contability.comum.StringPaginasAndRedirect;
 
 @Controller
 @RequestMapping("/perfil")
 public class PerfilResources {
 
+	@Autowired
+	private UploadImageServices services;
+
+	@Autowired
+	private UsuarioServices usuarioServices;
+
+	@Autowired
+	private AuthenticationAbstract auth;
+
 	@GetMapping
-	public ModelAndView perfil(Usuario usuarioModel, Model model) {
+	public ModelAndView perfil(Usuario usuario, Model model) { // MODEL QUANDO QUER UMA MENSAGEM E
+		// OBJETO QUANDO PRECISA DE ALGO
+		// MODELATTRIBUTE PODE SER UTILIZADO NA VIEW OU SE PASSANDO O ID ELE BUSCA NO BANCO O OBJETO
 
 		ModelAndView mv = new ModelAndView("perfil/Perfil");
+		mv.addObject("usuario", auth.getAutenticacao());
 
 		return mv;
 
 	}
 
-	@SuppressWarnings("unchecked")
 	@PostMapping
-	public ModelAndView perfilEdit(Usuario usuario, @RequestParam(value = "file") MultipartFile file) {
+	public ModelAndView perfilEdit(Usuario usuario, @RequestParam(value = "file") MultipartFile file,
+			BindingResult result, RedirectAttributes attributes, Model model) {
 
-		System.out.println(file.getName());
-		System.out.println(file.getOriginalFilename());
-		System.out.println(file.getSize());
-		System.out.println(usuario.getNome());
+		if (result.hasErrors())
+			return perfil(usuario, model);
 
-		Map<String, String> configuracao = new HashMap<>();
-		configuracao.put("cloud_name", "dznde0ht5");
-		configuracao.put("api_key", "538862271882227");
-		configuracao.put("api_secret", "UKxwkpSI-SQp2gzZ65AMzCj8Vkc");
+		usuarioServices.preenche(usuario);
 
-		Cloudinary cloudinary = new Cloudinary(configuracao);
+		UploadImage uploadImage = services.uploadImageCloudinary(file);
 
-		Map<String, String> vazio = new HashMap<>();
+		UploadImage uploadRetorno = services.insere(uploadImage, false);
 
-		Map<String, String> resultado = new HashMap<>();
+		usuario.setUploadImage(uploadRetorno);
 
-		File f = null;
-		try {
-			f = Files.createTempFile("temp", file.getOriginalFilename()).toFile();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-		try {
-			file.transferTo(f);
-		} catch (IllegalStateException e1) {
-			e1.printStackTrace();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
+		usuarioServices.atualiza(usuario, false);
 
-		try {
-			resultado = cloudinary.uploader().upload(f, vazio);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		attributes.addFlashAttribute("mensagem", "Perfil editado com sucesso.");
 
-		System.out.println(resultado);
-
-		/*
-		 * KEYSET É O CONJUNTO DE KEY, JÁ O ENTRYSET É O CONJUNTO DE KEY X VALOR
-		 * for (String strings : resultado.keySet()) {
-		 * 
-		 * }
-		 * 
-		 * resultado.keySet().forEach(action);
-		 */
-
-		return null;
+		return new ModelAndView(StringPaginasAndRedirect.PERFIL);
 	}
 
 }

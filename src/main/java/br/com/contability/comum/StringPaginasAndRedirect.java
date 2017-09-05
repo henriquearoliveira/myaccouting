@@ -5,5 +5,7 @@ public final class StringPaginasAndRedirect {
 	public final static String CATEGORIA = "redirect:/categoria";
 	
 	public final static String LOGIN = "redirect:/login";
+	
+	public final static String PERFIL = "redirect:/perfil";
 
 }
