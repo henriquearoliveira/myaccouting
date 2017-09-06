@@ -49,16 +49,10 @@ public class Usuario extends BeanIdentificavel {
 	private String nome;
 
 	@Column
-	private String enderecoImagemPerfil;
-
-	@Column
 	private boolean ativo = true;
 
 	@Column
 	private boolean administrador = true;
-
-	@Column
-	private String fotoPerfil;
 
 	//
 	@JsonIgnore
@@ -91,7 +85,6 @@ public class Usuario extends BeanIdentificavel {
 		this.setAdministrador(true);
 		this.setAtivo(ativaUsuario);
 		this.setEmail(cadastro.getEmail());
-		this.setEnderecoImagemPerfil(null);
 		this.setNome(cadastro.getNome());
 		this.setSenha(ShaPasswordEncoder.getSha512Securit(cadastro.getSenha()));
 		this.setSenhaMaster(null);
@@ -155,22 +148,6 @@ public class Usuario extends BeanIdentificavel {
 
 	public void setAdministrador(boolean administrador) {
 		this.administrador = administrador;
-	}
-
-	public String getEnderecoImagemPerfil() {
-		return enderecoImagemPerfil;
-	}
-
-	public void setEnderecoImagemPerfil(String enderecoImagemPerfil) {
-		this.enderecoImagemPerfil = enderecoImagemPerfil;
-	}
-
-	public String getFotoPerfil() {
-		return fotoPerfil;
-	}
-
-	public void setFotoPerfil(String fotoPerfil) {
-		this.fotoPerfil = fotoPerfil;
 	}
 
 	public List<Categoria> getCategorias() {

@@ -9,6 +9,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import br.com.contability.comum.AuthenticationAbstract;
 
+/**
+ * @author eliel
+ *
+ */
 @Controller
 @RequestMapping
 public class IndexResources {
@@ -19,14 +23,26 @@ public class IndexResources {
 	@GetMapping("/index")
 	public String loginSucesso(HttpSession session) {
 
-		session.setAttribute("user", auth.getAutenticacao().getEmail());
+		configuraSession(session);
 
 		return "Index";
 
 	}
 
+	/**
+	 * @param session
+	 */
+	private void configuraSession(HttpSession session) {
+		session.setAttribute("userEmail", auth.getAutenticacao().getEmail());
+		session.setAttribute("userUrl", auth.getAutenticacao().getUploadImage() == null ? null
+				: auth.getAutenticacao().getUploadImage().getUrl());
+		session.setAttribute("userDate", auth.getAutenticacao().getDataHoraCadastro());
+	}
+
 	@GetMapping()
-	public String loginPrincipal() {
+	public String loginPrincipal(HttpSession session) {
+
+		configuraSession(session);
 
 		return "Index";
 

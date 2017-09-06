@@ -61,6 +61,7 @@ public class UsuarioServices extends ServicesAbstract<Usuario, UsuarioRepository
 
 		Usuario usuarioAutenticado = auth.getAutenticacao();
 
+		usuario.setId(usuarioAutenticado.getId());
 		usuario.setSenha(usuarioAutenticado.getSenha());
 		usuario.setEmail(usuarioAutenticado.getEmail());
 		usuario.setSenhaMaster(
