@@ -11,7 +11,7 @@ $(function(){
 });
 
 
-setInterval(function() {
+/*setInterval(function() {
 	$.ajax({
 	    type: 'get',
 	    url: 'https://myaccounting.herokuapp.com/login',
@@ -20,7 +20,7 @@ setInterval(function() {
 	    error: this.myError,
 	    cache: false,
 	});
-}, 300000);
+}, 300000);*/
 
 /*setInterval(function(){
 	alert("teste");
