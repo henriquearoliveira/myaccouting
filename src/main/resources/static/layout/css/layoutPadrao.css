@@ -34,7 +34,7 @@
 	margin-bottom: 10px;
 }
 
-.modal-body {
+.modal-bodys {
 	padding: 0px;
 	
 	position:relative; /* This avoids whatever it's absolute inside of it to go off the container */
@@ -42,12 +42,12 @@
     margin-bottom: 30px;
 }
 
-.modal-header {
+.modal-headers {
 	border-bottom: none;
 	padding: 0px;	
 }
 
-.modal-content {
+.modal-contents {
     background-color: transparent;
 }
 
@@ -64,6 +64,16 @@
     display:inline-block;
     
     margin-bottom: 20px;
+}
+
+/*   */
+
+.glyphicon.glyphicon-trash {
+	color:#ff0000;
+}
+
+.glyphicon.glyphicon-trash:hover {
+	color:#f33b3b;
 }
 
 /*

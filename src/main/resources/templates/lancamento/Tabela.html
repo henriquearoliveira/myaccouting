@@ -8,6 +8,7 @@
 				<th class="text-center">Data</th>
 				<th class="text-center">Descrição</th>
 				<th class="text-center">Valor</th>
+				<th class="text-center">Ação</th>
 			</tr>
 			
 		</thead>
@@ -19,8 +20,9 @@
 				<td><a th:href="@{/lancamento/{id}(id=${lancamento.id})}" th:text="${lancamento.descricao}"></a></td>
 				<td class="col-sm-2" th:text="((${lancamento.categoria.tipoDeCategoria.name()} == 'DESPESA') ? '- ' : '') + ${'R$ ' + #numbers.formatDecimal(lancamento.valorLancamento, 0, 'POINT', 2, 'COMMA')}"></td>
 				<td class="col-xs-2 text-center">
-					<a th:href="@{/lancamento/} + ${lancamento.id}" style="padding: 6px 22px" class="btn btn-primary" role="button">Editar</a>
-					<button class="btn  btn-danger" th:id="${lancamento.id}" th:value="${lancamento.id}" type="button" data-toggle="modal" data-target="#confirmaExclusaoModal">Remover</button></td>
+					<a th:href="@{/lancamento/} + ${lancamento.id}" style="padding: 6px 10px" class="glyphicon glyphicon-edit" role="button"></a>
+					<button th:id="${lancamento.id}" th:value="${lancamento.id}" type="button" data-toggle="modal" data-target="#confirmaExclusaoModal" style="background:none;border:none;padding:0;" ><i class="glyphicon glyphicon-trash"></i></button>
+				</td>	
 			</tr>
 			
 		</tbody>

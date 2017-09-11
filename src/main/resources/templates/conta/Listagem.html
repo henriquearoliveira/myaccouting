@@ -29,23 +29,23 @@
 						<table id="tabela1" class="table table-bordered table-striped">
 							<thead>
 								<tr>
-									<th>Código</th>
-									<th>Data/Hora</th>
-									<th>Descrição</th>
-									<th>Ação</th>
+									<th class="text-center">Código</th>
+									<th class="text-center">Data/Hora</th>
+									<th class="text-center">Descrição</th>
+									<th class="text-center">Ação</th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr th:each="conta : ${contas}">
 									<td class="col-sm-1 text-center" th:text="${conta.id}"></td>
-									<td class="col-sm-2" th:text="${#temporals.format(conta.dataHoraCadastro,'dd/MM/yyyy HH:mm')}"></td>
+									<td class="col-sm-2" th:text="${#temporals.format(conta.dataHoraCadastro,'dd/MM/yyyy')}"></td> <!-- 'dd/MM/yyyy HH:mm' DATA E HORA  -->
 									<td><a th:href="@{/conta/{id}(id=${conta.id})}" th:text="${conta.descricao}"></a></td>
 									<td class="col-xs-2 text-center">
 									
-										<a th:href="@{/conta/} + ${conta.id}" style="padding: 6px 22px" class="btn btn-primary" role="button">Editar</a>
+										<a th:href="@{/conta/} + ${conta.id}" style="padding: 6px 10px" class="glyphicon glyphicon-edit" role="button"></a>
 										<!-- <a th:href="@{/categoria/remove/} + ${categoria.id}" style="padding: 6px 8px" class="btn btn-danger" role="button">Remover</a> -->
 										<!-- <a th:href="@{/categoria/remove/} + ${categoria.id}" style="padding: 6px 8px" class="btn btn-danger" role="button">Remover</a> -->
-										<button class="btn  btn-danger" th:id="${conta.id}" th:value="${conta.id}" type="button" data-toggle="modal" data-target="#confirmaExclusaoModal" >Remover</button>
+										<button th:id="${conta.id}" th:value="${conta.id}" type="button" data-toggle="modal" data-target="#confirmaExclusaoModal" style="background:none;border:none;padding:0;" ><i class="glyphicon glyphicon-trash"></i></button>
 										
 									</td>
 								</tr>
@@ -83,7 +83,7 @@
 		                  </div> 
 		                  
 		                  <div class="col-xs-3">
-		                  	<button class="btn  btn-danger pull-right" th:id="${conta.id}" th:value="${conta.id}" type="button" data-toggle="modal" data-target="#confirmaExclusaoModal" style="padding: 4px 8px;" >Remover</button>
+		                  	<button th:id="${conta.id}" th:value="${conta.id}" type="button" data-toggle="modal" data-target="#confirmaExclusaoModal" style="background:none;border:none;padding:0;" ><i class="glyphicon glyphicon-trash"></i></button>
 		                  </div>
 	                  
 	                  </div>
