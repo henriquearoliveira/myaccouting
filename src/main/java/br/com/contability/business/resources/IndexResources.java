@@ -35,7 +35,7 @@ public class IndexResources {
 	private void configuraSession(HttpSession session) {
 		session.setAttribute("userEmail", auth.getAutenticacao().getEmail());
 		session.setAttribute("userUrl", auth.getAutenticacao().getUploadImage() == null ? null
-				: auth.getAutenticacao().getUploadImage().getUrl());
+				: auth.getAutenticacao().getUploadImage().getSecureUrl());
 		session.setAttribute("userDate", auth.getAutenticacao().getDataHoraCadastro());
 	}
 
