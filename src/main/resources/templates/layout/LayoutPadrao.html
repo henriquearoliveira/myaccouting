@@ -66,8 +66,8 @@
 
 
 <!-- Morris.js charts -->
-<!-- <script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js}"></script>
-<script th:src="@{/layout/plugins/morris/morris.min.js}"></script> -->
+<script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js}"></script>
+<script th:src="@{/layout/plugins/morris/morris.min.js}"></script>
 <!-- Sparkline -->
 <script th:src="@{/layout/plugins/sparkline/jquery.sparkline.min.js}"></script>
 <!-- jvectormap -->
@@ -86,10 +86,10 @@
 <script th:src="@{/layout/plugins/fastclick/fastclick.js}"></script>
 <!-- AdminLTE App -->
 <script th:src="@{/layout/dist/js/app.min.js}"></script>
-<!-- AdminLTE dashboard demo (This is only for demo purposes) --><!-- 
+<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script th:src="@{/layout/dist/js/pages/dashboard.js}"></script>
- AdminLTE for demo purposes
-<script th:src="@{/layout/dist/js/demo.js}"></script> -->
+ <!-- AdminLTE for demo purposes -->
+<script th:src="@{/layout/dist/js/demo.js}"></script>
 <!-- Jquery Mobile -->
 <script th:src="@{/layout/javascript/jquery.mobile.custom.min.js}"></script>
 <!-- DataTables -->
@@ -101,11 +101,13 @@
 <script th:src="@{/layout/javascript/erroDivMessage.js}"></script>
 <script th:src="@{/layout/javascript/successDivMessage.js}"></script>
 
-<script th:src="@{/layout/bower_components/chart.js/Chart.min.js}"></script>
+<!-- <script th:src="@{/layout/bower_components/chart.js/Chart.min.js}"></script> -->
+
+
 
 </head>
-
-<body class="demo skin-blue sidebar-mini" id="navBarHide"> <!-- hold-transition --> 
+<!-- demo skin-blue sidebar-mini -->
+<body class="skin-blue sidebar-mini" id="navBarHide"> <!-- hold-transition --> 
 <!--[if lt IE 7]>
 <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
 <![endif]-->
@@ -497,6 +499,8 @@
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
   
+  
+  
     <!-- Content Header (Page header) -->
     <!-- <section class="content-header">
       <h1>
@@ -518,8 +522,6 @@
     <div>
 		<th:block layout:fragment="conteudo"/>
 	</div>
-	
-	
     
     <!-- 
       <div class="row">
@@ -586,6 +588,9 @@
 <!-- Pessoal -->
 <script th:src="@{/layout/javascript/layoutPadrao.js}"></script>
 <script th:src="@{/layout/javascript/funcoes.js}"></script>
+
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
 
 
 </body>

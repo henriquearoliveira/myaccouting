@@ -51,6 +51,22 @@ function reloadPage(sizeWidth){
 	
 }
 
+$(".skin-blue.sidebar-mini").click(function(){
+	$(this).removeClass('skin-blue sidebar-mini');
+	$(this).addClass('skin-blue sidebar-mini sidebar-collapse sidebar-open');
+});
+
+$(".sidebar-collapse").click(function(){
+	alert("teste");
+	$(this).removeClass('loaded skin-blue sidebar-mini sidebar-open');
+	$(this).addClass('skin-blue sidebar-mini');
+});
+
+/*$("#navBarHide").click(function(){
+	$(this).removeClass('loaded skin-blue sidebar-mini sidebar-collapse sidebar-open').addClass(
+	'skin-blue sidebar-mini loaded');
+});*/
+
 $(function() {
 	$("#valorConversao").maskMoney({prefix:'R$ ', allowNegative: true, thousands:'.', decimal:',', affixesStay: false});
 });

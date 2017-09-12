@@ -25,9 +25,27 @@ public class IndexResources {
 
 		configuraSession(session);
 
+//		teste();
+
 		return "Index";
 
 	}
+
+	/*private void teste() {
+
+		Map<String, Long> barChartData = new HashMap<>();
+		barChartData.put("Samsung", 5000L);
+		barChartData.put("Iphone", 10000L);
+		barChartData.put("MI", 2000L);
+		barChartData.put("Lava", 4000L);
+		barChartData.put("Oppo", 3560L);
+		barChartData.put("HTC", 5560L);
+
+		System.out.println(barChartData.keySet());
+		System.err.println("hahaha");
+		System.out.println(barChartData.values());
+
+	}*/
 
 	/**
 	 * @param session
@@ -35,7 +53,7 @@ public class IndexResources {
 	private void configuraSession(HttpSession session) {
 		session.setAttribute("userEmail", auth.getAutenticacao().getEmail());
 		session.setAttribute("userUrl", auth.getAutenticacao().getUploadImage() == null ? null
-				: auth.getAutenticacao().getUploadImage().getUrl());
+				: auth.getAutenticacao().getUploadImage().getSecureUrl());
 		session.setAttribute("userDate", auth.getAutenticacao().getDataHoraCadastro());
 	}
 

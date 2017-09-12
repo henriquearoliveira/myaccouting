@@ -1,10 +1,3 @@
-/*
- * Author: Abdullah A Almsaeed
- * Date: 4 Jan 2014
- * Description:
- *      This is a demo file used only for the main dashboard (index.html)
- **/
-
 $(function () {
 
   "use strict";
@@ -46,7 +39,7 @@ $(function () {
   });
 
   /* jQueryKnob */
-  $(".knob").knob();
+  /*$(".knob").knob();*/
 
   //jvectormap data
   var visitorsData = {
@@ -124,7 +117,6 @@ $(function () {
 
   /* Morris.js Charts */
   // Sales chart
-<<<<<<< HEAD
   /*var area = new Morris.Area({
 =======
   var area = new Morris.Area({
@@ -190,11 +182,8 @@ $(function () {
       {label: "Mail-Order Sales", value: 20}
     ],
     hideHover: 'auto'
-<<<<<<< HEAD
   });*/
-=======
-  });
->>>>>>> e26a122ee9dc5c68f0226a28f2329b8132d29c7c
+  /*});*/
 
   //Fix for charts under tabs
   $('.box ul.nav a').on('shown.bs.tab', function () {
