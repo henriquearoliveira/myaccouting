@@ -1,7 +1,7 @@
 $(function() {
 	setTimeout(function() {
 		$('#hideComponent').fadeOut('slow');
-	}, 7000);
+	}, 5000);
 });
 
 /*$(document).ready(*/
@@ -60,22 +60,28 @@ $(function() {
 		});
 	});
 });*/
-var tr = null;
+/*var tr = null;
 var li = null;
 $(document).ready(function(e) {
-$(".btn-danger").on("click", function(e){
-		tr = $(e.target).closest("tr");
-		li = $(e.target).closest("li");;
-	});
-});
+	$(".btn-danger").on("click", function(e){
+			tr = $(e.target).closest("tr");
+			li = $(e.target).closest("li");;
+		});
+});*/
 
 $(document).ready(function(e) {
 	$("#botaoExcluirRegistro").on("click", function(e) {
 
 		var id = $('.idValueModal').val();
+		var liSelect = 'li' + id; // PEGA O VALOR QUE TÁ NO ID DE CADA LINHA
+		var trSelect = 'tr' + id;
+		
+		var li = $("#"+liSelect); // ATRIBUI O SELETOR PARA UMA VARIÁVEL
+		
+		var tr = $("#"+trSelect);
+		
 		var endereco = "remover/";
 		
-		// teste
 		$.ajax({
 			url : endereco + id,
 			type : "DELETE",
@@ -88,16 +94,22 @@ $(document).ready(function(e) {
 			success : function() {
 
 				tr.css("background-color", "#000000");
-				tr.fadeIn(1000).fadeOut(200, function() {
+				tr.fadeIn(1000).fadeOut(500, function() {
 					tr.remove();
 				})
 				
 				li.css("backgroud-color","#000000");
-				li.fadeIn(1000).fadeOut(200,function(){
+				li.fadeIn(1000).fadeOut(500,function(){
 					li.remove();
 				})
 				
 				$('#bodyteste').append(erroDiv); // VARIÁVEL LOCALIZADA EM OUTRO ARQUIVO -> erroDivMessage.js
+				
+				$(function() {
+					setTimeout(function() {
+						$('#hideComponent').fadeOut('slow');
+					}, 5000);
+				});
 			},
 
 			error : function(e) {

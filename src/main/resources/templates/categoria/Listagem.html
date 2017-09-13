@@ -37,7 +37,7 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr th:each="categoria : ${categorias}">
+								<tr th:each="categoria : ${categorias}" th:id="tr+${categoria.id}">
 									<td th:text="${categoria.id}"></td>
 									<td><a th:href="@{/categoria/{id}(id=${categoria.id})}" th:text="${categoria.descricao}"></a></td>
 									<td th:text="${categoria.tipoDeCategoria.descricao}"></td>
@@ -77,7 +77,7 @@
 	            <div class="box-body">
 	
 	              <ul class="list-group list-group-unbordered" id="tabela1">
-	                <li class="list-group-item" th:each="categoria : ${categorias}">
+	                <li class="list-group-item" th:each="categoria : ${categorias}" th:id="li+${categoria.id}">
 	                  <div class="row">
 	                  
 		                  <div class="col-xs-9">

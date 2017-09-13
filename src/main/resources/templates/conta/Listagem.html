@@ -36,7 +36,7 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr th:each="conta : ${contas}">
+								<tr th:each="conta : ${contas}" th:id="tr+${conta.id}">
 									<td class="col-sm-1 text-center" th:text="${conta.id}"></td>
 									<td class="col-sm-2" th:text="${#temporals.format(conta.dataHoraCadastro,'dd/MM/yyyy')}"></td> <!-- 'dd/MM/yyyy HH:mm' DATA E HORA  -->
 									<td><a th:href="@{/conta/{id}(id=${conta.id})}" th:text="${conta.descricao}"></a></td>
@@ -75,7 +75,7 @@
 	            <div class="box-body">
 	
 	              <ul class="list-group list-group-unbordered" id="tabela1">
-	                <li class="list-group-item" th:each="conta : ${contas}">
+	                <li class="list-group-item" th:each="conta : ${contas}" th:id="li+${conta.id}">
 	                  <div class="row">
 	                  
 		                  <div class="col-xs-9">

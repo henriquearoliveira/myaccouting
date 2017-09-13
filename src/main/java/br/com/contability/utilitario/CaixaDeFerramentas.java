@@ -3,6 +3,7 @@ package br.com.contability.utilitario;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -25,6 +26,15 @@ public class CaixaDeFerramentas {
 		BigDecimal bigDecimal = new BigDecimal(valorFormatada);
 
 		return bigDecimal;
+	}
+
+	/**
+	 * @param date
+	 * @return
+	 */
+	public static LocalDate converteDateToLocalDate(Date date) {
+		
+		return Instant.ofEpochMilli(date.getTime()).atZone(ZoneId.systemDefault()).toLocalDate();
 	}
 
 	/**

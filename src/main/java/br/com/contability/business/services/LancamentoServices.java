@@ -2,6 +2,8 @@ package br.com.contability.business.services;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.servlet.ModelAndView;
 
 import br.com.contability.business.Lancamento;
+import br.com.contability.business.Mes;
 import br.com.contability.business.Usuario;
 import br.com.contability.business.facade.SaldoFacade;
 import br.com.contability.business.repository.LancamentoRepository;
@@ -69,10 +72,9 @@ public class LancamentoServices extends ServicesAbstract<Lancamento, LancamentoR
 	 * PERFEITAMENTE // TESTE SALDO Usuario usuario = auth.getAutenticacao();
 	 * List<Lancamento> lancamentos = lancamentoServices.getJpa()
 	 * .selecionaLancamentosPuroStream(usuario.getId(),
-	 * calendar.get(Calendar.MONTH), calendar.get(Calendar.YEAR)); Double saldo
-	 * = lancamentos.stream().mapToDouble(f ->
-	 * f.getCategoria().getTipoDeCategoria() == TipoDeCategoria.RECEITA ?
-	 * f.getValorLancamento().doubleValue() :
+	 * calendar.get(Calendar.MONTH), calendar.get(Calendar.YEAR)); Double saldo =
+	 * lancamentos.stream().mapToDouble(f -> f.getCategoria().getTipoDeCategoria()
+	 * == TipoDeCategoria.RECEITA ? f.getValorLancamento().doubleValue() :
 	 * (-f.getValorLancamento().doubleValue())).sum();
 	 * 
 	 * System.out.println(saldo);
@@ -131,6 +133,29 @@ public class LancamentoServices extends ServicesAbstract<Lancamento, LancamentoR
 		Lancamento lancamento = super.getJpa().getLancamento(usuario.getId(), lancamentoId);
 
 		return lancamento == null;
+	}
+
+	public List<String> selecionaMesesDosLancamentosAnoAtual(Usuario usuario) {
+
+		List<Date> mesesDate = super.getJpa().selecionaMesesDosLancamentosAnoAtual(usuario.getId());
+		
+		List<LocalDate> mesesLocalDate = new ArrayList<>();
+
+		converteMesesDateToLocalDate(mesesDate, mesesLocalDate);
+
+		List<String> meses = new ArrayList<>();
+
+		mesesLocalDate.forEach(m -> {
+			meses.add(Mes.getBy(m.getMonthValue()));
+		});
+
+		return meses;
+	}
+
+	private void converteMesesDateToLocalDate(List<Date> mesesDate, List<LocalDate> mesesLocalDate) {
+
+		mesesDate.forEach(m -> mesesLocalDate.add(CaixaDeFerramentas.converteDateToLocalDate(m)));
+
 	}
 
 }

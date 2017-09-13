@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
+import br.com.contability.business.services.IndexServices;
 import br.com.contability.comum.AuthenticationAbstract;
 
 /**
@@ -19,15 +21,20 @@ public class IndexResources {
 
 	@Autowired
 	private AuthenticationAbstract auth;
+	
+	@Autowired
+	private IndexServices indexServices;
 
 	@GetMapping("/index")
-	public String loginSucesso(HttpSession session) {
+	public ModelAndView loginSucesso(HttpSession session) {
 
 		configuraSession(session);
+		
+		ModelAndView mv = new ModelAndView("Index");
 
-//		teste();
+		mv.addObject("meses", indexServices.getBalanceteMeses(auth.getAutenticacao()));
 
-		return "Index";
+		return mv;
 
 	}
 

@@ -16,6 +16,18 @@
     }
 }
 
+@media screen and (max-width: 1200px) {
+    #hideWhenTwoThousand {
+        display: none !important;
+    }
+}
+
+@media screen and (max-width: 990px) {
+    #hideWhenNinetyNine {
+        display: none !important;
+    }
+}
+
 /* 100% Image Width on Smaller Screens */
 @media only screen and (max-width: 700px){
     .modalImage-content {
