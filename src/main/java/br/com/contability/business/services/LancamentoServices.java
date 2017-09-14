@@ -2,8 +2,6 @@ package br.com.contability.business.services;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +10,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.servlet.ModelAndView;
 
 import br.com.contability.business.Lancamento;
-import br.com.contability.business.Mes;
 import br.com.contability.business.Usuario;
 import br.com.contability.business.facade.SaldoFacade;
 import br.com.contability.business.repository.LancamentoRepository;
@@ -135,27 +132,10 @@ public class LancamentoServices extends ServicesAbstract<Lancamento, LancamentoR
 		return lancamento == null;
 	}
 
-	public List<String> selecionaMesesDosLancamentosAnoAtual(Usuario usuario) {
+	public List<Lancamento> selecionaLancamentosAnoAtual(Usuario usuario) {
 
-		List<Date> mesesDate = super.getJpa().selecionaMesesDosLancamentosAnoAtual(usuario.getId());
+		return super.getJpa().selecionaLancamentosAnoAtual(usuario.getId());
 		
-		List<LocalDate> mesesLocalDate = new ArrayList<>();
-
-		converteMesesDateToLocalDate(mesesDate, mesesLocalDate);
-
-		List<String> meses = new ArrayList<>();
-
-		mesesLocalDate.forEach(m -> {
-			meses.add(Mes.getBy(m.getMonthValue()));
-		});
-
-		return meses;
-	}
-
-	private void converteMesesDateToLocalDate(List<Date> mesesDate, List<LocalDate> mesesLocalDate) {
-
-		mesesDate.forEach(m -> mesesLocalDate.add(CaixaDeFerramentas.converteDateToLocalDate(m)));
-
 	}
 
 }

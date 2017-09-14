@@ -34,7 +34,10 @@ public interface LancamentoRepository extends JpaRepository<Lancamento, Long> {
 	public Lancamento getLancamento(Long idUsuario, Long idLancamento);
 
 	@Query("SELECT DISTINCT(DATE(l.dataHoraCadastro)) FROM Lancamento l WHERE l.usuario.id = ?1 AND YEAR(l.dataHoraCadastro) = YEAR(NOW())")
-	public List<Date> selecionaMesesDosLancamentosAnoAtual(Long id);
+	public List<Date> selecionaMesesDosLancamentosAnoAtual(Long idUsuario);
+
+	@Query("SELECT l FROM Lancamento l WHERE l.usuario.id = ?1 AND YEAR(l.dataHoraCadastro) = YEAR(NOW())")
+	public List<Lancamento> selecionaLancamentosAnoAtual(Long idUsuario);
 
 
 }

@@ -9,34 +9,18 @@
 	<div class="content">
 
 		<div class="row">
-
-			<!-- posso tirar caso preciso -->
-			<div class="col-lg-3 col-md-4 col-xs-6">
-				<!-- small box -->
-				<div class="small-box bg-aqua">
-					<div class="inner">
-						<h3>150</h3>
-
-						<p style="color: white;">New Orders</p>
-					</div>
-					<div class="icon">
-						<i class="fa fa-usd"></i>
-					</div>
-					<a href="#" class="small-box-footer">&nbsp; <!-- <i
-						class="fa fa-arrow-circle-right"></i> -->
-					</a>
-				</div>
-			</div>
-
+		
 			<div class="col-lg-3 col-md-4 col-xs-6">
 				<!-- small box -->
 				<div class="small-box bg-green">
 					<div class="inner">
-						<h3>
+						<h3> <span th:text="${receitasDoMes}" th:remove="tag"></span> <sup style="font-size: 20px">+</sup></h3>
+						
+						<!-- <h3>
 							53<sup style="font-size: 20px">%</sup>
-						</h3>
+						</h3> -->
 
-						<p style="color: white;">Bounce Rate</p>
+						<p style="color: white;" th:text="${#temporals.format(#temporals.createNow(), 'MMMM')}">Mês</p>
 					</div>
 					<div class="icon">
 						<i class="ion ion-stats-bars"></i>
@@ -46,34 +30,14 @@
 					</a>
 				</div>
 			</div>
-
-
-
-			<div id="hideWhenNinetyNine" class="col-lg-3 col-md-4 col-xs-6">
-				<!-- small box -->
-				<div class="small-box bg-yellow">
-					<div class="inner">
-						<h3>44</h3>
-
-						<p style="color: white;">User Registrations</p>
-					</div>
-					<div class="icon">
-						<i class="ion ion-person-add"></i>
-					</div>
-					<a href="#" class="small-box-footer">&nbsp; <!-- <i
-						class="fa fa-arrow-circle-right"></i> -->
-					</a>
-				</div>
-			</div>
-
-
-			<div id="hideWhenTwoThousand" class="col-lg-3 col-xs-6">
+			
+			<div  class="col-lg-3 col-md-4 col-xs-6">
 				<!-- small box -->
 				<div class="small-box bg-red">
 					<div class="inner">
-						<h3>65</h3>
+						<h3> <span th:text="${despesasDoMes}" th:remove="tag"></span> <sup style="font-size: 20px">-</sup></h3>
 
-						<p style="color: white;">Unique Visitors</p>
+						<p style="color: white;" th:text="${#temporals.format(#temporals.createNow(), 'MMMM')}">Mês</p>
 					</div>
 					<div class="icon">
 						<i class="ion ion-pie-graph"></i>
@@ -84,6 +48,39 @@
 				</div>
 			</div>
 
+			<div id="hideWhenNinetyNine" class="col-lg-3 col-md-4 col-xs-6">
+				<!-- small box -->
+				<div class="small-box bg-aqua">
+					<div class="inner">
+						<h3> <span th:text="${saldoDoMes}" th:remove="tag"></span> <sup style="font-size: 20px">=</sup></h3>
+
+						<p style="color: white;" th:text="${#temporals.format(#temporals.createNow(), 'MMMM')}">Mês</p>
+					</div>
+					<div class="icon">
+						<i class="fa fa-usd"></i>
+					</div>
+					<a href="#" class="small-box-footer">&nbsp; <!-- <i
+						class="fa fa-arrow-circle-right"></i> -->
+					</a>
+				</div>
+			</div>
+
+			<div id="hideWhenTwoThousand" class="col-lg-3 col-md-4 col-xs-6">
+				<!-- small box -->
+				<div class="small-box bg-yellow">
+					<div class="inner">
+						<h3 th:text="${contas}"></h3>
+
+						<p style="color: white;">Nº Contas</p>
+					</div>
+					<div class="icon">
+						<i class="ion ion-person-add"></i>
+					</div>
+					<a href="#" class="small-box-footer">&nbsp; <!-- <i
+						class="fa fa-arrow-circle-right"></i> -->
+					</a>
+				</div>
+			</div>
 
 		</div>
 
@@ -138,12 +135,12 @@
 								},
 								series : [ {
 									name : 'Receita',
-									data : [ 400, 356]
+									data : [[${receitas}]]
 								// [4000, 3560, 5560, 10000, 5000, 2000]
 
 								}, {
 									name : 'Despesa',
-									data : [ 400, 356]
+									data : [[${despesas}]]
 								} ]
 							});
 		});

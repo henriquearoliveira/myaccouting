@@ -91,4 +91,9 @@ public class ContaServices extends ServicesAbstract<Conta, ContaRepository> {
 		return super.getJpa().getPeloLancamento(idLancamento);
 	}
 
+	public Integer selecionaNumeroContasDo(Usuario usuario) {
+		
+		return super.getJpa().selecionaNumeroContasDo(usuario.getId());
+	}
+
 }
