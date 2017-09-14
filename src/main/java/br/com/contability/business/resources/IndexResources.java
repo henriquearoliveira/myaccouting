@@ -30,8 +30,15 @@ public class IndexResources {
 
 		configuraSession(session);
 		
-		ModelAndView mv = new ModelAndView("Index");
+		return alimentaPaginaInicial();
 
+
+	}
+
+	private ModelAndView alimentaPaginaInicial() {
+		
+		ModelAndView mv = new ModelAndView("Index");
+		
 		mv.addObject("meses", indexServices.getBalanceteMeses(auth.getAutenticacao()));
 		mv.addObject("receitas", indexServices.getBalanceteReceitas());
 		mv.addObject("despesas", indexServices.getBalanceteDespesas());
@@ -41,7 +48,6 @@ public class IndexResources {
 		mv.addObject("contas", indexServices.getContas(auth.getAutenticacao()));
 		
 		return mv;
-
 	}
 
 	/*private void teste() {
@@ -71,11 +77,11 @@ public class IndexResources {
 	}
 
 	@GetMapping()
-	public String loginPrincipal(HttpSession session) {
+	public ModelAndView loginPrincipal(HttpSession session) {
 
 		configuraSession(session);
-
-		return "Index";
+		
+		return alimentaPaginaInicial();
 
 	}
 
