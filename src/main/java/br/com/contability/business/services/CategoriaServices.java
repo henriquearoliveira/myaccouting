@@ -3,8 +3,8 @@ package br.com.contability.business.services;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 import org.springframework.web.servlet.ModelAndView;
 
 import br.com.contability.business.Categoria;
@@ -17,20 +17,20 @@ import br.com.contability.exceptions.ObjetoInexistenteExceptionMessage;
 @Service
 public class CategoriaServices extends ServicesAbstract<Categoria, CategoriaRepository> {
 	
+	@Autowired
+	private TrataParametrosServices parametroServices;
+	
 	/**
-	 * @param model
 	 * @param id
 	 * @param mv
 	 * @param usuario
 	 * @return
 	 */
-	public ModelAndView getCategoria(Model model, Optional<Long> id, ModelAndView mv, Usuario usuario) {
+	public ModelAndView getCategoria(Object id, ModelAndView mv, Usuario usuario) {
 		
-		id.orElseThrow(() -> new ObjetoInexistenteExceptionMessage("/categoria", "Código inválido"));
+		Long idCategoria = parametroServices.trataParametroLong(id);
 		
-		Optional<Categoria> categoria = null;
-		
-		categoria = super.getJpa().getCategorias(id.get(), usuario.getId());
+		Optional<Categoria> categoria = super.getJpa().getCategorias(idCategoria, usuario.getId());
 
 		categoria.orElseThrow(() -> new ObjetoInexistenteExceptionMessage("/categoria", "Categoria não encontrada"));
 		

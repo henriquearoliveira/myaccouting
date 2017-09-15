@@ -1,7 +1,6 @@
 package br.com.contability.business.resources;
 
 import java.util.List;
-import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -48,15 +47,14 @@ public class CategoriaResources {
 		return mv;
 	}
 	
-	@GetMapping("/{id}")
-	public ModelAndView get(Model model, Categoria categoria, @PathVariable Long id) { // tem que haver no método para ele mapear depois
+	@GetMapping("/{idCategoria}")
+	public ModelAndView get(Model model, Categoria categoria, @PathVariable Object idCategoria) { // tem que haver no método para ele mapear depois
 		ModelConstruct.setAttributes(model,"activeLi", "activeNovo");
-		Optional<Long> idLong = Optional.ofNullable(id);
 		
 		Usuario usuario = auth.getAutenticacao();
 		
 		ModelAndView mv = new ModelAndView("categoria/Categoria");
-		return categoriaServices.getCategoria(model, idLong, mv, usuario);
+		return categoriaServices.getCategoria(idCategoria, mv, usuario);
 		
 	}
 

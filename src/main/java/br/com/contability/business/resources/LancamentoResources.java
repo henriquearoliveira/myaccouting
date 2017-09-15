@@ -10,11 +10,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -26,6 +28,7 @@ import br.com.contability.business.services.LancamentoServices;
 import br.com.contability.business.services.SaldoServices;
 import br.com.contability.comum.AuthenticationAbstract;
 import br.com.contability.comum.ModelConstruct;
+import br.com.contability.comum.StringPaginasAndRedirect;
 import br.com.contability.utilitario.CaixaDeFerramentas;
 
 @Controller
@@ -61,15 +64,16 @@ public class LancamentoResources {
 
 	}
 
-	@GetMapping("/{id}")
-	public ModelAndView get(@PathVariable Long id, Model model) {
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+	@GetMapping("/{idLancamento}")
+	public ModelAndView get(@PathVariable Object idLancamento, Model model) {
 		ModelConstruct.setAttributes(model, "activeLiLancamento", "activeNovo");
 
 		Usuario usuario = auth.getAutenticacao();
-
+		
 		ModelAndView mv = new ModelAndView("lancamento/Lancamento");
 
-		return lancamentoServices.getLancamento(usuario, mv, id, model);
+		return lancamentoServices.getLancamento(usuario, mv, idLancamento);
 
 	}
 
@@ -84,7 +88,7 @@ public class LancamentoResources {
 		lancamentoServices.grava(lancamento, usuario);
 
 		attributes.addFlashAttribute("mensagem", "Lancamento gravado com sucesso");
-		return new ModelAndView("redirect:/lancamento");
+		return new ModelAndView(StringPaginasAndRedirect.LANCAMENTO);
 	}
 
 	@GetMapping("/lista")

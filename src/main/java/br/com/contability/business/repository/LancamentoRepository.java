@@ -3,6 +3,7 @@ package br.com.contability.business.repository;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -31,7 +32,7 @@ public interface LancamentoRepository extends JpaRepository<Lancamento, Long> {
 	public List<Lancamento> selecionaLancamentosPuroStream(Long id, int month, int year);
 	
 	@Query("SELECT l FROM Lancamento l WHERE l.usuario.id = ?1 AND l.id = ?2")
-	public Lancamento getLancamento(Long idUsuario, Long idLancamento);
+	public Optional<Lancamento> getLancamento(Long idUsuario, Long idLancamento);
 
 	@Query("SELECT DISTINCT(DATE(l.dataHoraCadastro)) FROM Lancamento l WHERE l.usuario.id = ?1 AND YEAR(l.dataHoraCadastro) = YEAR(NOW())")
 	public List<Date> selecionaMesesDosLancamentosAnoAtual(Long idUsuario);

@@ -22,6 +22,7 @@ import br.com.contability.business.Usuario;
 import br.com.contability.business.services.ContaServices;
 import br.com.contability.comum.AuthenticationAbstract;
 import br.com.contability.comum.ModelConstruct;
+import br.com.contability.comum.StringPaginasAndRedirect;
 
 @Controller
 @RequestMapping("/conta")
@@ -43,15 +44,15 @@ public class ContaResources {
 		return mv;
 	}
 	
-	@GetMapping("/{id}")
-	public ModelAndView get(@PathVariable Long id, Model model, Conta conta){
+	@GetMapping("/{idConta}")
+	public ModelAndView get(@PathVariable Object idConta, Model model, Conta conta){
 		ModelConstruct.setAttributes(model, "activeLiConta", "activeNovo");
 		
 		Usuario usuario = auth.getAutenticacao();
 		
 		ModelAndView mv = new ModelAndView("conta/Conta");
 		
-		return contaServices.getConta(usuario, mv, id, model);
+		return contaServices.getConta(usuario, mv, idConta);
 		
 	}
 	
@@ -65,7 +66,7 @@ public class ContaResources {
 		contaServices.gravaConta(usuario, conta);
 		
 		attributes.addFlashAttribute("mensagem", "Conta salva com sucesso");
-		return new ModelAndView("redirect:/conta");
+		return new ModelAndView(StringPaginasAndRedirect.CONTA);
 	}
 	
 	@GetMapping("lista")

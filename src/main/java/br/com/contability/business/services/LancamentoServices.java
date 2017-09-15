@@ -3,10 +3,10 @@ package br.com.contability.business.services;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 import org.springframework.web.servlet.ModelAndView;
 
 import br.com.contability.business.Lancamento;
@@ -16,6 +16,7 @@ import br.com.contability.business.repository.LancamentoRepository;
 import br.com.contability.comum.IServices;
 import br.com.contability.comum.ServicesAbstract;
 import br.com.contability.exceptions.ObjetoInexistenteException;
+import br.com.contability.exceptions.ObjetoInexistenteExceptionMessage;
 import br.com.contability.utilitario.CaixaDeFerramentas;
 
 @Service
@@ -30,6 +31,9 @@ public class LancamentoServices extends ServicesAbstract<Lancamento, LancamentoR
 
 	@Autowired
 	private SaldoFacade saldoFacade;
+	
+	@Autowired
+	private TrataParametrosServices parametroServices;
 
 	/**
 	 * @param lancamento
@@ -84,26 +88,19 @@ public class LancamentoServices extends ServicesAbstract<Lancamento, LancamentoR
 	 * @param model
 	 * @return mv
 	 */
-	public ModelAndView getLancamento(Usuario usuario, ModelAndView mv, Long idLancamento, Model model) {
+	public ModelAndView getLancamento(Usuario usuario, ModelAndView mv, Object id) {
+		
+		Long idLancamento = parametroServices.trataParametroLong(id);
+		
+		Optional<Lancamento> lancamento = super.getJpa().getLancamento(usuario.getId(), idLancamento);
 
-		if (idLancamento == 0 || idLancamento == null)
-			model.addAttribute("erro", "Identificador incorreto");
+		lancamento.orElseThrow(() -> new ObjetoInexistenteExceptionMessage("/lancamento", "Lançamento não encontrado"));
 
-		Lancamento lancamento = null;
+		lancamento.get().setValorConversao(lancamento.get().getValorLancamento().toString());
 
-		lancamento = super.getJpa().getLancamento(usuario.getId(), idLancamento);
-
-		if (lancamento == null) {
-			model.addAttribute("erro", "Impossível encontrar o lancamento desejado");
-			return mv;
-		}
-
-		lancamento.setValorConversao(lancamento.getValorLancamento().toString());
-
-		model.addAttribute("lancamento", lancamento);
-
-		mv.addObject("categorias", categoriaServices.getPeloLancamento(lancamento.getId()));
-		mv.addObject("contas", contaServices.getPeloLancamento(lancamento.getId()));
+		mv.addObject("lancamento", lancamento.get());
+		mv.addObject("categorias", categoriaServices.getPeloLancamento(lancamento.get().getId()));
+		mv.addObject("contas", contaServices.getPeloLancamento(lancamento.get().getId()));
 
 		return mv;
 
@@ -127,9 +124,9 @@ public class LancamentoServices extends ServicesAbstract<Lancamento, LancamentoR
 
 	private boolean confirmaVinculo(Usuario usuario, Long lancamentoId) {
 
-		Lancamento lancamento = super.getJpa().getLancamento(usuario.getId(), lancamentoId);
+		Optional<Lancamento> lancamento = super.getJpa().getLancamento(usuario.getId(), lancamentoId);
 
-		return lancamento == null;
+		return !lancamento.isPresent();
 	}
 
 	public List<Lancamento> selecionaLancamentosAnoAtual(Usuario usuario) {

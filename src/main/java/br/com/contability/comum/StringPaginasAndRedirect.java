@@ -7,5 +7,9 @@ public final class StringPaginasAndRedirect {
 	public final static String LOGIN = "redirect:/login";
 	
 	public final static String PERFIL = "redirect:/perfil";
+	
+	public final static String CONTA = "redirect:/conta";
+
+	public static final String LANCAMENTO = "redirect:/lancamento";
 
 }
