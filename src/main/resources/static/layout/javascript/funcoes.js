@@ -200,6 +200,70 @@ function enviaDataPost(){
 	});*/
 }
 
+/* DECIDE SE NECESSÁRIO EXIBIR IS_PAGO -------- MOVIDO PARA ARQUIVO SEPARADO */
+/*$(document).ready(function() {
+	
+	var idCategoria = $("#cat").val();
+	
+	desabilitaChecked(idCategoria);
+	
+});
+
+$("#cat").on("change",function(){
+	
+	var idCategoria = $(this).val();
+	
+	desabilitaChecked(idCategoria);
+
+});
+
+function desabilitaChecked(idCategoria) {
+	
+	var endereco = "/categoria/json/";
+	
+	$.ajax({
+		url : endereco + idCategoria,
+		type : "GET",
+
+		beforeSend : function(xhr) {
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json"); TIREI DEVIDO ESTAR RETORNANDO APENAS UMA STRING
+		},
+
+		success : function(data) {
+
+			checked(data);
+			
+		},
+
+		error : function(e) {
+
+			$('#bodyteste').append(erroDiv); // VARIÁVEL LOCALIZADA EM OUTRO ARQUIVO -> erroDivMessage.js
+
+		}
+		
+	});
+}
+
+function checked(resposta){
+	
+	alert("aqui");
+	console.log(resposta);
+	
+	if (resposta == 'DESPESA') {
+		$('#valorPago').show('slow');
+	} else {
+		$('#valorPago').hide('slow');
+	}
+}*/
+
+/*function getValueSelected () {
+	
+	var valor = ('#conta : selected').text();
+	
+	alert(valor);
+}*/
+
 /*$(function(){
 	var teste = $('#inputMonthYear').val();
 	

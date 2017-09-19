@@ -55,7 +55,7 @@ public class ContaServices extends ServicesAbstract<Conta, ContaRepository> {
 	 */
 	public ModelAndView getConta(Usuario usuario, ModelAndView mv, Object id) {
 		
-		Long idConta = parametroServices.trataParametroLong(id);
+		Long idConta = parametroServices.trataParametroLong(id, "/conta");
 		
 		Optional<Conta> conta = super.getJpa().getConta(usuario.getId(), idConta);
 

@@ -5,6 +5,7 @@
 		<thead>
 		
 			<tr>
+				<th class="text-center">Pago</th>
 				<th class="text-center">Data</th>
 				<th class="text-center">Descrição</th>
 				<th class="text-center">Valor</th>
@@ -16,6 +17,12 @@
 		<tbody>
 		
 			<tr th:each="lancamento : ${lancamentos}" th:id="tr+${lancamento.id}">
+				<td class="col-sm-1 text-center">
+	                <label class="custom-control custom-checkbox" th:if="${lancamento.categoria.tipoDeCategoria.name()} == 'DESPESA'" >
+	                    <input type="checkbox" class="custom-control-input" style="display: none;" th:checked="${lancamento.pago}" onclick="return false;"/>
+	                    <span class="custom-control-indicator"></span>
+	                </label>
+                </td>
 				<td class="col-sm-2 text-center" th:text="${#temporals.format(lancamento.dataHoraLancamento,'dd/MM/yyyy')}"></td>
 				<td><a th:href="@{/lancamento/{id}(id=${lancamento.id})}" th:text="${lancamento.descricao}"></a></td>
 				<td class="col-sm-2" th:text="((${lancamento.categoria.tipoDeCategoria.name()} == 'DESPESA') ? '- ' : '') + ${'R$ ' + #numbers.formatDecimal(lancamento.valorLancamento, 0, 'POINT', 2, 'COMMA')}"></td>

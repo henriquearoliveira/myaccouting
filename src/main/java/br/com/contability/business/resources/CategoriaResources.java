@@ -57,6 +57,15 @@ public class CategoriaResources {
 		return categoriaServices.getCategoria(idCategoria, mv, usuario);
 		
 	}
+	
+	@GetMapping("/json/{idCategoria}")
+	public ResponseEntity<String> get(@PathVariable Object idCategoria) {
+		
+		Usuario usuario = auth.getAutenticacao();
+		
+		return ResponseEntity.ok(categoriaServices.get(idCategoria, usuario));
+		
+	}
 
 	@PostMapping
 	public ModelAndView salvar(@Valid Categoria categoria, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {

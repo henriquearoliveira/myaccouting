@@ -10,13 +10,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -64,7 +62,6 @@ public class LancamentoResources {
 
 	}
 
-    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
 	@GetMapping("/{idLancamento}")
 	public ModelAndView get(@PathVariable Object idLancamento, Model model) {
 		ModelConstruct.setAttributes(model, "activeLiLancamento", "activeNovo");
@@ -80,10 +77,13 @@ public class LancamentoResources {
 	@PostMapping
 	public ModelAndView salvar(@Valid Lancamento lancamento, BindingResult result, RedirectAttributes attributes,
 			Model model) {
+		
 		Usuario usuario = auth.getAutenticacao();
 		
 		if (result.hasErrors())
 			return novo(model, lancamento);
+		
+		System.out.println(lancamento.isPago());
 
 		lancamentoServices.grava(lancamento, usuario);
 

@@ -90,7 +90,7 @@ public class LancamentoServices extends ServicesAbstract<Lancamento, LancamentoR
 	 */
 	public ModelAndView getLancamento(Usuario usuario, ModelAndView mv, Object id) {
 		
-		Long idLancamento = parametroServices.trataParametroLong(id);
+		Long idLancamento = parametroServices.trataParametroLong(id, "/lancamento");
 		
 		Optional<Lancamento> lancamento = super.getJpa().getLancamento(usuario.getId(), idLancamento);
 

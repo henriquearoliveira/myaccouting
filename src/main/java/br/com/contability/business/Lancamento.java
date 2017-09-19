@@ -46,8 +46,11 @@ public class Lancamento extends BeanIdentificavel {
 	@Transient
 	private String valorConversao;
 	
-	@Column(nullable = true)
+	@Column
 	private BigDecimal valorLancamento;
+	
+	@Column
+	private boolean pago;
 
 	public Usuario getUsuario() {
 		return usuario;
@@ -103,6 +106,14 @@ public class Lancamento extends BeanIdentificavel {
 	
 	public void setValorConversao(String valorConversao) {
 		this.valorConversao = valorConversao;
+	}
+	
+	public boolean isPago() {
+		return pago;
+	}
+	
+	public void setPago(boolean pago) {
+		this.pago = pago;
 	}
 	
 }

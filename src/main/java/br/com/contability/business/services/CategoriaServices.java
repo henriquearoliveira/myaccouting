@@ -28,7 +28,7 @@ public class CategoriaServices extends ServicesAbstract<Categoria, CategoriaRepo
 	 */
 	public ModelAndView getCategoria(Object id, ModelAndView mv, Usuario usuario) {
 		
-		Long idCategoria = parametroServices.trataParametroLong(id);
+		Long idCategoria = parametroServices.trataParametroLong(id, "/categoria");
 		
 		Optional<Categoria> categoria = super.getJpa().getCategorias(idCategoria, usuario.getId());
 
@@ -103,6 +103,19 @@ public class CategoriaServices extends ServicesAbstract<Categoria, CategoriaRepo
 	 */
 	public Categoria getPeloLancamento(Long idLancamento) {
 		return super.getJpa().getPeloLancamento(idLancamento);
+	}
+	
+	/* ----------------- API ------------------- */
+	
+	public String get(Object id, Usuario usuario) {
+		
+		Long idCategoria = parametroServices.trataParametroLongAPI(id);
+		
+		Optional<Categoria> categoria = super.getJpa().getCategorias(idCategoria, usuario.getId());
+		
+		categoria.orElseThrow(() -> new ObjetoInexistenteException("Categoria inexistente"));
+		
+		return categoria.get().getTipoDeCategoria().name();
 	}
 
 }
