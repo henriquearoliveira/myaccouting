@@ -19,12 +19,21 @@ public class SaldoServices extends ServicesAbstract<Saldo, SaldoRepository> impl
 	 * @return
 	 */
 	public Object getSaldoDo(Usuario usuario, LocalDate localDate) {
-		
-		BigDecimal saldoUsuario = super.getJpa().getSaldoDo(usuario.getId(), localDate.getMonthValue(), localDate.getYear());
-		
+
+		BigDecimal saldoUsuario = super.getJpa().getSaldoDo(usuario.getId(), localDate.getMonthValue(),
+				localDate.getYear());
+
 		return saldoUsuario;
 	}
 
+	public Object getSaldoProvavelDo(Usuario usuario, LocalDate localDate) {
+
+		BigDecimal saldoUsuario = super.getJpa().getSaldoProvavelDo(usuario.getId(), localDate.getMonthValue(),
+				localDate.getYear());
+
+		return saldoUsuario;
+	}
+	
 	public Saldo getSaldo(Long idUsuario, LocalDate localDate) {
 		return super.getJpa().getSaldo(idUsuario, localDate.getMonthValue(), localDate.getYear());
 	}

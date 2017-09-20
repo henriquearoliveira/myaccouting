@@ -67,6 +67,15 @@ public class LancamentoServices extends ServicesAbstract<Lancamento, LancamentoR
 	public BigDecimal getSaldo(Usuario usuario, LocalDate localDate) {
 		return super.getJpa().getSaldo(usuario.getId(), localDate.getMonthValue(), localDate.getYear());
 	}
+	
+	/**
+	 * @param usuario
+	 * @param localDate
+	 * @return
+	 */
+	public BigDecimal getSaldoProvavel(Usuario usuario, LocalDate localDate) {
+		return super.getJpa().getSaldoProvavel(usuario.getId(), localDate.getMonthValue(), localDate.getYear());
+	}
 
 	/*
 	 * FAZENDO COM STREAM (PARTICULAMENTE ACHO MUITA COISA KKKKK) FUNCIONA

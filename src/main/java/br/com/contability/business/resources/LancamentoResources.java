@@ -83,8 +83,6 @@ public class LancamentoResources {
 		if (result.hasErrors())
 			return novo(model, lancamento);
 		
-		System.out.println(lancamento.isPago());
-
 		lancamentoServices.grava(lancamento, usuario);
 
 		attributes.addFlashAttribute("mensagem", "Lancamento gravado com sucesso");
@@ -112,6 +110,7 @@ public class LancamentoResources {
 
 		model.addAttribute("lancamentos", lancamentoServices.seleciona(usuario, localDate));
 		model.addAttribute("saldo", saldoServices.getSaldoDo(usuario, localDate));
+		model.addAttribute("saldoProvavel", saldoServices.getSaldoProvavelDo(usuario, localDate));
 		
 		return mobile == null ? "lancamento/Tabela :: tabelaLancamento"
 				: "lancamento/TabelaMobile :: tabelaLancamentoMobile";

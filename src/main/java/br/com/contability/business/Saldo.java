@@ -27,6 +27,9 @@ public class Saldo extends BeanIdentificavel {
 	private BigDecimal saldoAtual;
 	
 	@Column(nullable = true)
+	private BigDecimal saldoProvavel;
+	
+	@Column(nullable = true)
 	@DateTimeFormat(pattern="dd/MM/yyyy")
 	private LocalDateTime dataHoraLancamento;
 
@@ -52,6 +55,14 @@ public class Saldo extends BeanIdentificavel {
 
 	public void setDataHoraLancamento(LocalDateTime dataHoraLancamento) {
 		this.dataHoraLancamento = dataHoraLancamento;
+	}
+	
+	public BigDecimal getSaldoProvavel() {
+		return saldoProvavel;
+	}
+	
+	public void setSaldoProvavel(BigDecimal saldoProvavel) {
+		this.saldoProvavel = saldoProvavel;
 	}
 	
 }

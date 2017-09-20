@@ -29,6 +29,8 @@ public class SaldoFacade {
 		
 		BigDecimal saldoValor = lancamentoServices.getSaldo(usuario, lancamento.getDataHoraLancamento());
 		
+		BigDecimal saldoValorProvavel = lancamentoServices.getSaldoProvavel(usuario, lancamento.getDataHoraLancamento());
+
 		Saldo saldo = saldoServices.getSaldo(usuario.getId(), lancamento.getDataHoraLancamento());
 		
 		if (saldo == null){
@@ -37,11 +39,15 @@ public class SaldoFacade {
 			saldo.setDataHoraCadastro(LocalDateTime.now());
 			saldo.setDataHoraLancamento(LocalDateTime.now());
 			saldo.setSaldoAtual(saldoValor);
+			saldo.setSaldoProvavel(saldoValorProvavel);
 			saldo.setUsuario(usuario);
 			
 			saldoServices.insere(saldo, null);
+			
 		} else
+			
 			saldo.setSaldoAtual(saldoValor);
+			saldo.setSaldoProvavel(saldoValorProvavel);
 			saldoServices.atualiza(saldo, null);
 		
 	}
