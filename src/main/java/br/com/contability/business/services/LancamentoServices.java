@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 
 import br.com.contability.business.Lancamento;
+import br.com.contability.business.TipoDeCategoria;
 import br.com.contability.business.Usuario;
 import br.com.contability.business.facade.SaldoFacade;
 import br.com.contability.business.repository.LancamentoRepository;
@@ -44,12 +45,81 @@ public class LancamentoServices extends ServicesAbstract<Lancamento, LancamentoR
 		lancamento.setUsuario(usuario);
 		BigDecimal bigDecimal = CaixaDeFerramentas.converteStringToBidDecimal(lancamento.getValorConversao());
 		lancamento.setValorLancamento(bigDecimal);
+		
+		if (lancamento.getCategoria().getTipoDeCategoria() == TipoDeCategoria.DESPESA && lancamento.isParcelado()) {
+			
+			insereLancamentoParcelado(lancamento, usuario);
+			
+		} else {
 
-		if (super.insere(lancamento, null) != null)
-			saldoFacade.atualizaSaldoUsuario(usuario, lancamento);
+			lancamento.setParcelado(false);
+			lancamento.setParcelas(null);
+			lancamento.setDataHoraVencimento(null);
+			insereLancamento(usuario, lancamento);
+			
+		}
 
 	}
 
+	/**
+	 * @param lancamento
+	 * @param usuario
+	 */
+	private void insereLancamentoParcelado(Lancamento lancamento, Usuario usuario) {
+		
+		int quantidadeParcelas = lancamento.getParcelas();
+		
+		for (int i = 1; i <= quantidadeParcelas; i++) {
+			
+			Lancamento lancamentoParcela = clonaLancamento(lancamento);
+			
+			LocalDate dataLancamento = lancamentoParcela.getDataHoraLancamento();
+			LocalDate dataVencimento = lancamentoParcela.getDataHoraVencimento();
+			
+			LocalDate dataLancamentoPlus = dataLancamento.plusMonths(i);
+			LocalDate dataVencimentoPlus = dataVencimento.plusMonths(i);
+			
+			
+			
+			lancamentoParcela.setParcelas(i);
+			lancamentoParcela.setDataHoraLancamento(dataLancamentoPlus);
+			lancamentoParcela.setDataHoraVencimento(dataVencimentoPlus);
+			
+			insereLancamento(usuario, lancamentoParcela);
+			
+		}
+	}
+
+	private void insereLancamento(Usuario usuario, Lancamento lancamento) {
+		
+		if (super.insere(lancamento, null) != null)
+			saldoFacade.atualizaSaldoUsuario(usuario, lancamento);
+		
+	}
+
+	private Lancamento clonaLancamento(Lancamento lancamento) {
+		
+		Lancamento lancamentoClone = new Lancamento();
+		lancamentoClone.setUsuario(lancamento.getUsuario());
+		lancamentoClone.setCategoria(lancamento.getCategoria() == null ? null : lancamento.getCategoria());
+		lancamentoClone.setConta(lancamento.getConta() == null ? null : lancamento.getConta());
+		lancamentoClone.setDescricao(lancamento.getDescricao());
+		
+		lancamentoClone.setDataHoraCadastro(lancamento.getDataHoraCadastro() == null ? null : lancamento.getDataHoraCadastro());
+		lancamentoClone.setDataHoraAtualizacao(lancamento.getDataHoraAtualizacao() == null ? null : lancamento.getDataHoraAtualizacao());
+		lancamentoClone.setDataHoraVencimento(lancamento.getDataHoraVencimento() == null ? null : lancamento.getDataHoraVencimento());
+		lancamentoClone.setDataHoraLancamento(lancamento.getDataHoraLancamento() == null ? null : lancamento.getDataHoraLancamento());
+		
+		lancamentoClone.setValorLancamento(lancamento.getValorLancamento());
+		lancamentoClone.setPago(lancamento.isPago());
+		lancamentoClone.setParcelado(lancamento.isParcelado());
+		
+		System.out.println("id: " + lancamentoClone.getId());
+		
+		return lancamentoClone;
+	}
+	
+	
 	/**
 	 * @param usuario
 	 * @param calendar

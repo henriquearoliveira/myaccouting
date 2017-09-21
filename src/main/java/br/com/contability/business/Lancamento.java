@@ -51,6 +51,16 @@ public class Lancamento extends BeanIdentificavel {
 	
 	@Column
 	private boolean pago;
+	
+	@Column
+	private boolean parcelado;
+	
+	@Column
+	private Integer parcelas;
+	
+	@Column(nullable = true)
+	@DateTimeFormat(pattern="yyyy-MM-dd")
+	private LocalDate dataHoraVencimento;
 
 	public Usuario getUsuario() {
 		return usuario;
@@ -114,6 +124,30 @@ public class Lancamento extends BeanIdentificavel {
 	
 	public void setPago(boolean pago) {
 		this.pago = pago;
+	}
+	
+	public boolean isParcelado() {
+		return parcelado;
+	}
+	
+	public void setParcelado(boolean parcelado) {
+		this.parcelado = parcelado;
+	}
+	
+	public Integer getParcelas() {
+		return parcelas;
+	}
+	
+	public void setParcelas(Integer parcelas) {
+		this.parcelas = parcelas;
+	}
+	
+	public LocalDate getDataHoraVencimento() {
+		return dataHoraVencimento;
+	}
+	
+	public void setDataHoraVencimento(LocalDate dataHoraVencimento) {
+		this.dataHoraVencimento = dataHoraVencimento;
 	}
 	
 }

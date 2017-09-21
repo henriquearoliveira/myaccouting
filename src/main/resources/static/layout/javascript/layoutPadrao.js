@@ -83,6 +83,12 @@ $("#dataHoraLancamento").datepicker({
 	autoclose : true
 });
 
+$("#dataHoraVencimento").datepicker({
+	format : 'yyyy-mm-dd',
+	forceParse : false,
+	autoclose : true
+});
+
 // Month And Year Listagem Lancamento
 $('#monthYearListagem').datepicker({
 	format : 'MM yyyy',

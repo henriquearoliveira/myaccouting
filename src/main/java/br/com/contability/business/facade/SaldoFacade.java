@@ -2,6 +2,7 @@ package br.com.contability.business.facade;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -33,11 +34,14 @@ public class SaldoFacade {
 
 		Saldo saldo = saldoServices.getSaldo(usuario.getId(), lancamento.getDataHoraLancamento());
 		
+		LocalDateTime dataHoraCadastro = LocalDateTime.of(lancamento.getDataHoraLancamento(), LocalTime.now());
+		LocalDateTime dataHoraLancamento = LocalDateTime.of(lancamento.getDataHoraLancamento(), LocalTime.now());
+		
 		if (saldo == null){
 			
 			saldo = new Saldo();
-			saldo.setDataHoraCadastro(LocalDateTime.now());
-			saldo.setDataHoraLancamento(LocalDateTime.now());
+			saldo.setDataHoraCadastro(dataHoraCadastro);
+			saldo.setDataHoraLancamento(dataHoraLancamento);
 			saldo.setSaldoAtual(saldoValor);
 			saldo.setSaldoProvavel(saldoValorProvavel);
 			saldo.setUsuario(usuario);

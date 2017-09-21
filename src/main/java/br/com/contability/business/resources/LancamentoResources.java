@@ -53,7 +53,7 @@ public class LancamentoResources {
 		ModelConstruct.setAttributes(model, "activeLiLancamento", "activeNovo");
 		
 		Usuario usuario = auth.getAutenticacao();
-
+		
 		ModelAndView mv = new ModelAndView("lancamento/Lancamento");
 		mv.addObject("categorias", categoriaServices.seleciona(usuario));
 		mv.addObject("contas", contaServices.seleciona(usuario));

@@ -58,7 +58,7 @@
 					            <!-- date -->
 					            <div class="col-md-4">
 				              		<div class="form-group">
-				                	<label>Date:</label>
+				                	<label>Data:</label>
 				
 					                	<div class="input-group date">
 					                  		<div class="input-group-addon">
@@ -94,16 +94,74 @@
 									</div>
 								</div>
 								
-								<div class="col-md-4" style="display:none;" id="valorPago">
-					            	<div class="form-group">
-										<label>Pago:</label>
-										<div>
-											<label class="custom-control custom-checkbox">
-							                    <input type="checkbox" class="custom-control-input" style="display: none;" th:checked="${lancamento.pago}" th:field="*{pago}"/>
-							                    <span class="custom-control-indicator sem-margin"></span>
-							                </label>
-						                </div>
+								<div style="display:none;" id="idValorPago">
+								
+									<!-- <div class="col-md-2">
+										<div class="form-group">
+											<label for="parcela" >Parcela(s):</label>
+											<input id="parcela" type="number" min="1" max="100" class="form-control" th:value="${lancamento.parcela != null} ? ${lancamento.parcela}" th:field="*{parcela}"/>
+										</div>
+									</div> -->
+									
+									<div class="col-md-2">
+									
+						            	<div class="form-group">
+											<label>Pago:</label>
+											<div>
+												<label class="custom-control custom-checkbox">
+								                    <input type="checkbox" class="custom-control-input" style="display: none;" th:checked="${lancamento.pago}" th:field="*{pago}"/>
+								                    <span class="custom-control-indicator sem-margin"></span>
+								                </label>
+							                </div>
+										</div>
+										
 									</div>
+									
+									<div class="col-md-2">
+									
+						            	<div class="form-group">
+											<label>Parcelado ?</label>
+											<div>
+												<label class="custom-control custom-checkbox">
+								                    <input type="checkbox" id="isParcelado" class="custom-control-input" style="display: none;" th:checked="${lancamento.parcelado}" th:field="*{parcelado}"/>
+								                    <span class="custom-control-indicator sem-margin"></span>
+								                </label>
+							                </div>
+										</div>
+										
+									</div>
+								
+								</div>
+								
+							</div>
+							
+							<div class="row">
+							
+								<div style="display:none;" id="idParcelado">
+							
+							
+									<div class="col-md-4">
+										<div class="form-group">
+											<label for="parcelas" >Parcela(s):</label>
+											<input id="parcelas" type="number" min="0" max="100" class="form-control" th:disabled="${lancamento.parcelas != null}" th:value="${lancamento.parcelas != null} ? ${lancamento.parcelas}" th:field="*{parcelas}"/>
+										</div>
+									</div>
+									
+						            <div class="col-md-4">
+					              		<div class="form-group">
+					                	<label>Data Vencimento:</label>
+					
+						                	<div class="input-group date">
+						                  		<div class="input-group-addon">
+						                    		<i class="fa fa-calendar"></i>
+						                  		</div>
+						                  		
+						                  		<input id="dataHoraVencimento" type="date" class="form-control pull-right"
+						                  		th:value="${dataHoraVencimento != null} ? ${lancamento.dataHoraVencimento}" th:field="*{dataHoraVencimento}" />
+							                </div>
+						              	</div>
+					             	</div>
+					             	
 								</div>
 							
 							</div>

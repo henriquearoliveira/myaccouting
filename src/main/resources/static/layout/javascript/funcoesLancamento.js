@@ -50,9 +50,41 @@ function desabilitaChecked(idCategoria) {
 function checked(resposta){
 	
 	if (resposta == 'DESPESA') {
-		$('#valorPago').show('slow');
+		$('#idValorPago').show('slow');
+		verificaSelecionado();
 	} else {
-		$('#valorPago').hide('slow');
+		$('#idValorPago').hide('slow');
+		$('#idParcelado').hide('slow');
 	}
 }
 
+/* DECIDE SE NECESSÁRIO EXIBIR IS_PARCELADO */
+$(document).ready(function() {
+	
+	verificaSelecionado();
+	
+});
+
+$("#isParcelado").on("change",function(){
+	
+	verificaSelecionado();
+	
+});
+
+function verificaSelecionado(){
+	
+	if ($('#isParcelado').is(":checked")){
+		checkedParcelado(true);
+	} else {
+		checkedParcelado(false);
+	}
+}
+
+function checkedParcelado(resposta){
+	
+	if (resposta) {
+		$('#idParcelado').show('slow');
+	} else {
+		$('#idParcelado').hide('slow');
+	}
+}
