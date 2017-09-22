@@ -15,6 +15,19 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 
 public class CaixaDeFerramentas {
+	
+	/**
+	 * @param seconds
+	 * 
+	 * SLEEP DA THREAD
+	 */
+	public void aguardaTempoThread(int seconds) {
+		try {
+			Thread.sleep(seconds * 1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
 
 	/**
 	 * @param valorConversao

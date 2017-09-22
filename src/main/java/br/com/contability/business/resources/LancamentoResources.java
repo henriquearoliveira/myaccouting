@@ -107,7 +107,7 @@ public class LancamentoResources {
 		Usuario usuario = auth.getAutenticacao();
 
 		LocalDate localDate = CaixaDeFerramentas.calendarFromStringDate(calendarString);
-
+		
 		model.addAttribute("lancamentos", lancamentoServices.seleciona(usuario, localDate));
 		model.addAttribute("saldo", saldoServices.getSaldoDo(usuario, localDate));
 		model.addAttribute("saldoProvavel", saldoServices.getSaldoProvavelDo(usuario, localDate));

@@ -138,17 +138,23 @@ $('#inputMonthYear').on("change", function(){
 
 function enviaDataPost(){
 	
-	var urlTeste = '/lancamento/tabela';
+	var urlTabela = '/lancamento/tabela';
 	
 	if($('#inputMonthYear').val() != ''){
-		urlTeste = urlTeste + '?date=' + encodeURIComponent($('#inputMonthYear').val());
+		urlTabela = urlTabela + '?date=' + encodeURIComponent($('#inputMonthYear').val());
 	}
 	
-	$("#tabelaBlock").load(urlTeste/*, function(){
-		$.getScript("https://code.jquery.com/jquery-2.2.3.min.js");
-		$.getScript("/layout/javascript/funcoes.js");
-	}*/);
-	$("#tabelaBlockMobile").load(urlTeste + '&mobile=mobile');
+	$("#ajax-loading").html(" <img src='/layout/imgs/loading-gif/spinner-loading5.gif' alt='loading...' /> ");
+	
+	$("#tabelaBlock").load(urlTabela, function(){
+		/*$.getScript("https://code.jquery.com/jquery-2.2.3.min.js");
+		$.getScript("/layout/javascript/funcoes.js");*/
+		$("#ajax-loading").remove();
+	});
+	
+	$("#tabelaBlockMobile").load(urlTabela + '&mobile=mobile', function(){
+		$("#ajax-loading").remove();
+	});
 
 	// TREINAMENTO.. RSRS
 	/*$jq.when(

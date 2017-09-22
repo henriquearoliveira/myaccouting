@@ -2,7 +2,7 @@
 	xmlns:th="http://www.thymeleaf.org" th:remove="tag"
 	th:unless="${#lists.isEmpty(lancamentos)}">
 
-	<ul class="list-group list-group-unbordered" id="tabela1">
+	<ul class="list-group list-group-unbordered"> <!-- tabela1 -->
 		<li class="list-group-item" th:each="lancamento : ${lancamentos}" th:id="li+${lancamento.id}">
 			<div class="row">
 
@@ -11,7 +11,9 @@
 				</div>
 				
 				<div class="col-xs-4">
-					<span th:text="((${lancamento.categoria.tipoDeCategoria.name()} == 'DESPESA') ? '- ' : '') + ${'R$ ' + #numbers.formatDecimal(lancamento.valorLancamento, 0, 'POINT', 2, 'COMMA')}"></span>
+					<span th:text="((${lancamento.categoria.tipoDeCategoria.name()} == 'DESPESA') ? '- ' : '')
+					+ ${'R$ ' + #numbers.formatDecimal(lancamento.valorLancamento, 0, 'POINT', 2, 'COMMA')}"
+					th:class="${lancamento.categoria.tipoDeCategoria.name() == 'RECEITA'} ? '' : (${lancamento.pago == true} AND ${lancamento.categoria.tipoDeCategoria.name() == 'DESPESA'} ? 'text-success' : 'text-danger')"></span>
 				</div>
 
 				<div class="col-xs-2">
@@ -26,9 +28,17 @@
 	</ul>
 	
 	<div class="row">
-		<div class="col-md-offset-8 col-md-4">
-			<span style="color: gray;">Saldo atual: </span> <strong style="font-size: 20px; color: #00C49D;"
-				th:text="${saldo != null} ? ${saldo} : 0.00">0.00</strong>
+		<div class="col-xs-offset-2 col-xs-10 col-md-offset-8 col-md-4 text-right">
+			<span style= "color: gray;">Saldo Atual: </span>
+
+			<strong style= "font-size: 20px; color: #00C49D;" th:text="${saldo != null} ? ${'R$ ' + #numbers.formatDecimal(saldo, 0, 'POINT', 2, 'COMMA')}">0,00</strong>
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="col-xs-12 col-md-offset-7 col-md-5 text-right">
+			<span style= "color: gray;">Probabilidade Saldo: </span>
+			<strong style= "font-size: 20px; color: #00C49D;" th:text="${saldoProvavel != null} ? ${'R$ ' + #numbers.formatDecimal(saldoProvavel, 0, 'POINT', 2, 'COMMA')}">0,00</strong>
 		</div>
 	</div>
 	
