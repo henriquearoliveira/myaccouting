@@ -123,7 +123,7 @@
 											<label>Parcelado ?</label>
 											<div>
 												<label class="custom-control custom-checkbox">
-								                    <input type="checkbox" id="isParcelado" class="custom-control-input" style="display: none;" th:checked="${lancamento.parcelado}" th:field="*{parcelado}"/>
+								                    <input type="checkbox" id="isParcelado" class="custom-control-input" style="display: none;" th:checked="${lancamento.parcelado}" th:disabled="${lancamento.parcelado != null}" th:field="*{parcelado}"/>
 								                    <span class="custom-control-indicator sem-margin"></span>
 								                </label>
 							                </div>

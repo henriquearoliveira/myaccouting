@@ -41,14 +41,14 @@
 		<div class="col-xs-offset-6 col-xs-6 col-md-offset-8 col-md-4 text-right">
 			<span style= "color: gray;">Saldo Atual: </span>
 
-			<strong style= "font-size: 20px; color: #00C49D;" th:text="${saldo != null} ? ${'R$ ' + #numbers.formatDecimal(saldo, 0, 'POINT', 2, 'COMMA')}">0,00</strong>
+			<strong style= "font-size: 20px; color: #00C49D;" th:text="${saldo != null} ? ${'R$ ' + #numbers.formatDecimal(saldo, 0, 'POINT', 2, 'COMMA')} : 0.00">0,00</strong>
 		</div>
 	</div>
 	
 	<div class="row">
 		<div class="col-xs-offset-5 col-xs-7 col-md-offset-7 col-md-5 text-right">
 			<span style= "color: gray;">Probabilidade Saldo: </span>
-			<strong style= "font-size: 20px; color: #00C49D;" th:text="${saldoProvavel != null} ? ${'R$ ' + #numbers.formatDecimal(saldoProvavel, 0, 'POINT', 2, 'COMMA')}">0,00</strong>
+			<strong style= "font-size: 20px; color: #00C49D;" th:text="${saldoProvavel != null} ? ${'R$ ' + #numbers.formatDecimal(saldoProvavel, 0, 'POINT', 2, 'COMMA')} : 0.00">0,00</strong>
 		</div>
 	</div>
 	
