@@ -149,6 +149,7 @@ function enviaDataPost(){
 	$("#tabelaBlock").load(urlTabela, function(){
 		/*$.getScript("https://code.jquery.com/jquery-2.2.3.min.js");
 		$.getScript("/layout/javascript/funcoes.js");*/
+		// REMOVE O LOADING ASSIM QUE TERMINAR DE CARREGAR A(S) TABELA(S)
 		$("#ajax-loading").remove();
 	});
 	

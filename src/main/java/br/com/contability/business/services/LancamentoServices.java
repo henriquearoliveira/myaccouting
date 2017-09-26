@@ -69,25 +69,34 @@ public class LancamentoServices extends ServicesAbstract<Lancamento, LancamentoR
 		
 		int quantidadeParcelas = lancamento.getParcelas();
 		
-		for (int i = 1; i <= quantidadeParcelas; i++) {
+		defineValorParcelado(lancamento, quantidadeParcelas);
+		
+		for (int i = 0; i < quantidadeParcelas; i++) {
 			
 			Lancamento lancamentoParcela = clonaLancamento(lancamento);
 			
-			LocalDate dataLancamento = lancamentoParcela.getDataHoraLancamento();
+//			LocalDate dataLancamento = lancamentoParcela.getDataHoraLancamento();
 			LocalDate dataVencimento = lancamentoParcela.getDataHoraVencimento();
 			
-			LocalDate dataLancamentoPlus = dataLancamento.plusMonths(i);
+//			LocalDate dataLancamentoPlus = dataLancamento.plusMonths(i);
 			LocalDate dataVencimentoPlus = dataVencimento.plusMonths(i);
 			
-			
-			
 			lancamentoParcela.setParcelas(i);
-			lancamentoParcela.setDataHoraLancamento(dataLancamentoPlus);
+			lancamentoParcela.setDataHoraLancamento(dataVencimentoPlus);
 			lancamentoParcela.setDataHoraVencimento(dataVencimentoPlus);
 			
 			insereLancamento(usuario, lancamentoParcela);
 			
 		}
+	}
+
+	private void defineValorParcelado(Lancamento lancamento, int quantidadeParcelas) {
+		
+		BigDecimal valorParcelado = lancamento.getValorLancamento()
+				.divide(new BigDecimal(new String(""+quantidadeParcelas)), 2, BigDecimal.ROUND_HALF_UP);
+		
+		lancamento.setValorLancamento(valorParcelado);
+		
 	}
 
 	private void insereLancamento(Usuario usuario, Lancamento lancamento) {
@@ -113,8 +122,6 @@ public class LancamentoServices extends ServicesAbstract<Lancamento, LancamentoR
 		lancamentoClone.setValorLancamento(lancamento.getValorLancamento());
 		lancamentoClone.setPago(lancamento.isPago());
 		lancamentoClone.setParcelado(lancamento.isParcelado());
-		
-		System.out.println("id: " + lancamentoClone.getId());
 		
 		return lancamentoClone;
 	}
