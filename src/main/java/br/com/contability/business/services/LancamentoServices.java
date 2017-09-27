@@ -135,6 +135,15 @@ public class LancamentoServices extends ServicesAbstract<Lancamento, LancamentoR
 	public List<Lancamento> seleciona(Usuario usuario, LocalDate localDate) {
 		return super.getJpa().selecionaLancamentos(usuario.getId(), localDate.getMonthValue(), localDate.getYear());
 	}
+	
+	/**
+	 * @param usuario
+	 * @param localDate
+	 * @return
+	 */
+	public List<Lancamento> selecionaVencidos(Usuario usuario, LocalDate localDate) {
+		return super.getJpa().selecionaVencidos(usuario.getId(), localDate.getMonthValue());
+	}
 
 	/**
 	 * @param usuario

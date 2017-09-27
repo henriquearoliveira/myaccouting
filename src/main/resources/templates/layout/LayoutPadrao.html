@@ -140,7 +140,7 @@
 
   <header class="main-header">
     <!-- Logo -->
-    <a th:href="@{/index}" class="logo">
+    <a th:href="@{/}" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <!-- <span class="logo-mini"><b>A</b>LT</span> -->
       <!-- logo for regular state and mobile devices -->
@@ -239,23 +239,29 @@
           <li class="dropdown notifications-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <i class="fa fa-bell-o"></i>
-              <span class="label label-warning">10</span>
+              <span class="label label-warning" th:text="${#lists.size(session.lancamentosVencidos)}"
+              									th:unless="${session.lancamentosVencidos == null}">10</span>
             </a>
             <ul class="dropdown-menu">
-              <li class="header"><i class="fa fa-warning text-yellow"></i> &nbsp; Você tem .. contas vencidas.</li>
+              <li class="header"><i class="fa fa-warning text-yellow"></i> &nbsp; Você tem contas vencidas.</li>
               <li>
                 <!-- inner menu: contains the actual data -->
                 <ul class="menu">
                 
-                  <li >
+                  <li th:each="vencidos : ${session.lancamentosVencidos}">
                   
-                    <a href="#">
-                      <i class="fa fa-exclamation text-yellow"></i> 5 new members joined today
+                    <a th:href="@{/lancamento/} + ${vencidos.id}">
+                      <i class="fa fa-exclamation text-yellow"></i>
+                      
+                      	<span th:text="${vencidos.descricao} + ' - '" th:remove="tag">Descricao</span>
+                      	<span th:text="${#temporals.format(vencidos.dataHoraVencimento, 'dd/MM')}" th:remove="tag"></span>
+                      	
+                      	<!-- ${#temporals.format(lancamento.dataHoraLancamento,'dd/MM/yyyy')} -->
                     </a>
                     
                   </li>
                   
-                  <li>
+                  <!-- <li>
                     <a href="#">
                       <i class="fa fa-exclamation text-yellow"></i> Very long description here that may not fit into the
                       page and may cause design problems
@@ -273,13 +279,13 @@
                   </li>
                   <li>
                     <a href="#">
-                      <i class="fa fa-exclamation text-yellow"></i> You changed your username <!-- text-green or red -->
+                      <i class="fa fa-exclamation text-yellow"></i> You changed your username text-green or red
                     </a>
-                  </li>
+                  </li> -->
                   
                 </ul>
               </li>
-              <li class="footer"><a href="#">Ver todas</a></li>
+              <li class="footer"><a th:href="@{/lancamento/lista}">Ver todas</a></li>
             </ul>
           </li>
           <!-- Tasks: style can be found in dropdown.less -->

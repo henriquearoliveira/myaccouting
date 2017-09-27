@@ -90,7 +90,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests().antMatchers("/login/**", "/teste/**", "/cadastrar/**", "/esqueceusenha/**", "/alterasenha/**").permitAll().anyRequest().authenticated()
 				.and().httpBasic()
 				.and().formLogin().loginPage("/login")/*.failureUrl("/login")*/.usernameParameter("username").passwordParameter("password")
-				.defaultSuccessUrl("/index", true)
+				.defaultSuccessUrl("/", true)
 				.and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login");
 		
 		http.csrf().disable();

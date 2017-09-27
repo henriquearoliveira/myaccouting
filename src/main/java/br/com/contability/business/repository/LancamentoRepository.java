@@ -54,4 +54,7 @@ public interface LancamentoRepository extends JpaRepository<Lancamento, Long> {
 	@Query("SELECT l FROM Lancamento l WHERE l.usuario.id = ?1 AND YEAR(l.dataHoraCadastro) = YEAR(NOW())")
 	public List<Lancamento> selecionaLancamentosAnoAtual(Long idUsuario);
 
+	@Query("SELECT l FROM Lancamento l WHERE l.usuario.id = ?1 AND MONTH(l.dataHoraVencimento) = ?2")
+	public List<Lancamento> selecionaVencidos(Long idUsuario, int monthValue);
+
 }
