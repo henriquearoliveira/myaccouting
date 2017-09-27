@@ -3,6 +3,7 @@ package br.com.contability.business.resources;
 import java.time.LocalDate;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,14 +78,14 @@ public class LancamentoResources {
 
 	@PostMapping
 	public ModelAndView salvar(@Valid Lancamento lancamento, BindingResult result, RedirectAttributes attributes,
-			Model model) {
+			Model model, HttpSession session) {
 		
 		Usuario usuario = auth.getAutenticacao();
 		
 		if (result.hasErrors())
 			return novo(model, lancamento);
 		
-		lancamentoServices.grava(lancamento, usuario);
+		lancamentoServices.grava(lancamento, usuario, session);
 
 		attributes.addFlashAttribute("mensagem", "Lancamento gravado com sucesso");
 		return new ModelAndView(StringPaginasAndRedirect.LANCAMENTO);

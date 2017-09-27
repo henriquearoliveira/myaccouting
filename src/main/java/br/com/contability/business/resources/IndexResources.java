@@ -1,7 +1,5 @@
 package br.com.contability.business.resources;
 
-import java.time.LocalDate;
-
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import br.com.contability.business.services.IndexServices;
-import br.com.contability.business.services.LancamentoServices;
 import br.com.contability.comum.AuthenticationAbstract;
+import br.com.contability.comum.SessaoServices;
 
 /**
  * @author eliel
@@ -29,7 +27,7 @@ public class IndexResources {
 	private IndexServices indexServices;
 	
 	@Autowired
-	private LancamentoServices lancamentoServices;
+	private SessaoServices sessaoServices;
 
 	/*@GetMapping("/index")
 	public ModelAndView loginSucesso(HttpSession session) {
@@ -44,7 +42,7 @@ public class IndexResources {
 	@GetMapping()
 	public ModelAndView loginPrincipal(HttpSession session) {
 
-		configuraSession(session);
+		sessaoServices.configuraSession(session);
 		
 		return alimentaPaginaInicial();
 
@@ -80,19 +78,6 @@ public class IndexResources {
 		System.out.println(barChartData.values());
 
 	}*/
-
-	/**
-	 * @param session
-	 */
-	private void configuraSession(HttpSession session) {
-		
-		session.setAttribute("userEmail", auth.getAutenticacao().getEmail());
-		session.setAttribute("userUrl", auth.getAutenticacao().getUploadImage() == null ? null
-				: auth.getAutenticacao().getUploadImage().getSecureUrl());
-		session.setAttribute("userDate", auth.getAutenticacao().getDataHoraCadastro());
-		session.setAttribute("lancamentosVencidos",
-				lancamentoServices.selecionaVencidos(auth.getAutenticacao(), LocalDate.now()));
-	}
 
 	/*
 	 * @RequestMapping("/index/{id}") public String

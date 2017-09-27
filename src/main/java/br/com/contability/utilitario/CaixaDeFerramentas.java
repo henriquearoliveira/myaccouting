@@ -34,13 +34,18 @@ public class CaixaDeFerramentas {
 	 * @return
 	 */
 	public static BigDecimal converteStringToBidDecimal(String valorConversao) {
-
-		String valorFormatada = convertePontosAndVirgulas(valorConversao);
+		
+		StringBuffer s = new StringBuffer(valorConversao);
+		
+		String valorFormatada = s.reverse().toString().substring(2).contains(",") 
+				? convertePontosAndVirgulas(valorConversao)
+				: valorConversao;
+				
 		BigDecimal bigDecimal = new BigDecimal(valorFormatada);
 
 		return bigDecimal;
 	}
-
+	
 	/**
 	 * @param date
 	 * @return
@@ -57,7 +62,7 @@ public class CaixaDeFerramentas {
 	private static String convertePontosAndVirgulas(String valorConversao) {
 		return valorConversao.replaceAll("\\.", "").replaceAll("\\,", ".");
 	}
-
+	
 	/**
 	 * @param dateToFormat
 	 * @return

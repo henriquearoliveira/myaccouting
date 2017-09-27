@@ -1,6 +1,7 @@
 package br.com.contability.business.repository;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -54,7 +55,7 @@ public interface LancamentoRepository extends JpaRepository<Lancamento, Long> {
 	@Query("SELECT l FROM Lancamento l WHERE l.usuario.id = ?1 AND YEAR(l.dataHoraCadastro) = YEAR(NOW())")
 	public List<Lancamento> selecionaLancamentosAnoAtual(Long idUsuario);
 
-	@Query("SELECT l FROM Lancamento l WHERE l.usuario.id = ?1 AND MONTH(l.dataHoraVencimento) = ?2")
-	public List<Lancamento> selecionaVencidos(Long idUsuario, int monthValue);
+	@Query("SELECT l FROM Lancamento l WHERE l.usuario.id = ?1 AND l.dataHoraVencimento < ?2 AND l.pago IS FALSE")
+	public List<Lancamento> selecionaVencidos(Long idUsuario, LocalDate dataVencimento);
 
 }
