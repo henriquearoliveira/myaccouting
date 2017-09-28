@@ -286,7 +286,7 @@
                   
                 </ul>
               </li>
-              <li class="footer"><a th:href="@{/lancamento/lista}">Ver todas</a></li>
+              <li class="footer" th:unless="${#lists.size(session.lancamentosVencidos) == 0}"><a th:href="@{/lancamento/lista}">Ver todas</a></li>
             </ul>
           </li>
           <!-- Tasks: style can be found in dropdown.less -->

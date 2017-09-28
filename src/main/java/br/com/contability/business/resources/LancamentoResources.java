@@ -101,6 +101,9 @@ public class LancamentoResources {
 
 		return mv;
 	}
+	
+	/* APLICAR O SEGUINTE: QUANDO CLICAR EM TODAS OS LANÇAMENTOS ABRIR UMA LISTA COM ASPENAS AS PENDENTES
+	 * E EM CIMA UM <SELECT> PREENCHIDO COM AS DATAS QUE CONTEM CONTAS VENCIDAS. ACREDITO QUE VAI FICAR LEGAL */
 
 	@GetMapping("/tabela")
 	public String mostraTabelaCadastrados(Model model, @RequestParam("date") String calendarString,
