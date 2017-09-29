@@ -66,8 +66,7 @@ public class LancamentoServices extends ServicesAbstract<Lancamento, LancamentoR
 			saldoFacade.atualizaSaldoUsuario(lancamento);
 			
 			if (lancamento.getDataHoraVencimento().isBefore(LocalDate.now())) {
-				sessionServices.atualizaVencidos(session, this.selecionaVencidos(lancamento.getUsuario(), LocalDate.now()));
-				System.out.println("tentou atualizar sessão");
+				sessionServices.atualizaVencidos(session, this.selecionaVencidosAnteriorA(lancamento.getUsuario(), LocalDate.now()));
 			}
 		}
 
@@ -175,13 +174,22 @@ public class LancamentoServices extends ServicesAbstract<Lancamento, LancamentoR
 	public List<Lancamento> seleciona(Usuario usuario, LocalDate localDate) {
 		return super.getJpa().selecionaLancamentos(usuario.getId(), localDate.getMonthValue(), localDate.getYear());
 	}
+	
+	/**
+	 * @param usuario
+	 * @param calendar
+	 * @return
+	 */
+	public List<Lancamento> selecionaVencidosDa(Usuario usuario, LocalDate localDate) {
+		return super.getJpa().selecionaVencidosDa(usuario.getId(), localDate);
+	}
 
 	/**
 	 * @param usuario
 	 * @param localDate
 	 * @return
 	 */
-	public List<Lancamento> selecionaVencidos(Usuario usuario, LocalDate localDate) {
+	public List<Lancamento> selecionaVencidosAnteriorA(Usuario usuario, LocalDate localDate) {
 		return super.getJpa().selecionaVencidos(usuario.getId(), localDate);
 	}
 

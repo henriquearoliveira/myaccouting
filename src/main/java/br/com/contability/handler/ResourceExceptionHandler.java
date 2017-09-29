@@ -11,7 +11,7 @@ import br.com.contability.exceptions.DetalheErro;
 import br.com.contability.exceptions.ObjetoComDependenciaException;
 import br.com.contability.exceptions.ObjetoExistenteException;
 import br.com.contability.exceptions.ObjetoInexistenteException;
-import br.com.contability.exceptions.ObjetoNaoAutorizado;
+import br.com.contability.exceptions.ObjetoNaoAutorizadoException;
 
 @ControllerAdvice
 public class ResourceExceptionHandler {
@@ -55,8 +55,8 @@ public class ResourceExceptionHandler {
 		
 	}
 	
-	@ExceptionHandler(ObjetoNaoAutorizado.class)
-	public ResponseEntity<DetalheErro> objetoNaoAutorizado(ObjetoNaoAutorizado e, 
+	@ExceptionHandler(ObjetoNaoAutorizadoException.class)
+	public ResponseEntity<DetalheErro> objetoNaoAutorizado(ObjetoNaoAutorizadoException e, 
 			HttpServletRequest request){
 		
 		DetalheErro detalheErro = new DetalheErro();

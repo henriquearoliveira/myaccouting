@@ -10,11 +10,29 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 import javax.servlet.http.HttpServletRequest;
 
 public class CaixaDeFerramentas {
+	
+	/**
+	 * @param keyExtractor
+	 * @return
+	 * 
+	 *  O MAPA SÓ USA AQUI DENTRO, ELE É USADO PRA CONSEGUIR DESTINGUIR SE ADICIONA OU NÃO
+	 *  ASSIM QUE ELE CONSEGUE FILTRAR COM O STREAM
+	 *  
+	 *  OBJECT ESTAVA NO LUGAR DE R
+	 */
+	public static <T, R> Predicate<T> distinctByKey(Function<? super T, R> keyExtractor) {
+	    Map<R,Boolean> seen = new ConcurrentHashMap<>();
+	    return t -> seen.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
+	}
 	
 	/**
 	 * @param seconds
@@ -67,7 +85,7 @@ public class CaixaDeFerramentas {
 	 * @param dateToFormat
 	 * @return
 	 */
-	public static LocalDate calendarFromStringDate(String dateToFormat) {
+	public static LocalDate calendarFromStringMesAnoDate(String dateToFormat) {
 
 		Date date = new Date();
 
@@ -80,6 +98,17 @@ public class CaixaDeFerramentas {
 
 		LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
+		return localDate;
+	}
+	
+	/**
+	 * @param dateToFormat
+	 * @return
+	 */
+	public static LocalDate calendarFromStringDiaMesAnoDate(String dateToFormat) {
+
+		LocalDate localDate = LocalDate.parse(dateToFormat);
+		
 		return localDate;
 	}
 

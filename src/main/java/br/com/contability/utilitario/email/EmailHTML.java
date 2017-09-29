@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 
-import br.com.contability.exceptions.ObjetoNaoAutorizado;
+import br.com.contability.exceptions.ObjetoNaoAutorizadoException;
 
 @Component
 public class EmailHTML implements IEnviaEmail {
@@ -45,7 +45,7 @@ public class EmailHTML implements IEnviaEmail {
 			mailSender.send(mensagem);
 			
 		} catch (MessagingException e) {
-			throw new ObjetoNaoAutorizado(e.getMessage());
+			throw new ObjetoNaoAutorizadoException(e.getMessage());
 		}
 		
 	}

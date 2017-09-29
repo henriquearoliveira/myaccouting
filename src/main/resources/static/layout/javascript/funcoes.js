@@ -128,15 +128,15 @@ $('#confirmaExclusaoModal').on('show.bs.modal', function (event) {
 	$('.idValueModal').val(id);
 });
 
-$('#inputMonthYear').on("change", function(){
+/* FAZ O PROCESSO DINAMICO DOS LANCAMENTOS, CARREGAMENTO DA TABELA */
+
+$('#inputMonthYear').on("change", function(e){
 	
-	var teste = $(this).val();
-	enviaDataPost();
-	
+	enviaLancamentos();
 	
 }).change();
 
-function enviaDataPost(){
+function enviaLancamentos(){
 	
 	var urlTabela = '/lancamento/tabela';
 	
@@ -205,6 +205,34 @@ function enviaDataPost(){
 	        $('#targetDiv').html(div);
 	    }
 	});*/
+}
+
+/* FAZ O PROCESSO DINAMICO, CARREGAMENTO DAS TABELAS VENCIDAS */
+$('#inputDateVencidos').on("change", function(){
+	
+	enviaVencidos();
+	
+});
+
+function enviaVencidos(){
+	
+	var urlTabela = '/lancamento/tabelaVencidos';
+	
+	if($('#inputDateVencidos').val() != ''){
+		urlTabela = urlTabela + '?dataVencido=' + encodeURIComponent($('#inputDateVencidos').val());
+	}
+	
+	$("#ajax-loading").html(" <img src='/layout/imgs/loading-gif/spinner-loading5.gif' alt='loading...' /> ");
+	
+	$("#tabelaVencidos").load(urlTabela, function(){
+		
+		// REMOVE O LOADING ASSIM QUE TERMINAR DE CARREGAR A(S) TABELA(S)
+		$("#ajax-loading").remove();
+	});
+	
+	$("#tabelaVencidosMobile").load(urlTabela + '&mobile=mobile', function(){
+		$("#ajax-loading").remove();
+	});
 }
 
 /* DECIDE SE NECESSÁRIO EXIBIR IS_PAGO -------- MOVIDO PARA ARQUIVO SEPARADO */

@@ -58,4 +58,7 @@ public interface LancamentoRepository extends JpaRepository<Lancamento, Long> {
 	@Query("SELECT l FROM Lancamento l WHERE l.usuario.id = ?1 AND l.dataHoraVencimento < ?2 AND l.pago IS FALSE")
 	public List<Lancamento> selecionaVencidos(Long idUsuario, LocalDate dataVencimento);
 
+	@Query("SELECT l FROM Lancamento l WHERE l.usuario.id = ?1 AND l.dataHoraVencimento = ?2 AND l.pago IS FALSE")
+	public List<Lancamento> selecionaVencidosDa(Long id, LocalDate dataVencimento);
+
 }

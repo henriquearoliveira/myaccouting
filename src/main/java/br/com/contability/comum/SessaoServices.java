@@ -30,7 +30,7 @@ public class SessaoServices {
 				: auth.getAutenticacao().getUploadImage().getSecureUrl());
 		session.setAttribute("userDate", auth.getAutenticacao().getDataHoraCadastro());
 		session.setAttribute("lancamentosVencidos",
-				lancamentoServices.selecionaVencidos(auth.getAutenticacao(), LocalDate.now()));
+				lancamentoServices.selecionaVencidosAnteriorA(auth.getAutenticacao(), LocalDate.now()));
 	}
 	
 	public void atualizaVencidos(HttpSession session, List<Lancamento> lancamentosVencidos) {
