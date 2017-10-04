@@ -494,9 +494,13 @@
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
+          
           <ul class="treeview-menu">
             <li th:class="${activeNovo}"><a th:href="@{/lancamento}">
             	<i class="fa fa-floppy-o" aria-hidden="true"></i> Novo </a></li>
+            	
+            	<li th:class="${activeNovoImport}"><a th:href="@{/lancamento/import}">
+            	<i class="fa fa-floppy-o" aria-hidden="true"></i> Importar </a></li>
           <!-- </ul>
           
           <ul class="treeview-menu"> -->

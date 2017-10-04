@@ -65,6 +65,20 @@ public class LancamentoResources {
 		return mv;
 
 	}
+	
+	@GetMapping("/import")
+	public ModelAndView novoFileImport(Model model, Lancamento lancamento) {
+		ModelConstruct.setAttributes(model, "activeLiLancamento", "activeNovoImport");
+		
+		Usuario usuario = auth.getAutenticacao();
+		
+		ModelAndView mv = new ModelAndView("lancamento/LancamentoImportFile");
+		mv.addObject("categorias", categoriaServices.seleciona(usuario));
+		mv.addObject("contas", contaServices.seleciona(usuario));
+
+		return mv;
+
+	}
 
 	@GetMapping("/{idLancamento}")
 	public ModelAndView get(@PathVariable Object idLancamento, Model model) {
