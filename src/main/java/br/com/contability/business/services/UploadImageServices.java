@@ -2,10 +2,10 @@ package br.com.contability.business.services;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,6 +23,9 @@ public class UploadImageServices extends ServicesAbstract<UploadImage, UploadIma
 	private final String cloudName = "dznde0ht5";
 	private final String apiKey = "538862271882227";
 	private final String apiSecret = "UKxwkpSI-SQp2gzZ65AMzCj8Vkc";
+	
+	@Autowired
+	private ConfiguraArquivosServices arquivosServices;
 
 	public UploadImage uploadImageCloudinary(MultipartFile file) {
 
@@ -31,7 +34,7 @@ public class UploadImageServices extends ServicesAbstract<UploadImage, UploadIma
 
 		Cloudinary cloudinary = new Cloudinary(configuracao);
 
-		File imagem = configuraImagem(file);
+		File imagem = arquivosServices.configuraArquivo(file);
 
 		Map<String, Object> resultado = uploadImagem(cloudinary, imagem);
 
@@ -82,31 +85,7 @@ public class UploadImageServices extends ServicesAbstract<UploadImage, UploadIma
 		return resultado;
 	}
 
-	/**
-	 * @param file
-	 * @param imagem
-	 * @return
-	 */
-	private File configuraImagem(MultipartFile file) {
-
-		File imagem = null;
-
-		try {
-			imagem = Files.createTempFile("temp", file.getOriginalFilename()).toFile();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-		try {
-			file.transferTo(imagem);
-		} catch (IllegalStateException e1) {
-			e1.printStackTrace();
-			throw new ObjetoNaoAutorizadoMessage();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-			throw new ObjetoNaoAutorizadoMessage();
-		}
-		return imagem;
-	}
+	
 
 	/**
 	 * @return

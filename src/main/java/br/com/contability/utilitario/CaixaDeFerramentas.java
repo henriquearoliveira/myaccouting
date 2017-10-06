@@ -35,6 +35,19 @@ public class CaixaDeFerramentas {
 	}
 	
 	/**
+	 * @param valor
+	 * @return
+	 */
+	public static BigDecimal alteraValorParaPositivo(BigDecimal valor) {
+		
+		if (valor.signum() == -1) {
+			return valor.negate();
+		}
+		
+		return valor;
+	}
+	
+	/**
 	 * @param seconds
 	 * 
 	 * SLEEP DA THREAD
@@ -116,11 +129,23 @@ public class CaixaDeFerramentas {
 	 * @param dateTimeCloudinary
 	 * @return LocalDateTime
 	 */
-	public static LocalDateTime stringToLocalDateTime(String dateTimeCloudinary) {
+	public static LocalDateTime stringToLocalDateTime(String dateTime) {
 
 		DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-		return LocalDateTime.parse(dateTimeCloudinary.replace("T", " ").replace("Z", ""), format);
+		return LocalDateTime.parse(dateTime.replace("T", " ").replace("Z", ""), format);
+
+	}
+	
+	/**
+	 * @param dateTimeCloudinary
+	 * @return LocalDateTime
+	 */
+	public static LocalDate stringToLocalDateEXCEL(String date) {
+
+		DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+		return LocalDate.parse(date, format);
 
 	}
 

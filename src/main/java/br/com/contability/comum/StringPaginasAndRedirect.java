@@ -11,5 +11,7 @@ public final class StringPaginasAndRedirect {
 	public final static String CONTA = "redirect:/conta";
 
 	public static final String LANCAMENTO = "redirect:/lancamento";
+	
+	public static final String LANCAMENTO_IMPORT = "redirect:/lancamento/import";
 
 }

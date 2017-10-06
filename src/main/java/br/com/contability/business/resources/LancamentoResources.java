@@ -1,28 +1,39 @@
 package br.com.contability.business.resources;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.com.contability.business.Lancamento;
+import br.com.contability.business.Lancamentos;
 import br.com.contability.business.Usuario;
 import br.com.contability.business.services.CategoriaServices;
 import br.com.contability.business.services.ContaServices;
@@ -70,15 +81,114 @@ public class LancamentoResources {
 	public ModelAndView novoFileImport(Model model, Lancamento lancamento) {
 		ModelConstruct.setAttributes(model, "activeLiLancamento", "activeNovoImport");
 		
-		Usuario usuario = auth.getAutenticacao();
+		auth.getAutenticacao();
 		
 		ModelAndView mv = new ModelAndView("lancamento/LancamentoImportFile");
-		mv.addObject("categorias", categoriaServices.seleciona(usuario));
-		mv.addObject("contas", contaServices.seleciona(usuario));
 
 		return mv;
 
 	}
+	
+	@PostMapping("/import") // REQUESTBODY DARIA NA MESMA. HEHEHHEHE
+	public ModelAndView gravaFileImport(Model model, Lancamento lancamento,
+			@RequestParam(value = "file", required = false) MultipartFile file, RedirectAttributes attributes) {
+		ModelConstruct.setAttributes(model, "activeLiLancamento", "activeNovoImport");
+		
+		Usuario usuario = auth.getAutenticacao();
+		
+		List<Lancamento> lancamentosExcel = lancamentoServices.configuraEXEL(file);
+		
+		Lancamentos lancamentos = new Lancamentos();
+		lancamentos.setLancamentos(lancamentosExcel);
+		
+		ModelAndView mv = new ModelAndView("lancamento/LancamentoImportFile");
+		mv.addObject("lancamentos", lancamentos);
+		mv.addObject("categorias", categoriaServices.seleciona(usuario));
+
+		return mv;
+
+	}
+	
+	/*@InitBinder
+	private void initBinder(WebDataBinder binder) {
+	    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd");//edit for the    format you need
+	    dateFormat.setLenient(false);
+	    binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
+	}*/
+	
+	@PostMapping("/importlancamentos") // REQUESTBODY DARIA NA MESMA. HEHEHHEHE
+	public ModelAndView gravaLancamentoFileImport(Model model, Lancamentos lancamentos,
+			RedirectAttributes attributes) {
+		
+		ModelConstruct.setAttributes(model, "activeLiLancamento", "activeNovoImport");
+		
+		Usuario usuario = auth.getAutenticacao();
+		
+		lancamentoServices.gravaImportacao(usuario, lancamentos);
+		
+		
+		attributes.addFlashAttribute("mensagem", "Lancamentos gravados com sucesso");
+		return new ModelAndView(StringPaginasAndRedirect.LANCAMENTO_IMPORT);
+
+	}
+	
+	@RequestMapping(value = "/arquivoexemplo", method = RequestMethod.GET, produces = {MediaType.ALL_VALUE})
+	public @ResponseBody void downloadA(HttpServletResponse response) throws IOException {
+		
+		ClassLoader classLoader = getClass().getClassLoader();
+		File file = new File(classLoader.getResource("fileExcel/boleto.pdf").getFile());
+		
+	    InputStream in = new FileInputStream(file);
+	    response.setContentType(MediaType.ALL_VALUE);
+	    response.setHeader("Content-Disposition", "attachment; filename=" + file.getName());
+	    response.setHeader("Content-Length", String.valueOf(file.length()));
+	    FileCopyUtils.copy(in, response.getOutputStream());
+	}
+	
+	/* DOWNLOAD EXIBINDO O ARQUIVO BAIXADO
+	 * 
+	 * OBS: FORMA MAIS ANTIGA
+	 * 
+	 * @GetMapping(value = "/arquivoexemplo", produces = "application/pdf")
+	public @ResponseBody HttpEntity<byte[]> baixaArquivoExemploExcel() {
+		
+		ClassLoader classLoader = getClass().getClassLoader();
+		File file = new File(classLoader.getResource("fileExcel/boleto.pdf").getFile());
+		
+	    byte[] document = null;
+	    
+		try {
+			document = FileCopyUtils.copyToByteArray(file);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	    
+	    HttpHeaders header = new HttpHeaders();
+	    header.setContentType(new MediaType("application", "pdf"));
+	    header.set("Content-Disposition", "inline; filename=" + file.getName());
+	    header.setContentLength(document.length);
+	    
+	    return new HttpEntity<byte[]>(document, header);
+	}*/
+	
+	/* DOWNLOAD EXIBINDO O ARQUIVO BAIXADO
+	 * 
+	 * OBS: FORMA MAIS ATUAL DE FAZER
+	 * 
+	 * @GetMapping(value = "/arquivoexemplo", produces = "application/pdf")
+	@ResponseBody
+	public Resource baixaArquivoExemploExcel(HttpServletResponse response) {
+		
+		ClassLoader classLoader = getClass().getClassLoader();
+		File file = new File(classLoader.getResource("fileExcel/boleto.pdf").getFile());
+		
+	    response.setContentType("application/pdf");
+	    response.setHeader("Content-Disposition", "inline; filename=" + file.getName());
+	    response.setHeader("Content-Length", String.valueOf(file.length()));
+		
+		System.out.println("teste");
+		return new FileSystemResource(file);
+	}*/
 
 	@GetMapping("/{idLancamento}")
 	public ModelAndView get(@PathVariable Object idLancamento, Model model) {

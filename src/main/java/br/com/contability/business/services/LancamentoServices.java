@@ -1,5 +1,6 @@
 package br.com.contability.business.services;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
@@ -9,9 +10,11 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import br.com.contability.business.Lancamento;
+import br.com.contability.business.Lancamentos;
 import br.com.contability.business.TipoDeCategoria;
 import br.com.contability.business.Usuario;
 import br.com.contability.business.facade.SaldoFacade;
@@ -32,6 +35,12 @@ public class LancamentoServices extends ServicesAbstract<Lancamento, LancamentoR
 
 	@Autowired
 	private CategoriaServices categoriaServices;
+	
+	@Autowired
+	private ConfiguraArquivosServices arquivosServices;
+	
+	@Autowired
+	private PlanilhaFilesServices planilhaServices;
 
 	@Autowired
 	private SaldoFacade saldoFacade;
@@ -276,6 +285,95 @@ public class LancamentoServices extends ServicesAbstract<Lancamento, LancamentoR
 
 		return super.getJpa().selecionaLancamentosAnoAtual(usuario.getId());
 
+	}
+
+	public List<Lancamento> configuraEXEL(MultipartFile multipartFile) {
+		
+		File file = arquivosServices.configuraArquivo(multipartFile);
+		
+		return planilhaServices.configuraFileToObject(file);
+		
+	}
+
+	/**
+	 * @param usuario
+	 * @param lancamentos
+	 */
+	public void gravaImportacao(Usuario usuario, Lancamentos lancamentoImportacao) {
+		
+		List<Lancamento> lancamentos = lancamentoImportacao.getLancamentos();
+		
+		verificaInconsistencias(lancamentos);
+		
+		retiraSinaisNegativos(lancamentos);
+		
+		setaUsuarios(lancamentos, usuario);
+		
+		lancamentos.forEach(l -> System.out.println("valor: "+ l.getValorLancamento()));
+		
+		lancamentos.forEach(l -> gravaLancamento(l));
+	}
+
+	/**
+	 * @param lancamentos
+	 * @param usuario
+	 */
+	private void setaUsuarios(List<Lancamento> lancamentos, Usuario usuario) {
+		
+		lancamentos.forEach(l -> l.setUsuario(usuario));
+		
+	}
+
+	private void retiraSinaisNegativos(List<Lancamento> lancamentos) {
+		
+		lancamentos.forEach(l -> {
+			
+			BigDecimal valor = l.getValorLancamento();
+			
+			BigDecimal valorCorrigido = CaixaDeFerramentas.alteraValorParaPositivo(valor);
+			l.setValorLancamento(valorCorrigido);
+			
+		});
+		
+	}
+
+	/**
+	 * @param lancamentos
+	 */
+	private void verificaInconsistencias(List<Lancamento> lancamentos) {
+		
+		lancamentos.forEach(l -> {
+			
+			verificaData(l);
+			
+			verificaDescricao(l);
+			
+			verificaCategoria(l);
+			
+			verificaValorLancamento(l);
+
+		});
+		
+	}
+	
+	private void verificaData(Lancamento l) {
+		if (l.getCategoria() == null)
+			throw new ObjetoInexistenteExceptionMessage("/import", "Data não informada.");
+	}
+	
+	private void verificaDescricao(Lancamento l) {
+		if (l.getCategoria() == null)
+			throw new ObjetoInexistenteExceptionMessage("/import", "Descrição não informada.");
+	}
+	
+	private void verificaCategoria(Lancamento l) {
+		if (l.getCategoria() == null)
+			throw new ObjetoInexistenteExceptionMessage("/import", "Categoria não vinculada.");
+	}
+
+	private void verificaValorLancamento(Lancamento l) {
+		if (l.getCategoria() == null)
+			throw new ObjetoInexistenteExceptionMessage("/import", "Valor não informado.");
 	}
 
 }

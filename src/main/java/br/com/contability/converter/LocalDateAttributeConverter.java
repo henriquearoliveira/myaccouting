@@ -1,22 +1,16 @@
 package br.com.contability.converter;
 
-import java.sql.Date;
-import java.time.LocalDate;
-
-import javax.persistence.AttributeConverter;
-import javax.persistence.Converter;
-
-@Converter(autoApply = true)
-public class LocalDateAttributeConverter implements AttributeConverter<LocalDate, Date> {
+//@Converter(autoApply = true)
+public class LocalDateAttributeConverter /*implements AttributeConverter<LocalDate, String>*/ {
 	
-    @Override
-    public Date convertToDatabaseColumn(LocalDate locDate) {
-    	return (locDate == null ? null : Date.valueOf(locDate));
+    /*@Override
+    public String convertToDatabaseColumn(LocalDate localDate) {
+    	return (localDate == null ? null : localDate.toString());
     }
 
     @Override
-    public LocalDate convertToEntityAttribute(Date sqlDate) {
-    	return (sqlDate == null ? null : sqlDate.toLocalDate());
-    }
+    public LocalDate convertToEntityAttribute(String stringDate) {
+    	return (stringDate == null ? null : CaixaDeFerramentas.stringToLocalDateEXCEL(stringDate));
+    }*/
     
 }

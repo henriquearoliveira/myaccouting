@@ -93,7 +93,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.defaultSuccessUrl("/", true)
 				.and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login");
 		
-//		http.csrf().disable();
+		http.csrf().disable();
 
 		/*
 		 * http.logout().logoutUrl("/logout").invalidateHttpSession(true).

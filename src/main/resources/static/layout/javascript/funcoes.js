@@ -235,6 +235,10 @@ function enviaVencidos(){
 	});
 }
 
+
+
+
+
 /* DECIDE SE NECESSÁRIO EXIBIR IS_PAGO -------- MOVIDO PARA ARQUIVO SEPARADO */
 /*$(document).ready(function() {
 	
