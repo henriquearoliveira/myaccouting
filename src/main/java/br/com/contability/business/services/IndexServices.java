@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import br.com.contability.business.Lancamento;
@@ -22,7 +23,7 @@ public class IndexServices {
 	@Autowired
 	private ContaServices contaServices;
 
-	@Autowired
+	@Qualifier("services")
 	private LancamentoServices lancamentoServices;
 
 	// VARIÁVEL RESPONSÁVEL PELA ECONOMIA DE PROCESSAMENTO DO BANCO

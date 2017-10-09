@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -96,15 +97,15 @@ public class LancamentoResources {
 		
 		Usuario usuario = auth.getAutenticacao();
 		
-		List<Lancamento> lancamentosExcel = lancamentoServices.configuraEXEL(file);
+		List<Lancamento> lancamentosExcel = lancamentoServices.configuraPlanilha(file);
 		
 		Lancamentos lancamentos = new Lancamentos();
 		lancamentos.setLancamentos(lancamentosExcel);
 		
 		ModelAndView mv = new ModelAndView("lancamento/LancamentoImportFile");
-		mv.addObject("lancamentos", lancamentos);
-		mv.addObject("categorias", categoriaServices.seleciona(usuario));
-
+		/*mv.addObject("lancamentos", lancamentos);
+		mv.addObject("categorias", categoriaServices.seleciona(usuario));*/
+		
 		return mv;
 
 	}
@@ -136,7 +137,7 @@ public class LancamentoResources {
 	public @ResponseBody void downloadA(HttpServletResponse response) throws IOException {
 		
 		ClassLoader classLoader = getClass().getClassLoader();
-		File file = new File(classLoader.getResource("fileExcel/boleto.pdf").getFile());
+		File file = new File(classLoader.getResource("fileExcel/exemplo.xls").getFile());
 		
 	    InputStream in = new FileInputStream(file);
 	    response.setContentType(MediaType.ALL_VALUE);

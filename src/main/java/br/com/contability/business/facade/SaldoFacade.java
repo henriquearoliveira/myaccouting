@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 
 import br.com.contability.business.Lancamento;
 import br.com.contability.business.Saldo;
-import br.com.contability.business.Usuario;
 import br.com.contability.business.services.LancamentoServices;
 import br.com.contability.business.services.SaldoServices;
 
