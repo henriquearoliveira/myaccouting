@@ -16,6 +16,9 @@ public class LeitorPlanilhasLibreOffice<T extends BeanIdentificavel, E extends I
 
 	private E servicesAbstract;
 	
+	/**
+	 * @param services
+	 */
 	public LeitorPlanilhasLibreOffice(E services) {
 		
 		this.servicesAbstract = services;

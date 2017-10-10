@@ -1,5 +1,7 @@
 package br.com.contability.business.resources;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -41,12 +43,12 @@ public class PerfilResources {
 
 	@PostMapping
 	public ModelAndView perfilEdit(Usuario usuario, @RequestParam(value = "file", required = false) MultipartFile file,
-			BindingResult result, RedirectAttributes attributes) {
+			BindingResult result, RedirectAttributes attributes, HttpSession session) {
 
 		if (result.hasErrors())
 			return perfil(usuario);
 
-		perfilServices.atualizaPerfil(usuario, file);
+		perfilServices.atualizaPerfil(usuario, file, session);
 
 		attributes.addFlashAttribute("mensagem", "Perfil editado com sucesso.");
 

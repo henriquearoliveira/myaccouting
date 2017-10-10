@@ -11,6 +11,8 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import br.com.contability.comum.ShaPasswordEncoder;
@@ -91,7 +93,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.and().httpBasic()
 				.and().formLogin().loginPage("/login")/*.failureUrl("/login")*/.usernameParameter("username").passwordParameter("password")
 				.defaultSuccessUrl("/", true)
-				.and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login");
+				.and().rememberMe()
+						.tokenValiditySeconds(1209600)
+						.tokenRepository(persistentTokenRepository())
+				.and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+						.logoutSuccessUrl("/login").deleteCookies("auth_code", "JSESSIONID").invalidateHttpSession(true);
 		
 		http.csrf().disable();
 
@@ -147,5 +153,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		 */
 
 	}
+	
+	/* REMEMBER ME DAS PÁGINAS, NÃO FICA DESLOGANDO */
+	@Bean
+	public PersistentTokenRepository persistentTokenRepository() {
+        JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl();
+        tokenRepository.setDataSource(dataSource);
+        return tokenRepository;
+    }
 
 }

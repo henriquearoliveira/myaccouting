@@ -6,10 +6,10 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import br.com.contability.business.Lancamento;
+import br.com.contability.business.Usuario;
 import br.com.contability.business.services.LancamentoServices;
 
 @Component
@@ -18,20 +18,38 @@ public class SessaoServices {
 	@Autowired
 	private AuthenticationAbstract auth;
 	
-	@Qualifier("services")
+	@Autowired
 	private LancamentoServices lancamentoServices;
 	
 	/**
 	 * @param session
 	 */
-	public void configuraSession(HttpSession session) {
+	public void configuraSessionComSessao(HttpSession session) {
 		
-		session.setAttribute("userEmail", auth.getAutenticacao().getEmail());
-		session.setAttribute("userUrl", auth.getAutenticacao().getUploadImage() == null ? null
-				: auth.getAutenticacao().getUploadImage().getSecureUrl());
-		session.setAttribute("userDate", auth.getAutenticacao().getDataHoraCadastro());
+		Usuario usuario = auth.getAutenticacao();
+		
+		this.configuraSessao(usuario, session);
+		
+	}
+	
+	/**
+	 * @param session
+	 */
+	public void configuraSessionComUsuario(Usuario usuario, HttpSession session) {
+		
+		this.configuraSessao(usuario, session);
+		
+	}
+	
+	private void configuraSessao(Usuario usuario, HttpSession session) {
+		
+		session.setAttribute("userEmail", usuario.getEmail());
+		session.setAttribute("userUrl", usuario.getUploadImage() == null ? null
+				: usuario.getUploadImage().getSecureUrl());
+		session.setAttribute("userDate", usuario.getDataHoraCadastro());
 		session.setAttribute("lancamentosVencidos",
-				lancamentoServices.selecionaVencidosAnteriorA(auth.getAutenticacao(), LocalDate.now()));
+				lancamentoServices.selecionaVencidosAnteriorA(usuario, LocalDate.now()));
+		
 	}
 	
 	public void atualizaVencidos(HttpSession session, List<Lancamento> lancamentosVencidos) {

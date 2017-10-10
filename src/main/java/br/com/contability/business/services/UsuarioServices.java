@@ -68,6 +68,7 @@ public class UsuarioServices extends ServicesAbstract<Usuario, UsuarioRepository
 				usuarioAutenticado.getSenhaMaster() == null ? null : usuarioAutenticado.getSenhaMaster());
 		usuario.setAtivo(usuarioAutenticado.isAtivo());
 		usuario.setAdministrador(usuarioAutenticado.isAdministrador());
+		usuario.setUploadImage(usuarioAutenticado.getUploadImage() == null ? null : usuarioAutenticado.getUploadImage());
 
 	}
 

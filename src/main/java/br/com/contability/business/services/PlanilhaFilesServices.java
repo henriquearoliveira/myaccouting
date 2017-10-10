@@ -9,10 +9,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class PlanilhaFilesServices {
 	
-	public void teste() {
-		System.out.println("teste");
-	}
-
 	public FileInputStream criaInputStream(File file, FileInputStream fileInputStream) {
 		try {
 			fileInputStream = new FileInputStream(file);

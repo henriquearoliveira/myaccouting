@@ -104,6 +104,8 @@
 			<div class="center button">
 				<a class="link" th:href="@{/cadastrar}">Cadastrar-se</a>
 			</div>
+			
+			<div class="center line"> <input type="checkbox" name="remember-me" /> Remember Me </div>
 
 			<div id="senhaIncorreta" style="color: red; text-align: center;">
 				<p th:if="${param.error}">Email ou senha inválidos</p>

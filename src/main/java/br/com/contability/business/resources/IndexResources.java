@@ -42,7 +42,7 @@ public class IndexResources {
 	@GetMapping()
 	public ModelAndView loginPrincipal(HttpSession session) {
 
-		sessaoServices.configuraSession(session);
+		sessaoServices.configuraSessionComSessao(session);
 		
 		return alimentaPaginaInicial();
 

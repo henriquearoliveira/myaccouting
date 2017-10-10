@@ -1,6 +1,7 @@
 package br.com.contability.utilitario;
 
 import java.math.BigDecimal;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
@@ -146,6 +147,26 @@ public class CaixaDeFerramentas {
 		DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
 		return LocalDate.parse(date, format);
+
+	}
+	
+	/**
+	 * @param dateTimeCloudinary
+	 * @return LocalDateTime
+	 */
+	public static LocalDate stringToLocalDateLibreOffice(String dateLibreOffice) {
+
+		DateFormat formatter = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy", Locale.US);
+		Date date = null;
+		try {
+			date = (Date)formatter.parse(dateLibreOffice);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		System.out.println("LocalDate: " + converteDateToLocalDate(date));
+		
+		return converteDateToLocalDate(date);
 
 	}
 

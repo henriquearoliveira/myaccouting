@@ -54,6 +54,14 @@ html, body {
 	display:none;
 }
 
+
+
+.line input {
+    display: inline;
+    width: 5%;
+    
+}
+
 /* #block-top {
 	background-image: linear-gradient(to right, #222d32, #2196f3, #222d32);
 	display: table;

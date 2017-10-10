@@ -483,6 +483,7 @@ public class LancamentoServices extends ServicesAbstract<Lancamento, LancamentoR
 		return valorLancamento;
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public void preencheObjetoPlanilhaLibreOffice(List<Lancamento> objetos, Sheet sheet) {
 
@@ -490,9 +491,7 @@ public class LancamentoServices extends ServicesAbstract<Lancamento, LancamentoR
 		int nColCount = sheet.getColumnCount();
 		int nRowCount = sheet.getRowCount();
 
-		System.out.println("Rows :" + nRowCount);
-		System.out.println("Cols :" + nColCount);
-		// Iterating through each row of the selected sheet
+		// ITERANDO EM CADA LINHA
 		MutableCell cell = null;
 
 		for (int nRowIndex = 0; nRowIndex < nRowCount; nRowIndex++) {
@@ -502,7 +501,7 @@ public class LancamentoServices extends ServicesAbstract<Lancamento, LancamentoR
 
 			Lancamento lancamento = new Lancamento();
 
-			// Iterating through each column
+			// ITERANDO SOBRE CADA COLUNA
 			int nColIndex = 0;
 
 			for (; nColIndex < nColCount; nColIndex++) {
@@ -511,10 +510,9 @@ public class LancamentoServices extends ServicesAbstract<Lancamento, LancamentoR
 
 				alimentaValor(nColIndex, lancamento, cell);
 
-				System.out.print(cell.getValue() + " ");
-
 			}
-			System.out.println();
+			
+			objetos.add(lancamento);
 		}
 
 	}
@@ -523,14 +521,15 @@ public class LancamentoServices extends ServicesAbstract<Lancamento, LancamentoR
 	 * @param nColIndex
 	 * @param lancamento
 	 */
+	@SuppressWarnings("rawtypes")
 	private void alimentaValor(int nColIndex, Lancamento lancamento, MutableCell cell) {
 
 		switch (nColIndex) {
 
 		case 0:
-
+			
 			lancamento.setDataHoraLancamento(
-					CaixaDeFerramentas.calendarFromStringDiaMesAnoDate(cell.getValue().toString()));
+					CaixaDeFerramentas.stringToLocalDateLibreOffice(cell.getValue().toString()));
 
 			break;
 
