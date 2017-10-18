@@ -144,7 +144,12 @@ function enviaLancamentos(){
 		urlTabela = urlTabela + '?date=' + encodeURIComponent($('#inputMonthYear').val());
 	}
 	
-	$("#ajax-loading").html(" <img src='/layout/imgs/loading-gif/spinner-loading5.gif' alt='loading...' /> ");
+	$("#ajax-loading").html(" " +
+			" <div class='row'>" +
+			" 	<div class='col-xs-12'>" +
+			" 		<img src='/layout/imgs/loading-gif/spinner-loading5.gif' alt='loading...' />" +
+			" 	</div>" +
+			" </div");
 	
 	$("#tabelaBlock").load(urlTabela, function(){
 		/*$.getScript("https://code.jquery.com/jquery-2.2.3.min.js");
