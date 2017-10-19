@@ -48,16 +48,16 @@ public class IndexServices {
 		return meses;
 	}
 
-	public List<Long> getBalanceteReceitas() {
+	public List<Double> getBalanceteReceitas() {
 		
-		Map<Integer, Long> receitas = new HashMap<>();
+		Map<Integer, Double> receitas = new HashMap<>();
 		
 		mesesLocalDateTime.forEach(m -> {
 			
 			Stream<Lancamento> lan = lancamentos.stream().filter(l ->  l.getDataHoraLancamento().getMonth().getValue() == m
 					&& l.getCategoria().getTipoDeCategoria() == TipoDeCategoria.RECEITA);
 			
-			Long valorTotal = lan.mapToLong(l -> l.getValorLancamento().longValue()).sum();
+			Double valorTotal = lan.mapToDouble(l -> l.getValorLancamento().doubleValue()).sum();
 			
 			receitas.put(m, valorTotal);
 		});
@@ -65,44 +65,44 @@ public class IndexServices {
 		return new ArrayList<>(receitas.values());
 	}
 	
-	public List<Long> getBalanceteDespesas() {
+	public List<Double> getBalanceteDespesas() {
 		
-		Map<Integer, Long> receitas = new HashMap<>();
+		Map<Integer, Double> despesas = new HashMap<>();
 		
 		mesesLocalDateTime.forEach(m -> {
 			
 			Stream<Lancamento> lan = lancamentos.stream().filter(l ->  l.getDataHoraLancamento().getMonth().getValue() == m
 					&& l.getCategoria().getTipoDeCategoria() == TipoDeCategoria.DESPESA);
 			
-			Long valorTotal = lan.mapToLong(l -> l.getValorLancamento().longValue()).sum();
+			Double valorTotal = lan.mapToDouble(l -> l.getValorLancamento().doubleValue()).sum();
 			
-			receitas.put(m, valorTotal);
+			despesas.put(m, valorTotal);
 		});
 		
-		return new ArrayList<>(receitas.values());
+		return new ArrayList<>(despesas.values());
 	}
 
-	public Long getReceitasMes() {
+	public Double getReceitasMes() {
 		
 		return lancamentos.stream().filter(l ->  l.getCategoria().getTipoDeCategoria() == TipoDeCategoria.RECEITA
 				&& l.getDataHoraLancamento().getMonth() == LocalDate.now().getMonth())
-				.mapToLong(l -> l.getValorLancamento().longValue()).sum();
+				.mapToDouble(l -> l.getValorLancamento().doubleValue()).sum();
 
 	}
 	
-	public Long getDespesasMes() {
+	public Double getDespesasMes() {
 		
 		return lancamentos.stream().filter(l ->  l.getCategoria().getTipoDeCategoria() == TipoDeCategoria.DESPESA
 				&& l.getDataHoraLancamento().getMonth() == LocalDate.now().getMonth())
-				.mapToLong(l -> l.getValorLancamento().longValue()).sum();
+				.mapToDouble(l -> l.getValorLancamento().doubleValue()).sum();
 
 	}
 
 	public Object getSaldoMes() {
 		
 		return lancamentos.stream().filter(l -> l.getDataHoraLancamento().getMonth() == LocalDate.now().getMonth())
-				.mapToLong(l -> l.getCategoria().getTipoDeCategoria() == TipoDeCategoria.RECEITA ?
-				l.getValorLancamento().longValue() : -l.getValorLancamento().longValue()).sum();
+				.mapToDouble(l -> l.getCategoria().getTipoDeCategoria() == TipoDeCategoria.RECEITA ?
+				l.getValorLancamento().doubleValue() : -l.getValorLancamento().doubleValue()).sum();
 		
 	}
 
