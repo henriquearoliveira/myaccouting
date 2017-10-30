@@ -239,6 +239,8 @@ public class LancamentoResources {
 		
 		List<Lancamento> lancamentosVencidos = lancamentoServices.selecionaVencidosAnteriorA(usuario, LocalDate.now());
 		
+		// Function<Lancamento, LocalDate> teste = l -> l.getDataHoraLancamento(); MONTADO SEPARADAMENTE
+		
 		List<Lancamento> lancamentosVencidosDintinctosPorData = lancamentosVencidos.stream()
 				.filter(CaixaDeFerramentas.distinctByKey(Lancamento::getDataHoraVencimento)).collect(Collectors.toList());
 														// É OGRIGADO A USAR ASSSIM DEVIDO ESTAR EM OUTRA CLASSE

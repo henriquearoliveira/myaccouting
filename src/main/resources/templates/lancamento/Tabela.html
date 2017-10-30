@@ -38,12 +38,25 @@
 	
 	
 	<div class="row" th:unless="${saldo == null}">
-		<div class="col-xs-offset-6 col-xs-6 col-md-offset-8 col-md-4 text-right">
+		<div class="col-xs-offset-5 col-xs-6 col-md-offset-8 col-md-4 text-right">
 			<span style= "color: gray;">Saldo Atual: </span>
 
 			<strong style= "font-size: 20px; color: #00C49D;" th:text="${saldo != null} ? ${'R$ ' + #numbers.formatDecimal(saldo, 1, 'POINT', 2, 'COMMA')} : 0.00">0,00</strong>
-																											<!-- COLOCANDO ESSE 1 O VALOR FICA ASSIM: R$ 0,50 CASO CONTRÁRIO R$ ,50 -->
+			
 		</div>
+		
+		<div class="input-group-btn dropdown">
+		
+        	<button type="button" class="btn btn-default dropdown-toggle personalized-color" id="teste" data-toggle="dropdown"><span class="fa fa-caret-down"></span></button>
+	        
+	        <ul class="dropdown-menu pull-right">
+		        <li th:if="${saldo &lt; 0}" ><a href="#">Depósito em Conta</a></li>
+		        <li><a href="#">Lançamento próximo mês</a></li>
+		        <!-- <li class="divider"></li> -->
+		        <!-- <li><a href="#">Separated link</a></li> -->
+	        </ul>
+       	</div>
+       	
 	</div>
 	
 	<div class="row" th:unless="${saldoProvavel == null}">

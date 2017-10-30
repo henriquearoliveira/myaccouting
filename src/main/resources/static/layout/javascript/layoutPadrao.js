@@ -127,6 +127,20 @@ $('#myModal').on('shown.bs.modal', function(e) {
 	$('#imgModal').attr('src', imagem);
 });
 
+//Add slideDown animation to Bootstrap dropdown when expanding.
+/*$('.dropdown').on('show.bs.dropdown', function() {
+	$(this).find('.dropdown-menu').first().stop(true, true).slideDown();
+});
+
+$('body').on("click", '#teste',function() {
+	alert("aer");
+});
+
+// Add slideUp animation to Bootstrap dropdown when collapsing.
+$('.dropdown').on('hide.bs.dropdown', function() {
+  $(this).find('.dropdown-menu').first().stop(true, true).slideUp();
+});*/
+
 /*
  * $('#monthYearListagemm').datepicker({ format: 'MM yyyy', startView: "months",
  * minViewMode: "months", forceParse: false, autoclose: true });
