@@ -1,8 +1,16 @@
 $(function() {
 	setTimeout(function() {
-		$('#hideComponent').fadeOut('slow');
+		$('#hideComponent').fadeOut('slow', function(){
+			$(this).remove();
+		});
 	}, 5000);
 });
+
+/*$("body").on("change", '#hideComponent', function() { 
+	alert("teste");
+});
+
+*/
 
 /*$(document).ready(*/
 $(function() {
@@ -124,9 +132,88 @@ $(document).ready(function(e) {
 $('#confirmaExclusaoModal').on('show.bs.modal', function (event) {
 	var botao = $(event.relatedTarget);
 	var id = botao.attr("id")
-	var modal = $(this);
+	/*var modal = $(this);*/
 	$('.idValueModal').val(id);
 });
+
+$('#confirmaDepositoEmConta').on('show.bs.modal', function () {
+	var valorData = $('#inputMonthYear').val();
+	/*var modal = $(this);*/
+	$('.valueModal').val(valorData);
+});
+
+$('#formDeposito').on('submit', function(e){
+	
+	var date = $('.valueModal').val();
+	
+	var endereco = "saldo?date=";
+	
+	var form = this;
+	
+	var saldo = null;
+	
+	e.preventDefault(e);
+	
+	$.ajax({
+		
+		url : endereco + date,
+		type : "GET",
+
+		beforeSend : function(xhr) {
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		},
+
+		success : function(data) {
+			
+			saldo = data;
+			
+			verificaValorDeposito(saldo, form);
+		},
+
+		error : function(e) {
+
+			$('#bodyteste').append(erroDiv); // VARIÁVEL LOCALIZADA EM OUTRO ARQUIVO -> erroDivMessage.js
+
+		}
+	});
+	
+});
+
+function verificaValorDeposito(saldo, form){
+	
+	var valorDepositoDigitado = $('#valorConversao').val().replace(/\./g, '').replace(/\,/g, '.');
+	
+	/*alert('digitado: ' + valorDepositoDigitado);
+	alert('saldo: ' + saldo);
+	*/
+	
+	var valorDigitado = Number(valorDepositoDigitado);
+	
+	if (saldo < valorDigitado) {
+		
+		$('#valorDigitadoIncorretoError').append(valorDigitadoIncorreto);
+		/*$(valorDigitadoIncorreto).appendTo('#valorDigitadoIncorretoError').delay(1000).queue(function(){
+			$(this).remove(); REMOVE RAPIDO DE MAIS
+		});*/
+		
+		setTimeout(function() {
+			$('#hideComponent').fadeOut('slow', function(){
+				$(this).remove();
+			});
+		}, 2000);
+		
+		return;
+		
+	}
+	
+	form.submit();
+	
+}
+
+/*$('body').on('appened', '#hideComponent', function(){
+	alert('teste');
+});*/
 
 /* FAZ O PROCESSO DINAMICO DOS LANCAMENTOS, CARREGAMENTO DA TABELA */
 

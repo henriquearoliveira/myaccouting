@@ -32,6 +32,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import br.com.contability.business.Conta;
 import br.com.contability.business.Lancamento;
 import br.com.contability.business.Lancamentos;
 import br.com.contability.business.Usuario;
@@ -218,14 +219,39 @@ public class LancamentoResources {
 		attributes.addFlashAttribute("mensagem", "Lancamento gravado com sucesso");
 		return new ModelAndView(StringPaginasAndRedirect.LANCAMENTO);
 	}
+	
+	@GetMapping("saldo")
+	public ResponseEntity<Double> getSaldo(@RequestParam String date) {
+		
+		Usuario usuario = auth.getAutenticacao();
+		
+		LocalDate localDate = CaixaDeFerramentas.calendarFromStringMesAnoDate(date);
+		
+		BigDecimal saldo = (BigDecimal) saldoServices.getSaldoDo(usuario, localDate);
+		
+		return ResponseEntity.ok(saldo.doubleValue());
+	}
+	
+	@PostMapping("/deposito")
+	public ModelAndView salvarDeposito(@RequestParam String date, @RequestParam Conta conta, @RequestParam String valor) {
+		
+		System.out.println("email: " + date);
+		System.out.println("conta: " + conta.getDescricao());
+		System.out.println("valor: " + valor);
+		
+		
+		return new ModelAndView("redirect:/lancamento/lista");
+	}
 
 	@GetMapping("/lista")
 	public ModelAndView lista(Model model, Lancamento lancamento) {
-		auth.getAutenticacao();
+		
+		Usuario usuario = auth.getAutenticacao();
 
 		ModelConstruct.setAttributes(model, "activeLiLancamento", "activeListagem");
 
 		ModelAndView mv = new ModelAndView("lancamento/Listagem");
+		mv.addObject("contas", contaServices.seleciona(usuario));
 
 		return mv;
 	}
