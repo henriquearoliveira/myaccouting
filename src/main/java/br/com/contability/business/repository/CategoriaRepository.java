@@ -19,4 +19,7 @@ public interface CategoriaRepository extends JpaRepository<Categoria, Long>{
 	@Query("SELECT c FROM Categoria c JOIN c.lancamentos ln WHERE ln.id = ?1")
 	public Categoria getPeloLancamento(Long idLancamento);
 
+	@Query("SELECT c FROM Categoria c WHERE c.descricao LIKE ?1 AND c.usuario.id = ?2")
+	public Optional<Categoria> getCategoriaProximoMes(String string, Long idUsuario);
+
 }

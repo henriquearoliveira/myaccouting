@@ -3,6 +3,8 @@ package br.com.contability.business.services;
 import java.io.File;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
@@ -20,9 +22,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import br.com.contability.business.Conta;
 import br.com.contability.business.Lancamento;
 import br.com.contability.business.Lancamentos;
 import br.com.contability.business.TipoDeCategoria;
+import br.com.contability.business.TipoDeOpcoes;
 import br.com.contability.business.Usuario;
 import br.com.contability.business.facade.SaldoFacade;
 import br.com.contability.business.repository.LancamentoRepository;
@@ -46,11 +50,11 @@ public class LancamentoServices extends ServicesAbstract<Lancamento, LancamentoR
 	@Autowired
 	private ConfiguraArquivosServices arquivosServices;
 
-	private LeitorPlanilhaStrategy<Lancamento, LancamentoServices> leitorPlanilhaExcel = new 
-			LeitorPlanilhasExcel<>(this);
+	private LeitorPlanilhaStrategy<Lancamento, LancamentoServices> leitorPlanilhaExcel = new LeitorPlanilhasExcel<>(
+			this);
 
-	private LeitorPlanilhaStrategy<Lancamento, LancamentoServices> leitorPlanilhaLibreOffice = new
-			LeitorPlanilhasLibreOffice<>(this);
+	private LeitorPlanilhaStrategy<Lancamento, LancamentoServices> leitorPlanilhaLibreOffice = new LeitorPlanilhasLibreOffice<>(
+			this);
 
 	@Autowired
 	private SaldoFacade saldoFacade;
@@ -77,6 +81,57 @@ public class LancamentoServices extends ServicesAbstract<Lancamento, LancamentoR
 			atualizaLancamento(lancamento, session);
 		}
 
+	}
+
+	public void gravaLancamentoProximoMesOuDeposito(String date, Conta conta,
+			TipoDeOpcoes opcao, String valor, Usuario usuario) {
+		
+		LocalDateTime dataCorrigida = getDataFormatada(date);
+		BigDecimal valorLancamento = CaixaDeFerramentas.converteStringToBidDecimal(valor);
+		
+		if (opcao.equals(TipoDeOpcoes.LANCAMENTO_PROXIMO_MES)) {
+			/*Lancamento lancamento = criaLancamentoProximoMes(conta, valorLancamento, dataCorrigida, usuario);
+			System.out.println("lancamento proximo mes");
+			gravaLancamento(lancamento);*/
+		} else if (opcao.equals(TipoDeOpcoes.DEPOSITO_CONTA)) {
+			conta.setUsuario(usuario);
+			gravaDepositoEmConta(dataCorrigida, conta, valorLancamento);
+		}
+		
+
+	}
+
+	private LocalDateTime getDataFormatada(String date) {
+		LocalDate localDate = CaixaDeFerramentas.calendarFromStringMesAnoDate(date);
+		LocalDateTime localDateTime = LocalDateTime.of(localDate, LocalTime.now());
+		LocalDateTime dataCorrigida = localDateTime.plusMonths(1).withDayOfMonth(1);
+		return dataCorrigida;
+	}
+
+	private void gravaDepositoEmConta(LocalDateTime data, Conta conta, BigDecimal valor) {
+		
+		System.out.println("deposito em conta");
+		
+	}
+
+	/**
+	 * @param conta
+	 * @param valor
+	 * @param usuario
+	 * @param localDateTime
+	 */
+	private Lancamento criaLancamentoProximoMes(Conta conta, BigDecimal valor, LocalDateTime localDateTime, Usuario usuario) {
+		
+		Lancamento lancamento = new Lancamento();
+		lancamento.setDataHoraCadastro(localDateTime);
+		lancamento.setDataHoraLancamento(localDateTime.toLocalDate());
+		lancamento.setConta(conta == null ? null : conta);
+		lancamento.setCategoria(categoriaServices.categoriaProximoMes(usuario, localDateTime));
+		lancamento.setDescricao("Lancamento referente mês passado");
+		lancamento.setUsuario(usuario);
+		lancamento.setValorLancamento(valor);
+		
+		return lancamento;
 	}
 
 	private void atualizaLancamento(Lancamento lancamento, HttpSession session) {
@@ -511,7 +566,7 @@ public class LancamentoServices extends ServicesAbstract<Lancamento, LancamentoR
 				alimentaValor(nColIndex, lancamento, cell);
 
 			}
-			
+
 			objetos.add(lancamento);
 		}
 
@@ -527,9 +582,9 @@ public class LancamentoServices extends ServicesAbstract<Lancamento, LancamentoR
 		switch (nColIndex) {
 
 		case 0:
-			
-			lancamento.setDataHoraLancamento(
-					CaixaDeFerramentas.stringToLocalDateLibreOffice(cell.getValue().toString()));
+
+			lancamento
+					.setDataHoraLancamento(CaixaDeFerramentas.stringToLocalDateLibreOffice(cell.getValue().toString()));
 
 			break;
 

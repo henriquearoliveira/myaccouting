@@ -1,5 +1,6 @@
 package br.com.contability.business.services;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 
 import br.com.contability.business.Categoria;
+import br.com.contability.business.TipoDeCategoria;
 import br.com.contability.business.Usuario;
 import br.com.contability.business.repository.CategoriaRepository;
 import br.com.contability.comum.ServicesAbstract;
@@ -116,6 +118,31 @@ public class CategoriaServices extends ServicesAbstract<Categoria, CategoriaRepo
 		categoria.orElseThrow(() -> new ObjetoInexistenteException("Categoria inexistente"));
 		
 		return categoria.get().getTipoDeCategoria().name();
+	}
+
+	/**
+	 * @param usuario
+	 * @param localDateTime
+	 * @return RETORNA A CATEGORIA JÁ CADASTRADA OU INSERE A CATEGORIA NECESSÁRIA
+	 */
+	public Categoria categoriaProximoMes(Usuario usuario, LocalDateTime localDateTime) {
+		
+		Optional<Categoria> categoria = super.getJpa()
+				.getCategoriaProximoMes("Lançamento referente mes passado", usuario.getId());
+		
+		return categoria.orElseGet(() -> novaCategoriaProximoMes(usuario, localDateTime));
+	}
+
+	private Categoria novaCategoriaProximoMes(Usuario usuario, LocalDateTime localDateTime) {
+		
+		Categoria categoria = new Categoria();
+		categoria.setDataHoraCadastro(localDateTime);
+		categoria.setDescricao("Lançamento referente mês passado");
+		categoria.setObservacao("Crédito referente mês passadpo");
+		categoria.setTipoDeCategoria(TipoDeCategoria.RECEITA);
+		categoria.setUsuario(usuario);
+		
+		return this.insere(categoria, null);
 	}
 
 }

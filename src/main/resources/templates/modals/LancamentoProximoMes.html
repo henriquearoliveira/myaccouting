@@ -1,7 +1,7 @@
 <div th:fragment="alert" xmlns:th="http://www.thymeleaf.org"
 	th:remove="tag">
 
-	<div class="modal fade" id="confirmaDepositoEmConta" tabindex="-1"
+	<div class="modal fade" id="confirmaLancamentoOuDeposito" tabindex="-1"
 		role="dialog">
 		<div class="modal-dialog" role="document">
 
@@ -14,15 +14,15 @@
 						<span aria-hidden="true">&times;</span>
 					</button>
 
-					<h4 class="modal-title" id="myModalLabel">Depósito em Conta</h4>
+					<h4 class="modal-title" id="myModalLabel">Lançamento próximo mês</h4>
 				</div>
 
 				<div class="modal-body">
 				
 					<div id="valorDigitadoIncorretoError"></div>
 
-					<form method="POST" id="formDeposito" th:object="${lancamento}"
-						th:action="@{/lancamento/deposito}" role="form">
+					<form method="POST" id="formProximoMes" th:object="${lancamento}"
+						th:action="@{/lancamento/lancamentoOuDepositoProximoMes}" role="form">
 
 						<!-- <div th:replace="mensagensutils/Erros :: erros" th:remove="tag"></div> -->
 
@@ -39,8 +39,20 @@
 										th:value="${conta.id != null} ? ${conta.id}"
 										th:field="*{id}" readonly="true" /> -->
 								</div>
-
+								
 								<div class="form-group">
+									<label>Selecione: </label>
+									
+									<select id="opcao" class="form-control" th:name="opcao">
+										<!-- <option value="">Seleciona a conta</option> -->
+										<option th:each="opcao : ${opcoes}" th:value="${opcao}"
+											th:text="${opcao.descricao}"></option>
+										<!-- <option th:each="conta : ${contas}" th:value="${conta.id}"
+											th:text="${conta.descricao}"></option> -->
+									</select>
+								</div>
+
+								<div class="form-group" id="idConta">
 									<label>Selecione: </label>
 									
 									<select id="conta" class="form-control" th:name="conta">
@@ -55,8 +67,8 @@
 							</div>
 							
 							<div class="col-md-12">
-				            	<div class="form-group">
-									<label for="valorConversao" >Valor depósito:</label>
+				            	<div class="form-group" id="idContaSelecao">
+									<label for="valorConversao" >Valor creditado para o próximo mês:</label>
 									
 									<input id="valorConversao" type="text" class="form-control"
 										th:name="valor"/>

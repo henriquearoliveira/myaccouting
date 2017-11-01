@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,6 +36,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import br.com.contability.business.Conta;
 import br.com.contability.business.Lancamento;
 import br.com.contability.business.Lancamentos;
+import br.com.contability.business.TipoDeOpcoes;
 import br.com.contability.business.Usuario;
 import br.com.contability.business.services.CategoriaServices;
 import br.com.contability.business.services.ContaServices;
@@ -48,7 +50,7 @@ import br.com.contability.utilitario.CaixaDeFerramentas;
 @Controller
 @RequestMapping("/lancamento")
 public class LancamentoResources {
-
+	
 	@Autowired
 	private AuthenticationAbstract auth;
 
@@ -63,7 +65,7 @@ public class LancamentoResources {
 	
 	@Autowired
 	private SaldoServices saldoServices;
-
+	
 	@GetMapping()
 	public ModelAndView novo(Model model, Lancamento lancamento) {
 		ModelConstruct.setAttributes(model, "activeLiLancamento", "activeNovo");
@@ -232,13 +234,13 @@ public class LancamentoResources {
 		return ResponseEntity.ok(saldo.doubleValue());
 	}
 	
-	@PostMapping("/deposito")
-	public ModelAndView salvarDeposito(@RequestParam String date, @RequestParam Conta conta, @RequestParam String valor) {
+	@PostMapping("/lancamentoOuDepositoProximoMes")
+	public ModelAndView lancamentoOuDepositoProximoMes(@RequestParam String date, @RequestParam TipoDeOpcoes opcao,
+			@RequestParam(required = false) Conta conta, @RequestParam String valor) {
 		
-		System.out.println("email: " + date);
-		System.out.println("conta: " + conta.getDescricao());
-		System.out.println("valor: " + valor);
+		Usuario usuario = auth.getAutenticacao();
 		
+		lancamentoServices.gravaLancamentoProximoMesOuDeposito(date, conta, opcao, valor, usuario);
 		
 		return new ModelAndView("redirect:/lancamento/lista");
 	}
@@ -252,6 +254,7 @@ public class LancamentoResources {
 
 		ModelAndView mv = new ModelAndView("lancamento/Listagem");
 		mv.addObject("contas", contaServices.seleciona(usuario));
+		mv.addObject("opcoes", TipoDeOpcoes.values());
 
 		return mv;
 	}
@@ -294,7 +297,11 @@ public class LancamentoResources {
 			return "lancamento/TabelasVazias :: listaVazia";
 		}
 		
-		model.addAttribute("lancamentos", listaLancamentos);
+		List<Lancamento> lancamentosOrdenados = listaLancamentos.stream()
+				.sorted(Comparator.comparing(Lancamento::getDataHoraLancamento).thenComparing(Lancamento::getDescricao))
+				.collect(Collectors.toList());
+		
+		model.addAttribute("lancamentos", lancamentosOrdenados);
 		model.addAttribute("saldo", saldoServices.getSaldoDo(usuario, localDate));
 		model.addAttribute("saldoProvavel", saldoServices.getSaldoProvavelDo(usuario, localDate));
 		

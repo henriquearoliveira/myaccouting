@@ -52,13 +52,17 @@ public class IndexResources {
 		
 		ModelAndView mv = new ModelAndView("Index");
 		
-		mv.addObject("meses", indexServices.getBalanceteMeses(auth.getAutenticacao()));
-		mv.addObject("receitas", indexServices.getBalanceteReceitas());
-		mv.addObject("despesas", indexServices.getBalanceteDespesas());
-		mv.addObject("receitasDoMes", indexServices.getReceitasMes());
-		mv.addObject("despesasDoMes", indexServices.getDespesasMes());
-		mv.addObject("saldoDoMes", indexServices.getSaldoMes());
-		mv.addObject("contas", indexServices.getContas(auth.getAutenticacao()));
+		synchronized (indexServices) {
+			
+			mv.addObject("meses", indexServices.getBalanceteMeses(auth.getAutenticacao()));
+			mv.addObject("receitas", indexServices.getBalanceteReceitas());
+			mv.addObject("despesas", indexServices.getBalanceteDespesas());
+			mv.addObject("receitasDoMes", indexServices.getReceitasMes());
+			mv.addObject("despesasDoMes", indexServices.getDespesasMes());
+			mv.addObject("saldoDoMes", indexServices.getSaldoMes());
+			mv.addObject("contas", indexServices.getContas(auth.getAutenticacao()));
+		
+		}
 		
 		return mv;
 	}

@@ -136,13 +136,13 @@ $('#confirmaExclusaoModal').on('show.bs.modal', function (event) {
 	$('.idValueModal').val(id);
 });
 
-$('#confirmaDepositoEmConta').on('show.bs.modal', function () {
+$('#confirmaLancamentoOuDeposito').on('show.bs.modal', function () {
 	var valorData = $('#inputMonthYear').val();
 	/*var modal = $(this);*/
 	$('.valueModal').val(valorData);
 });
 
-$('#formDeposito').on('submit', function(e){
+$('#formProximoMes').on('submit', function(e){
 	
 	var date = $('.valueModal').val();
 	
@@ -184,31 +184,67 @@ function verificaValorDeposito(saldo, form){
 	
 	var valorDepositoDigitado = $('#valorConversao').val().replace(/\./g, '').replace(/\,/g, '.');
 	
-	/*alert('digitado: ' + valorDepositoDigitado);
-	alert('saldo: ' + saldo);
-	*/
-	
 	var valorDigitado = Number(valorDepositoDigitado);
 	
-	if (saldo < valorDigitado) {
-		
-		$('#valorDigitadoIncorretoError').append(valorDigitadoIncorreto);
-		/*$(valorDigitadoIncorreto).appendTo('#valorDigitadoIncorretoError').delay(1000).queue(function(){
-			$(this).remove(); REMOVE RAPIDO DE MAIS
-		});*/
-		
-		setTimeout(function() {
-			$('#hideComponent').fadeOut('slow', function(){
-				$(this).remove();
-			});
-		}, 2000);
-		
+	var idValorError = $('#idContaSelecao');
+	var idContaError = $('#idConta');
+	
+	var tipoDeOpcao = $('#opcao').val(); 
+	var contaSelecionada = $('#conta').val();
+	
+	if(verificaTipoDeOpcaoSelecionada(tipoDeOpcao, contaSelecionada, idContaError)){
 		return;
+	}
+	
+	if(verificaValor(idValorError, saldo, valorDigitado)){
+		return;
+	}
+	/*
+	form.submit();*/
+	
+}
+
+function verificaValor(idValorError, saldo, valorDigitado) {
+	
+	if (valorDigitado <= 0) {
+		
+		configuraError(idValorError, valorDigitadoNegativo)
+		
+		return true;
+		
+	} else if (saldo < valorDigitado) {
+		
+		configuraError(idValorError, valorDigitadoIncorreto)
+		
+		return true;
 		
 	}
 	
-	form.submit();
+	return false;
 	
+}
+
+function verificaTipoDeOpcaoSelecionada(tipoDeOpcao, contaSelecionada, idContaError) {
+	
+	if (tipoDeOpcao != '' && tipoDeOpcao == 'DEPOSITO_CONTA' && contaSelecionada == '') {
+		configuraError(idContaError, contaNaoSelecionada)
+		return true;
+	}
+	
+	return false;
+	
+}
+
+function configuraError(idContaError, tipoDeErro) {
+	$('#valorDigitadoIncorretoError').append(tipoDeErro);
+	idContaError.addClass('has-error');
+	
+	setTimeout(function() {
+		idContaError.removeClass('has-error');
+		$('#hideComponent').fadeOut('slow', function(){
+			$(this).remove();
+		});
+	}, 3000);
 }
 
 /*$('body').on('appened', '#hideComponent', function(){
