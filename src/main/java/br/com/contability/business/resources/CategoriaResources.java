@@ -1,5 +1,6 @@
 package br.com.contability.business.resources;
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -42,7 +43,7 @@ public class CategoriaResources {
 		auth.getAutenticacao();
 		
 		ModelAndView mv = new ModelAndView("categoria/Categoria");
-		mv.addObject("tipoDeCategorias", TipoDeCategoria.values());
+		mv.addObject("tipoDeCategorias", Arrays.asList(TipoDeCategoria.RECEITA, TipoDeCategoria.DESPESA));
 		
 		return mv;
 	}

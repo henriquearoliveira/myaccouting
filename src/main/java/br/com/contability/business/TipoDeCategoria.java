@@ -1,19 +1,20 @@
 package br.com.contability.business;
 
-import br.com.contability.comum.BeanIdentificavel;
-
 public enum TipoDeCategoria {
 
-	DESPESA("Despesa", new Usuario()), RECEITA("Receita", new Categoria());
+	DESPESA("Despesa"/*, new Usuario()*/),
+	RECEITA("Receita"/*, new Categoria()*/),
+	DEPOSITO("Deposito"),
+	SAQUE("Saque");
 
 	private String descricao;
 
-	private BeanIdentificavel beanIdentificavel;
+//	private BeanIdentificavel beanIdentificavel;
 
-	private TipoDeCategoria(String descricao, BeanIdentificavel beanIdentificavel) {
+	private TipoDeCategoria(String descricao/*, BeanIdentificavel beanIdentificavel*/) {
 
 		this.descricao = descricao;
-		this.beanIdentificavel = beanIdentificavel;
+//		this.beanIdentificavel = beanIdentificavel;
 
 	}
 
@@ -21,14 +22,17 @@ public enum TipoDeCategoria {
 		return descricao;
 	}
 
-	public BeanIdentificavel getBeanIdentificavel() {
+	/*public BeanIdentificavel getBeanIdentificavel() {
 		return beanIdentificavel;
 	}
 
-	/**
+	*//**
 	 * @param tipoDeCategoriaParameter
+	 * 
+	 * IDENTIFICA PELO TIPO DE BEAN IDENTIFICAVEL
+	 * 
 	 * @return
-	 */
+	 *//*
 	public BeanIdentificavel organiza(TipoDeCategoria tipoDeCategoriaParameter) {
 
 		TipoDeCategoria[] tipos = TipoDeCategoria.values();
@@ -44,6 +48,6 @@ public enum TipoDeCategoria {
 		}
 
 		return null;
-	}
+	}*/
 
 }

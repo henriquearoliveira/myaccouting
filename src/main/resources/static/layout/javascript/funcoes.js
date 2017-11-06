@@ -199,8 +199,8 @@ function verificaValorDeposito(saldo, form){
 	if(verificaValor(idValorError, saldo, valorDigitado)){
 		return;
 	}
-	/*
-	form.submit();*/
+	
+	form.submit();
 	
 }
 

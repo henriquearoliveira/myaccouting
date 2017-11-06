@@ -499,17 +499,33 @@
             <li th:class="${activeNovo}"><a th:href="@{/lancamento}">
             	<i class="fa fa-floppy-o" aria-hidden="true"></i> Novo </a></li>
             	
-            	<li th:class="${activeNovoImport}"><a th:href="@{/lancamento/import}">
+           	<li th:class="${activeNovoImport}"><a th:href="@{/lancamento/import}">
             	<i class="fa fa-floppy-o" aria-hidden="true"></i> Importar </a></li>
-          <!-- </ul>
-          
-          <ul class="treeview-menu"> -->
+
             <li th:class="${activeListagem}"><a th:href="@{/lancamento/lista}">
             	<i class="fa fa-list" aria-hidden="true"></i> Cadastrados </a></li>
             	
             <li th:class="${activeListagemVencidos}"><a th:href="@{/lancamento/vencidos}">
             	<i class="fa fa-list" aria-hidden="true"></i> Vencidos </a></li>
           </ul>
+          
+        </li>
+        
+        <li th:class="${activeLiPoupanca}">
+        
+          <a href="#">
+            <!-- <i class="fa fa-floppy-o" aria-hidden="true"></i> -->
+            <i class="fa fa-money" aria-hidden="true"></i> <span>Poupança</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          
+          <ul class="treeview-menu">
+            <li th:class="${activeListagem}"><a th:href="@{/poupanca/lista}">
+            	<i class="fa fa-list" aria-hidden="true"></i> Cadastrados </a></li>
+          </ul>
+          
         </li>
         
         <li class="header">LABELS</li>
