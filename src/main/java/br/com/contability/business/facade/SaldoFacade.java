@@ -1,30 +1,18 @@
 package br.com.contability.business.facade;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import br.com.contability.business.Lancamento;
-import br.com.contability.business.Saldo;
-import br.com.contability.business.services.LancamentoServices;
-import br.com.contability.business.services.SaldoServices;
-
-@Component
+//@Component
 public class SaldoFacade {
 	
-	@Autowired
+	/*@Autowired
 	private LancamentoServices lancamentoServices;
 	
 	@Autowired
 	private SaldoServices saldoServices;
 
-	/**
+	*//**
 	 * @param usuario
 	 * @param lancamento
-	 */
+	 *//*
 	public void atualizaSaldoUsuario(Lancamento lancamento) {
 		
 		BigDecimal saldoValor = lancamentoServices.getSaldo(lancamento.getUsuario(), lancamento.getDataHoraLancamento());
@@ -53,6 +41,6 @@ public class SaldoFacade {
 			saldo.setSaldoProvavel(saldoValorProvavel);
 			saldoServices.atualiza(saldo, null);
 		
-	}
+	}*/
 
 }

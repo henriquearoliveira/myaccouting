@@ -42,7 +42,12 @@ public class ContaServices extends ServicesAbstract<Conta, ContaRepository> {
 	 */
 	public List<Conta> seleciona(Usuario usuario) {
 
+		Conta conta = new Conta();
+		conta.setId(new Long(0));
+		conta.setDescricao("TODAS");
+		
 		List<Conta> contas = super.getJpa().selecionaPelo(usuario.getId());
+		contas.add(0, conta);
 
 		return contas;
 	}
@@ -64,6 +69,14 @@ public class ContaServices extends ServicesAbstract<Conta, ContaRepository> {
 		mv.addObject("conta", conta.get());
 
 		return mv;
+
+	}
+	
+	public Conta getContaPelo(Usuario usuario, Long idConta) {
+		
+		Optional<Conta> conta = super.getJpa().getConta(usuario.getId(), idConta);
+
+		return conta.orElseThrow(() -> new ObjetoInexistenteExceptionMessage("/conta", "Conta não encontrada"));
 
 	}
 

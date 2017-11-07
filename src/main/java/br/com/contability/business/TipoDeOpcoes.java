@@ -2,7 +2,7 @@ package br.com.contability.business;
 
 public enum TipoDeOpcoes {
 	
-	DEPOSITO_CONTA("Deposito em conta"), LANCAMENTO_PROXIMO_MES("Lançamento próximo mês");
+	DEPOSITO_CONTA("Deposito em conta")/*, LANCAMENTO_PROXIMO_MES("Lançamento próximo mês")*/;
 	
 	private String descricao;
 

@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -41,7 +42,6 @@ import br.com.contability.business.Usuario;
 import br.com.contability.business.services.CategoriaServices;
 import br.com.contability.business.services.ContaServices;
 import br.com.contability.business.services.LancamentoServices;
-import br.com.contability.business.services.SaldoServices;
 import br.com.contability.comum.AuthenticationAbstract;
 import br.com.contability.comum.ModelConstruct;
 import br.com.contability.comum.StringPaginasAndRedirect;
@@ -63,8 +63,10 @@ public class LancamentoResources {
 	@Autowired
 	private LancamentoServices lancamentoServices;
 	
-	@Autowired
-	private SaldoServices saldoServices;
+	private List<Lancamento> listaLancamentos = new ArrayList<>();
+	
+	/*@Autowired
+	private SaldoServices saldoServices;*/
 	
 	@GetMapping()
 	public ModelAndView novo(Model model, Lancamento lancamento) {
@@ -222,14 +224,12 @@ public class LancamentoResources {
 		return new ModelAndView(StringPaginasAndRedirect.LANCAMENTO);
 	}
 	
-	@GetMapping("saldo")
-	public ResponseEntity<Double> getSaldo(@RequestParam String date) {
+	@GetMapping("/saldo")
+	public ResponseEntity<Double> getSaldo() {
 		
-		Usuario usuario = auth.getAutenticacao();
+		auth.getAutenticacao();
 		
-		LocalDate localDate = CaixaDeFerramentas.calendarFromStringMesAnoDate(date);
-		
-		BigDecimal saldo = (BigDecimal) saldoServices.getSaldoDo(usuario, localDate);
+		BigDecimal saldo = lancamentoServices.getSaldo(listaLancamentos);
 		
 		return ResponseEntity.ok(saldo.doubleValue());
 	}
@@ -283,27 +283,32 @@ public class LancamentoResources {
 	/* APLICAR O SEGUINTE: QUANDO CLICAR EM TODAS OS LANÇAMENTOS ABRIR UMA LISTA COM ASPENAS AS PENDENTES
 	 * E EM CIMA UM <SELECT> PREENCHIDO COM AS DATAS QUE CONTEM CONTAS VENCIDAS. ACREDITO QUE VAI FICAR LEGAL */
 
-	@GetMapping("/tabela")
-	public String mostraTabelaCadastrados(Model model, @RequestParam("date") String calendarString,
+	@PostMapping("/tabela")
+	public String mostraTabelaCadastrados(Model model, @RequestParam String date, @RequestParam Long conta,
 			@RequestParam(value = "mobile", required = false) String mobile) {
 		
 		Usuario usuario = auth.getAutenticacao();
-
-		LocalDate localDate = CaixaDeFerramentas.calendarFromStringMesAnoDate(calendarString);
 		
-		List<Lancamento> listaLancamentos = lancamentoServices.seleciona(usuario, localDate);
+		LocalDate localDate = CaixaDeFerramentas.calendarFromStringMesAnoDate(date);
+		
+		listaLancamentos = lancamentoServices.seleciona(usuario, localDate, conta);
+		
+		BigDecimal saldo = lancamentoServices.getSaldo(listaLancamentos);
+		
+		BigDecimal saldoProvavel = lancamentoServices.getSaldoProvavel(listaLancamentos);
 		
 		if (listaLancamentos.isEmpty()) {
 			return "lancamento/TabelasVazias :: listaVazia";
 		}
 		
-		List<Lancamento> lancamentosOrdenados = listaLancamentos.stream()
+		List<Lancamento> lancamentosOrdenadosAndMesAtual = listaLancamentos.stream()
 				.sorted(Comparator.comparing(Lancamento::getDataHoraLancamento).thenComparing(Lancamento::getDescricao))
+				.filter(l -> l.getDataHoraLancamento().getMonth() == localDate.getMonth())
 				.collect(Collectors.toList());
 		
-		model.addAttribute("lancamentos", lancamentosOrdenados);
-		model.addAttribute("saldo", saldoServices.getSaldoDo(usuario, localDate));
-		model.addAttribute("saldoProvavel", saldoServices.getSaldoProvavelDo(usuario, localDate));
+		model.addAttribute("lancamentos", lancamentosOrdenadosAndMesAtual);
+		model.addAttribute("saldo", saldo);
+		model.addAttribute("saldoProvavel", saldoProvavel);
 		
 		return mobile == null ? "lancamento/Tabela :: tabelaLancamento"
 				: "lancamento/TabelaMobile :: tabelaLancamentoMobile";

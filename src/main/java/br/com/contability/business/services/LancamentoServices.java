@@ -22,13 +22,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import br.com.contability.business.Categoria;
 import br.com.contability.business.Conta;
 import br.com.contability.business.Lancamento;
 import br.com.contability.business.Lancamentos;
 import br.com.contability.business.TipoDeCategoria;
 import br.com.contability.business.TipoDeOpcoes;
 import br.com.contability.business.Usuario;
-import br.com.contability.business.facade.SaldoFacade;
 import br.com.contability.business.repository.LancamentoRepository;
 import br.com.contability.comum.IServices;
 import br.com.contability.comum.ServicesAbstract;
@@ -56,8 +56,8 @@ public class LancamentoServices extends ServicesAbstract<Lancamento, LancamentoR
 	private LeitorPlanilhaStrategy<Lancamento, LancamentoServices> leitorPlanilhaLibreOffice = new LeitorPlanilhasLibreOffice<>(
 			this);
 
-	@Autowired
-	private SaldoFacade saldoFacade;
+	/*@Autowired
+	private SaldoFacade saldoFacade;*/
 
 	@Autowired
 	private SessaoServices sessionServices;
@@ -86,32 +86,48 @@ public class LancamentoServices extends ServicesAbstract<Lancamento, LancamentoR
 	public void gravaLancamentoProximoMesOuDeposito(String date, Conta conta,
 			TipoDeOpcoes opcao, String valor, Usuario usuario) {
 		
-		LocalDateTime dataCorrigida = getDataFormatada(date);
 		BigDecimal valorLancamento = CaixaDeFerramentas.converteStringToBidDecimal(valor);
 		
-		if (opcao.equals(TipoDeOpcoes.LANCAMENTO_PROXIMO_MES)) {
-			/*Lancamento lancamento = criaLancamentoProximoMes(conta, valorLancamento, dataCorrigida, usuario);
-			System.out.println("lancamento proximo mes");
-			gravaLancamento(lancamento);*/
-		} else if (opcao.equals(TipoDeOpcoes.DEPOSITO_CONTA)) {
+		/*if (opcao.equals(TipoDeOpcoes.LANCAMENTO_PROXIMO_MES)) { // PODERIA CRIAR INTERFACE NO ENUM E VINCULAR DIRETO MAS NÃO COMPENSA
+			
+			LocalDateTime dataCorrigida = getDataFormatada(date);
+			
+			Categoria categoriaProximoMes = categoriaServices.categoriaProximoMes(usuario, dataCorrigida);
+			Lancamento lancamento = criaLancamento(conta, valorLancamento, dataCorrigida, categoriaProximoMes);
+			gravaLancamento(lancamento);
+			
+		} else */if (opcao.equals(TipoDeOpcoes.DEPOSITO_CONTA)) {
+			
+			verificaConta(conta);
+			
 			conta.setUsuario(usuario);
-			gravaDepositoEmConta(dataCorrigida, conta, valorLancamento);
+			
+			LocalDateTime localDateTime = getDateTimeFromDate(date);
+			Categoria categoriaDeposito = categoriaServices.categoriaDeposito(conta.getUsuario(), localDateTime);
+			Lancamento lancamento = criaLancamento(conta, valorLancamento, localDateTime, categoriaDeposito);
+			gravaLancamento(lancamento);
 		}
 		
 
 	}
 
-	private LocalDateTime getDataFormatada(String date) {
-		LocalDate localDate = CaixaDeFerramentas.calendarFromStringMesAnoDate(date);
-		LocalDateTime localDateTime = LocalDateTime.of(localDate, LocalTime.now());
-		LocalDateTime dataCorrigida = localDateTime.plusMonths(1).withDayOfMonth(1);
-		return dataCorrigida;
+	private void verificaConta(Conta conta) {
+		
+		if (conta == null)
+			throw new ObjetoInexistenteExceptionMessage("/lancamento/lista", "Conta não vinculada");
+		
 	}
 
-	private void gravaDepositoEmConta(LocalDateTime data, Conta conta, BigDecimal valor) {
+	/*private LocalDateTime getDataFormatada(String date) {
+		LocalDateTime localDateTime = getDateTimeFromDate(date);
+		LocalDateTime dataCorrigida = localDateTime.plusMonths(1).withDayOfMonth(1);
+		return dataCorrigida;
+	}*/
+
+	private LocalDateTime getDateTimeFromDate(String date) {
 		
-		System.out.println("deposito em conta");
-		
+		LocalDate localDate = CaixaDeFerramentas.calendarFromStringMesAnoDate(date);
+		return LocalDateTime.of(localDate, LocalTime.now());
 	}
 
 	/**
@@ -120,15 +136,15 @@ public class LancamentoServices extends ServicesAbstract<Lancamento, LancamentoR
 	 * @param usuario
 	 * @param localDateTime
 	 */
-	private Lancamento criaLancamentoProximoMes(Conta conta, BigDecimal valor, LocalDateTime localDateTime, Usuario usuario) {
+	private Lancamento criaLancamento(Conta conta, BigDecimal valor, LocalDateTime localDateTime, Categoria categoria) {
 		
 		Lancamento lancamento = new Lancamento();
 		lancamento.setDataHoraCadastro(localDateTime);
 		lancamento.setDataHoraLancamento(localDateTime.toLocalDate());
 		lancamento.setConta(conta == null ? null : conta);
-		lancamento.setCategoria(categoriaServices.categoriaProximoMes(usuario, localDateTime));
-		lancamento.setDescricao("Lancamento referente mês passado");
-		lancamento.setUsuario(usuario);
+		lancamento.setCategoria(categoriaServices.categoriaDeposito(categoria.getUsuario(), localDateTime));
+		lancamento.setDescricao(categoria.getDescricao() == "Deposito" ? "Deposito" : "Lancamento referente mês passado");
+		lancamento.setUsuario(categoria.getUsuario());
 		lancamento.setValorLancamento(valor);
 		
 		return lancamento;
@@ -137,13 +153,13 @@ public class LancamentoServices extends ServicesAbstract<Lancamento, LancamentoR
 	private void atualizaLancamento(Lancamento lancamento, HttpSession session) {
 
 		if (super.atualiza(lancamento, null) != null) {
-			saldoFacade.atualizaSaldoUsuario(lancamento);
-
+//			saldoFacade.atualizaSaldoUsuario(lancamento);
 			if (lancamento.getDataHoraVencimento().isBefore(LocalDate.now())) {
 				sessionServices.atualizaVencidos(session,
 						this.selecionaVencidosAnteriorA(lancamento.getUsuario(), LocalDate.now()));
 			}
 		}
+		
 
 	}
 
@@ -212,8 +228,8 @@ public class LancamentoServices extends ServicesAbstract<Lancamento, LancamentoR
 
 	private void insereLancamento(Lancamento lancamento) {
 
-		if (super.insere(lancamento, null) != null)
-			saldoFacade.atualizaSaldoUsuario(lancamento);
+		super.insere(lancamento, null);
+//			saldoFacade.atualizaSaldoUsuario(lancamento);
 
 	}
 
@@ -246,8 +262,20 @@ public class LancamentoServices extends ServicesAbstract<Lancamento, LancamentoR
 	 * @param calendar
 	 * @return
 	 */
-	public List<Lancamento> seleciona(Usuario usuario, LocalDate localDate) {
-		return super.getJpa().selecionaLancamentos(usuario.getId(), localDate.getMonthValue(), localDate.getYear());
+	public List<Lancamento> seleciona(Usuario usuario, LocalDate localDate, Long idConta) {
+		
+//		Long idConta = parametroServices.trataParametroLong(id, "/lancamento/lista"); NÃO PODE USAR COM CHAMADAS JS
+		
+		verificaContaAoUsuario(usuario, idConta);
+		
+		return super.getJpa().selecionaLancamentos(usuario.getId(), idConta, localDate.getMonthValue(), localDate.getYear());
+	}
+
+	private void verificaContaAoUsuario(Usuario usuario, Long idConta) {
+		
+		if (idConta != 0)
+			contaServices.getContaPelo(usuario, idConta);
+		
 	}
 
 	/**
@@ -273,18 +301,18 @@ public class LancamentoServices extends ServicesAbstract<Lancamento, LancamentoR
 	 * @param dataHoraLancamento
 	 * @return saldo
 	 */
-	public BigDecimal getSaldo(Usuario usuario, LocalDate localDate) {
+	/*public BigDecimal getSaldo(Usuario usuario, LocalDate localDate) {
 		return super.getJpa().getSaldo(usuario.getId(), localDate.getMonthValue(), localDate.getYear());
-	}
+	}*/
 
 	/**
 	 * @param usuario
 	 * @param localDate
 	 * @return
 	 */
-	public BigDecimal getSaldoProvavel(Usuario usuario, LocalDate localDate) {
+	/*public BigDecimal getSaldoProvavel(Usuario usuario, LocalDate localDate) {
 		return super.getJpa().getSaldoProvavel(usuario.getId(), localDate.getMonthValue(), localDate.getYear());
-	}
+	}*/
 
 	/*
 	 * FAZENDO COM STREAM (PARTICULAMENTE ACHO MUITA COISA KKKKK) FUNCIONA
@@ -333,10 +361,10 @@ public class LancamentoServices extends ServicesAbstract<Lancamento, LancamentoR
 		if (lancamentoId == null || confirmaVinculo(usuario, lancamentoId))
 			throw new ObjetoInexistenteException("Impossível encontrar o lançamento selecionado");
 
-		Lancamento lancamento = super.get(lancamentoId, null);
 
 		super.remove(lancamentoId, null);
-		saldoFacade.atualizaSaldoUsuario(lancamento);
+//		Lancamento lancamento = super.get(lancamentoId, null);
+//		saldoFacade.atualizaSaldoUsuario(lancamento);
 
 	}
 
@@ -604,6 +632,29 @@ public class LancamentoServices extends ServicesAbstract<Lancamento, LancamentoR
 			break;
 		}
 
+	}
+
+	public BigDecimal getSaldo(List<Lancamento> listaLancamentos) {
+		
+		Double saldo = listaLancamentos.stream().mapToDouble(
+				l -> l.getCategoria().getTipoDeCategoria() == TipoDeCategoria.RECEITA
+				? l.getValorLancamento().doubleValue()
+						: l.getCategoria().getTipoDeCategoria() == TipoDeCategoria.DESPESA && l.isPago()
+						? (-l.getValorLancamento().doubleValue()) : 0 ).sum();
+		
+		return new BigDecimal(saldo);
+	}
+
+	public BigDecimal getSaldoProvavel(List<Lancamento> listaLancamentos) {
+		
+		Double saldo = listaLancamentos.stream().mapToDouble(
+				l -> l.getCategoria().getTipoDeCategoria() == TipoDeCategoria.RECEITA
+				? l.getValorLancamento().doubleValue()
+						: l.getCategoria().getTipoDeCategoria() == TipoDeCategoria.DESPESA && !l.isPago()
+						? (-l.getValorLancamento().doubleValue()) : 0 ).sum();
+		
+		return new BigDecimal(saldo);
+		
 	}
 
 }

@@ -125,7 +125,7 @@ public class CategoriaServices extends ServicesAbstract<Categoria, CategoriaRepo
 	 * @param localDateTime
 	 * @return RETORNA A CATEGORIA JÁ CADASTRADA OU INSERE A CATEGORIA NECESSÁRIA
 	 */
-	public Categoria categoriaProximoMes(Usuario usuario, LocalDateTime localDateTime) {
+	/*public Categoria categoriaProximoMes(Usuario usuario, LocalDateTime localDateTime) {
 		
 		Optional<Categoria> categoria = super.getJpa()
 				.getCategoriaProximoMes("Lançamento referente mes passado", usuario.getId());
@@ -138,8 +138,31 @@ public class CategoriaServices extends ServicesAbstract<Categoria, CategoriaRepo
 		Categoria categoria = new Categoria();
 		categoria.setDataHoraCadastro(localDateTime);
 		categoria.setDescricao("Lançamento referente mês passado");
-		categoria.setObservacao("Crédito referente mês passadpo");
+		categoria.setObservacao("Crédito referente mês passado");
 		categoria.setTipoDeCategoria(TipoDeCategoria.RECEITA);
+		categoria.setUsuario(usuario);
+		
+		return this.insere(categoria, null);
+	}*/
+
+	public Categoria categoriaDeposito(Usuario usuario, LocalDateTime localDateTime) {
+		
+		Optional<Categoria> categoria = super.getJpa()
+				.getCategoriaDeposito("Deposito", usuario.getId());
+		
+		return categoria.orElseGet(() -> novaCategoriaDeposito(usuario, localDateTime));
+		
+		
+		
+	}
+
+	private Categoria novaCategoriaDeposito(Usuario usuario, LocalDateTime localDateTime) {
+		
+		Categoria categoria = new Categoria();
+		categoria.setDataHoraCadastro(localDateTime);
+		categoria.setDescricao("Depósito");
+		categoria.setObservacao("Depósito em conta");
+		categoria.setTipoDeCategoria(TipoDeCategoria.DEPOSITO);
 		categoria.setUsuario(usuario);
 		
 		return this.insere(categoria, null);

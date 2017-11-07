@@ -144,9 +144,7 @@ $('#confirmaLancamentoOuDeposito').on('show.bs.modal', function () {
 
 $('#formProximoMes').on('submit', function(e){
 	
-	var date = $('.valueModal').val();
-	
-	var endereco = "saldo?date=";
+	var endereco = "saldo";
 	
 	var form = this;
 	
@@ -156,7 +154,7 @@ $('#formProximoMes').on('submit', function(e){
 	
 	$.ajax({
 		
-		url : endereco + date,
+		url : endereco,
 		type : "GET",
 
 		beforeSend : function(xhr) {
@@ -173,7 +171,7 @@ $('#formProximoMes').on('submit', function(e){
 
 		error : function(e) {
 
-			$('#bodyteste').append(erroDiv); // VARIÁVEL LOCALIZADA EM OUTRO ARQUIVO -> erroDivMessage.js
+			$('#bodyteste').append(erroInsersao); // VARIÁVEL LOCALIZADA EM OUTRO ARQUIVO -> erroDivMessage.js
 
 		}
 	});
@@ -253,18 +251,40 @@ function configuraError(idContaError, tipoDeErro) {
 
 /* FAZ O PROCESSO DINAMICO DOS LANCAMENTOS, CARREGAMENTO DA TABELA */
 
+$('#idConta').on("change", function(e){
+	
+	var conta = this.value;
+	var date = $('#inputMonthYear').val();
+	
+	if (conta == '' || date == ''){
+		return;
+	}
+	
+	enviaLancamentos(date, conta);
+	
+});
+
 $('#inputMonthYear').on("change", function(e){
 	
-	enviaLancamentos();
+	var date = this.value;
+	var conta = $('#idConta').val();
 	
-}).change();
+	if (conta == '' || date == ''){
+		return;
+	}
+	
+	enviaLancamentos(date, conta);
+	
+}); // .change() FAZ ELE ENVIAR A AÇÃO
 
-function enviaLancamentos(){
+function enviaLancamentos(date, conta){
+	
+	var count = 0;
 	
 	var urlTabela = '/lancamento/tabela';
 	
 	if($('#inputMonthYear').val() != ''){
-		urlTabela = urlTabela + '?date=' + encodeURIComponent($('#inputMonthYear').val());
+		urlTabela = urlTabela + '?date=' + encodeURIComponent(date) + '&conta=' + conta;
 	}
 	
 	$("#ajax-loading").html(" " +
@@ -274,14 +294,31 @@ function enviaLancamentos(){
 			" 	</div>" +
 			" </div");
 	
-	$("#tabelaBlock").load(urlTabela, function(){
+	$("#tabelaBlock").load(urlTabela, {limit: 25}, function(responseText, textStatus, req){
 		/*$.getScript("https://code.jquery.com/jquery-2.2.3.min.js");
 		$.getScript("/layout/javascript/funcoes.js");*/
 		// REMOVE O LOADING ASSIM QUE TERMINAR DE CARREGAR A(S) TABELA(S)
+		
+		if (textStatus == "error") {
+			
+			count++;
+			
+			console.log(count);
+			
+			$('#bodyteste').append(parametrosIncorretos);
+			
+			console.log($('[id="hideComponent"]').length); // FAZER O FOR AGORA.....
+			setTimeout(function() {
+				$('#hideComponent').fadeOut('slow', function(){
+					$(this).remove();
+				});
+			}, 3000);
+		}
+		
 		$("#ajax-loading").remove();
 	});
 	
-	$("#tabelaBlockMobile").load(urlTabela + '&mobile=mobile', function(){
+	$("#tabelaBlockMobile").load(urlTabela + '&mobile=mobile', {limit: 25}, function(){
 		$("#ajax-loading").remove();
 	});
 
