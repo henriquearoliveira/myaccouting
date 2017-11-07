@@ -279,8 +279,6 @@ $('#inputMonthYear').on("change", function(e){
 
 function enviaLancamentos(date, conta){
 	
-	var count = 0;
-	
 	var urlTabela = '/lancamento/tabela';
 	
 	if($('#inputMonthYear').val() != ''){
@@ -299,15 +297,13 @@ function enviaLancamentos(date, conta){
 		$.getScript("/layout/javascript/funcoes.js");*/
 		// REMOVE O LOADING ASSIM QUE TERMINAR DE CARREGAR A(S) TABELA(S)
 		
+		
 		if (textStatus == "error") {
 			
-			count++;
+			if(!$('#hideComponent').is(':visible')) {
+				$('#bodyteste').append(parametrosIncorretos);
+			}
 			
-			console.log(count);
-			
-			$('#bodyteste').append(parametrosIncorretos);
-			
-			console.log($('[id="hideComponent"]').length); // FAZER O FOR AGORA.....
 			setTimeout(function() {
 				$('#hideComponent').fadeOut('slow', function(){
 					$(this).remove();
