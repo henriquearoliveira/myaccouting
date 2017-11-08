@@ -253,7 +253,7 @@ public class LancamentoResources {
 		ModelConstruct.setAttributes(model, "activeLiLancamento", "activeListagem");
 
 		ModelAndView mv = new ModelAndView("lancamento/Listagem");
-		mv.addObject("contas", contaServices.seleciona(usuario));
+		mv.addObject("contas", contaServices.selecionaComOpcaoTodas(usuario));
 		mv.addObject("opcoes", TipoDeOpcoes.values());
 
 		return mv;
@@ -284,7 +284,7 @@ public class LancamentoResources {
 	 * E EM CIMA UM <SELECT> PREENCHIDO COM AS DATAS QUE CONTEM CONTAS VENCIDAS. ACREDITO QUE VAI FICAR LEGAL */
 
 	@PostMapping("/tabela")
-	public String mostraTabelaCadastrados(Model model, @RequestParam String date, @RequestParam Long conta,
+	public String mostraTabelaCadastrados(Model model, @RequestParam String date, @RequestParam Object conta,
 			@RequestParam(value = "mobile", required = false) String mobile) {
 		
 		Usuario usuario = auth.getAutenticacao();
@@ -293,13 +293,13 @@ public class LancamentoResources {
 		
 		listaLancamentos = lancamentoServices.seleciona(usuario, localDate, conta);
 		
+		if (listaLancamentos == null || listaLancamentos.isEmpty()) {
+			return "lancamento/TabelasVazias :: listaVazia";
+		}
+		
 		BigDecimal saldo = lancamentoServices.getSaldo(listaLancamentos);
 		
 		BigDecimal saldoProvavel = lancamentoServices.getSaldoProvavel(listaLancamentos);
-		
-		if (listaLancamentos.isEmpty()) {
-			return "lancamento/TabelasVazias :: listaVazia";
-		}
 		
 		List<Lancamento> lancamentosOrdenadosAndMesAtual = listaLancamentos.stream()
 				.sorted(Comparator.comparing(Lancamento::getDataHoraLancamento).thenComparing(Lancamento::getDescricao))
@@ -309,6 +309,7 @@ public class LancamentoResources {
 		model.addAttribute("lancamentos", lancamentosOrdenadosAndMesAtual);
 		model.addAttribute("saldo", saldo);
 		model.addAttribute("saldoProvavel", saldoProvavel);
+		model.addAttribute("contas", contaServices.selecionaComOpcaoTodas(usuario));
 		
 		return mobile == null ? "lancamento/Tabela :: tabelaLancamento"
 				: "lancamento/TabelaMobile :: tabelaLancamentoMobile";

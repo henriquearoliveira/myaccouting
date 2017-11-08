@@ -42,6 +42,13 @@ public class ContaServices extends ServicesAbstract<Conta, ContaRepository> {
 	 */
 	public List<Conta> seleciona(Usuario usuario) {
 
+		List<Conta> contas = super.getJpa().selecionaPelo(usuario.getId());
+
+		return contas;
+	}
+	
+	public List<Conta> selecionaComOpcaoTodas(Usuario usuario) {
+		
 		Conta conta = new Conta();
 		conta.setId(new Long(0));
 		conta.setDescricao("TODAS");
@@ -51,6 +58,26 @@ public class ContaServices extends ServicesAbstract<Conta, ContaRepository> {
 
 		return contas;
 	}
+	
+	/*public List<Conta> selecionaRetirandoContaInformada(Usuario usuario, Object id) {
+		
+		Long idConta = parametroServices.trataParametroLongException(id);
+		
+		if (idConta == null || idConta == 0) {
+			return null;
+		}
+		
+		Conta conta = super.get(idConta, null);
+		
+		if (confirmaVinculo(usuario, conta.getId()))
+			throw new ObjetoInexistenteException("conta não vinculada");
+		
+		List<Conta> contas = super.getJpa().selecionaPelo(usuario.getId());
+		contas.remove(conta);
+
+		return contas;
+		
+	}*/
 
 	/**
 	 * @param usuario
@@ -60,7 +87,7 @@ public class ContaServices extends ServicesAbstract<Conta, ContaRepository> {
 	 */
 	public ModelAndView getConta(Usuario usuario, ModelAndView mv, Object id) {
 		
-		Long idConta = parametroServices.trataParametroLong(id, "/conta");
+		Long idConta = parametroServices.trataParametroLongMessage(id, "/conta");
 		
 		Optional<Conta> conta = super.getJpa().getConta(usuario.getId(), idConta);
 

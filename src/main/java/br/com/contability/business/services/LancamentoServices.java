@@ -262,9 +262,9 @@ public class LancamentoServices extends ServicesAbstract<Lancamento, LancamentoR
 	 * @param calendar
 	 * @return
 	 */
-	public List<Lancamento> seleciona(Usuario usuario, LocalDate localDate, Long idConta) {
+	public List<Lancamento> seleciona(Usuario usuario, LocalDate localDate, Object id) {
 		
-//		Long idConta = parametroServices.trataParametroLong(id, "/lancamento/lista"); NÃO PODE USAR COM CHAMADAS JS
+		Long idConta = parametroServices.trataParametroLongException(id);
 		
 		verificaContaAoUsuario(usuario, idConta);
 		
@@ -336,7 +336,7 @@ public class LancamentoServices extends ServicesAbstract<Lancamento, LancamentoR
 	 */
 	public ModelAndView getLancamento(Usuario usuario, ModelAndView mv, Object id) {
 
-		Long idLancamento = parametroServices.trataParametroLong(id, "/lancamento");
+		Long idLancamento = parametroServices.trataParametroLongMessage(id, "/lancamento");
 
 		Optional<Lancamento> lancamento = super.getJpa().getLancamento(usuario.getId(), idLancamento);
 

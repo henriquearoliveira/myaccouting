@@ -30,7 +30,7 @@ public class CategoriaServices extends ServicesAbstract<Categoria, CategoriaRepo
 	 */
 	public ModelAndView getCategoria(Object id, ModelAndView mv, Usuario usuario) {
 		
-		Long idCategoria = parametroServices.trataParametroLong(id, "/categoria");
+		Long idCategoria = parametroServices.trataParametroLongMessage(id, "/categoria");
 		
 		Optional<Categoria> categoria = super.getJpa().getCategorias(idCategoria, usuario.getId());
 

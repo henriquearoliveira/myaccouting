@@ -45,7 +45,7 @@
 			
 		</div>
 		
-		<div th:if="${saldo &gt; 0}" class="input-group-btn dropdown">
+		<div th:if="${saldo &gt; 0 and #lists.size(contas) &gt; 2}" id="idDeposito" class="input-group-btn dropdown">
 		
         	<button type="button" class="btn btn-default dropdown-toggle personalized-color" id="teste" data-toggle="dropdown"><span class="fa fa-caret-down"></span></button>
 	        

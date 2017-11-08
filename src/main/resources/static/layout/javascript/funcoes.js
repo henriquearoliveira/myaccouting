@@ -140,6 +140,7 @@ $('#confirmaLancamentoOuDeposito').on('show.bs.modal', function () {
 	var valorData = $('#inputMonthYear').val();
 	/*var modal = $(this);*/
 	$('.valueModal').val(valorData);
+	
 });
 
 $('#formProximoMes').on('submit', function(e){
@@ -185,7 +186,7 @@ function verificaValorDeposito(saldo, form){
 	var valorDigitado = Number(valorDepositoDigitado);
 	
 	var idValorError = $('#idContaSelecao');
-	var idContaError = $('#idConta');
+	var idContaError = $('#idContaModal');
 	
 	var tipoDeOpcao = $('#opcao').val(); 
 	var contaSelecionada = $('#conta').val();
@@ -245,15 +246,37 @@ function configuraError(idContaError, tipoDeErro) {
 	}, 3000);
 }
 
+/*$('#conta').on('change', function(){
+	alert('teste');
+});*/
+
 /*$('body').on('appened', '#hideComponent', function(){
 	alert('teste');
 });*/
 
 /* FAZ O PROCESSO DINAMICO DOS LANCAMENTOS, CARREGAMENTO DA TABELA */
 
+var contaOptionsDeposito = null;
+var contaTextDeposito = null;
+
+$(document).ready(function(){
+	
+	var options = $('#conta option');
+
+	contaOptionsDeposito = $.map(options ,function(option) {
+	    return option.value;
+	});
+	
+	contaTextDeposito = $.map(options ,function(option) {
+	    return option.text;
+	});
+});
+
+var conta = null;
+
 $('#idConta').on("change", function(e){
 	
-	var conta = this.value;
+	conta = this.value;
 	var date = $('#inputMonthYear').val();
 	
 	if (conta == '' || date == ''){
@@ -292,11 +315,21 @@ function enviaLancamentos(date, conta){
 			" 	</div>" +
 			" </div");
 	
+	/*$.ajax({ DO THE SAME THING
+	    url: urlTabela,
+	    type: 'POST',
+	    success: function(data){
+	        $(data).find('#tabelaBlock').appendTo('#tabelaBlock');
+	    },
+	    error: function(data) {
+	        alert('woops!'); //or whatever
+	    }
+	});*/
+	
 	$("#tabelaBlock").load(urlTabela, {limit: 25}, function(responseText, textStatus, req){
 		/*$.getScript("https://code.jquery.com/jquery-2.2.3.min.js");
 		$.getScript("/layout/javascript/funcoes.js");*/
 		// REMOVE O LOADING ASSIM QUE TERMINAR DE CARREGAR A(S) TABELA(S)
-		
 		
 		if (textStatus == "error") {
 			
@@ -311,13 +344,17 @@ function enviaLancamentos(date, conta){
 			}, 3000);
 		}
 		
+		configuraApariçãoDaOpcaoDepositoConta(conta);
+		
+		configuraComboConta(conta);
+		
 		$("#ajax-loading").remove();
 	});
 	
 	$("#tabelaBlockMobile").load(urlTabela + '&mobile=mobile', {limit: 25}, function(){
 		$("#ajax-loading").remove();
 	});
-
+	
 	// TREINAMENTO.. RSRS
 	/*$jq.when(
 			$jq.getScript('/layout/javascript/jquery-2.2.3.min.js'),
@@ -366,6 +403,75 @@ function enviaLancamentos(date, conta){
 	        $('#targetDiv').html(div);
 	    }
 	});*/
+}
+
+function configuraApariçãoDaOpcaoDepositoConta(conta) {
+	
+	if (conta == 0){
+		$("#idDeposito").remove();
+	}
+	
+}
+
+function configuraComboConta(conta){
+	
+	/*var options = $('#conta option');
+
+	var contaOptionsDeposito = $.map(options ,function(option) {
+	    return option.value;
+	});
+	
+	var contaTextDeposito = $.map(options ,function(option) {
+	    return option.text;
+	});*/
+	
+	$('#conta')
+    	.find('option')
+    	.remove();
+	
+	var contaOptionsDepositoClone = contaOptionsDeposito.slice(0);
+	var contaTextDepositoClone = contaTextDeposito.slice(0);
+	
+	console.log(contaOptionsDepositoClone);
+	
+	$.each(contaOptionsDepositoClone, function (index, value) {
+		
+		$('#conta').append($('<option>', {
+		    value: value,
+		    text: contaTextDepositoClone[index]
+		}));;
+		  
+	});
+
+	/*var i;
+	
+	console.log(contaOptionsDepositoClone);
+	
+	for (i = 0; i < contaOptionsDepositoClone.lenght; i++){
+		console.log(contaOptionsDepositoClone[i]);
+	}*/
+	
+	/*$('#conta').append($('<option>', {
+	    value: 1,
+	    text: 'My option'
+	}));*/
+
+	contaOptionsDepositoClone = jQuery.grep(contaOptionsDepositoClone, function(value) {
+		return value != conta;
+	});
+	
+	/*contaTextDepositoClone = jQuery.grep(contaTextDepositoClone, function(value) {
+		return value != 'TODAS';
+	});*/
+	
+	$("#conta option[value='"+0+"']").each(function() {
+	    $(this).remove();
+	});
+	
+	$("#conta option[value='"+conta+"']").each(function() {
+	    $(this).remove();
+	});
+	
 }
 
 /* FAZ O PROCESSO DINAMICO, CARREGAMENTO DAS TABELAS VENCIDAS */

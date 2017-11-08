@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 
 import br.com.contability.exceptions.ObjetoInexistenteException;
 import br.com.contability.exceptions.ObjetoInexistenteExceptionMessage;
+import br.com.contability.exceptions.ObjetoNaoAutorizadoException;
 
 @Component
 public class TrataParametrosServices {
@@ -15,7 +16,7 @@ public class TrataParametrosServices {
 	 * 
 	 * @return Long
 	 */
-	public Long trataParametroLong(Object id, String redirecionamento) {
+	public Long trataParametroLongMessage(Object id, String redirecionamento) {
 		
 		String idLancamento = String.valueOf(id);
 		
@@ -26,6 +27,36 @@ public class TrataParametrosServices {
 			idLan = Long.parseLong(idLancamento);
 		} catch (Exception e) {
 			throw new ObjetoInexistenteExceptionMessage(redirecionamento, "Parametro incorreto");
+		}
+		return idLan;
+	}
+	
+	public Long trataParametroLongException(Object id) {
+		
+		String idLancamento = String.valueOf(id);
+		
+		Long idLan = 0l;
+		
+		try {
+			
+			idLan = Long.parseLong(idLancamento);
+		} catch (Exception e) {
+			throw new ObjetoNaoAutorizadoException("Parametro incorreto");
+		}
+		return idLan;
+	}
+	
+	public Long trataParametroLong(Object id) {
+		
+		String idLancamento = String.valueOf(id);
+		
+		Long idLan = 0l;
+		
+		try {
+			
+			idLan = Long.parseLong(idLancamento);
+		} catch (Exception e) {
+			return null;
 		}
 		return idLan;
 	}
