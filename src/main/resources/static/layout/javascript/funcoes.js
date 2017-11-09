@@ -283,6 +283,7 @@ $('#idConta').on("change", function(e){
 		return;
 	}
 	
+	deletaTabelaSeNecessário();
 	enviaLancamentos(date, conta);
 	
 });
@@ -296,11 +297,13 @@ $('#inputMonthYear').on("change", function(e){
 		return;
 	}
 	
+	deletaTabelaSeNecessário();
 	enviaLancamentos(date, conta);
 	
 }); // .change() FAZ ELE ENVIAR A AÇÃO
 
 function enviaLancamentos(date, conta){
+	
 	
 	var urlTabela = '/lancamento/tabela';
 	
@@ -311,7 +314,7 @@ function enviaLancamentos(date, conta){
 	$("#ajax-loading").html(" " +
 			" <div class='row'>" +
 			" 	<div class='col-xs-12'>" +
-			" 		<img src='/layout/imgs/loading-gif/spinner-loading5.gif' alt='loading...' />" +
+			" 		<img src='/layout/imgs/loading-gif/spinner-loading.gif' alt='loading...' />" +
 			" 	</div>" +
 			" </div");
 	
@@ -338,21 +341,26 @@ function enviaLancamentos(date, conta){
 			}
 			
 			setTimeout(function() {
-				$('#hideComponent').fadeOut('slow', function(){
+				$('#hideComponent').fadeOut('slow', function(){ // DENTRO DA MENSAGEM QUE APARECE NO MODAL
 					$(this).remove();
 				});
 			}, 3000);
 		}
 		
-		configuraApariçãoDaOpcaoDepositoConta(conta);
-		
 		configuraComboConta(conta);
 		
 		$("#ajax-loading").remove();
+		$('#ajaxLoadReferencia').html("<div id='ajax-loading' class='text-center'>" +
+							"</div>");
 	});
 	
 	$("#tabelaBlockMobile").load(urlTabela + '&mobile=mobile', {limit: 25}, function(){
+		
+		configuraApariçãoDaOpcaoDepositoConta(conta);
+
 		$("#ajax-loading").remove();
+		$('#ajaxLoadReferencia').html("<div id='ajax-loading' class='text-center'>" +
+		"</div>");
 	});
 	
 	// TREINAMENTO.. RSRS
@@ -405,6 +413,26 @@ function enviaLancamentos(date, conta){
 	});*/
 }
 
+function deletaTabelaSeNecessário(){
+	
+	var tabelaCompleta = $('#idTabelaCompleta');
+	
+	var tabelaMobile = $('#idTabelaMobile');
+
+	deletaTabelas(tabelaCompleta);
+	deletaTabelas(tabelaMobile);
+
+}
+
+function deletaTabelas(tabela){
+	
+	if (tabela != null || tabela != ''){
+		
+		tabela.detach();
+		
+	}
+}
+
 function configuraApariçãoDaOpcaoDepositoConta(conta) {
 	
 	if (conta == 0){
@@ -431,8 +459,6 @@ function configuraComboConta(conta){
 	
 	var contaOptionsDepositoClone = contaOptionsDeposito.slice(0);
 	var contaTextDepositoClone = contaTextDeposito.slice(0);
-	
-	console.log(contaOptionsDepositoClone);
 	
 	$.each(contaOptionsDepositoClone, function (index, value) {
 		

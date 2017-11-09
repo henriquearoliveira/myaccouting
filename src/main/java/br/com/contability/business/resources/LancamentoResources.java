@@ -306,6 +306,12 @@ public class LancamentoResources {
 				.filter(l -> l.getDataHoraLancamento().getMonth() == localDate.getMonth())
 				.collect(Collectors.toList());
 		
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		
 		model.addAttribute("lancamentos", lancamentosOrdenadosAndMesAtual);
 		model.addAttribute("saldo", saldo);
 		model.addAttribute("saldoProvavel", saldoProvavel);

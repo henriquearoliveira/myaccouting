@@ -141,16 +141,80 @@
 			<version>1.3b1</version>
 		</dependency>
 
-
+		<!-- COMPRESSOR DE CSS E JS -->
+		<dependency>
+			<groupId>net.alchim31.maven</groupId>
+			<artifactId>yuicompressor-maven-plugin</artifactId>
+			<version>1.5.1</version>
+		</dependency>
 
 	</dependencies>
 
 	<build>
 		<plugins>
+
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+
+			<!-- CONFIGURAÇÃO DO COMPRESSOR PARA ARQUIVOS CSS E JS -->
+			<plugin>
+				<groupId>net.alchim31.maven</groupId>
+				<artifactId>yuicompressor-maven-plugin</artifactId>
+				<version>1.4.0</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>compress</goal>
+						</goals>
+						<configuration>
+							<linebreakpos>1000</linebreakpos>
+							<excludes>
+								<exclude>**/*-min.js</exclude>
+								<exclude>**/*.min.js</exclude>
+								<exclude>**/*-min.css</exclude>
+								<exclude>**/*.min.css</exclude>
+							</excludes>
+							<nosuffix>true</nosuffix>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<warSourceExcludes>**/*.css,**/*.js</warSourceExcludes>
+				</configuration>
+			</plugin>
+
+			<!--This plugin's configuration is used to store Eclipse m2e settings 
+				only. It has no influence on the Maven build itself. -->
+			<plugin>
+				<groupId>org.eclipse.m2e</groupId>
+				<artifactId>lifecycle-mapping</artifactId>
+				<version>1.0.0</version>
+				<configuration>
+					<lifecycleMappingMetadata>
+						<pluginExecutions>
+							<pluginExecution>
+								<pluginExecutionFilter>
+									<groupId>net.alchim31.maven</groupId>
+									<artifactId>yuicompressor-maven-plugin</artifactId>
+									<versionRange>[1.0.0,)</versionRange>
+									<goals>
+										<goal>compress</goal>
+									</goals>
+								</pluginExecutionFilter>
+								<action>
+									<execute />
+								</action>
+							</pluginExecution>
+						</pluginExecutions>
+					</lifecycleMappingMetadata>
+				</configuration>
+			</plugin>
+
 		</plugins>
 	</build>
 

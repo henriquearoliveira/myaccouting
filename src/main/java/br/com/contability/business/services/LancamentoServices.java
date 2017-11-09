@@ -650,7 +650,8 @@ public class LancamentoServices extends ServicesAbstract<Lancamento, LancamentoR
 		Double saldo = listaLancamentos.stream().mapToDouble(
 				l -> l.getCategoria().getTipoDeCategoria() == TipoDeCategoria.RECEITA
 				? l.getValorLancamento().doubleValue()
-						: l.getCategoria().getTipoDeCategoria() == TipoDeCategoria.DESPESA && !l.isPago()
+						: l.getCategoria().getTipoDeCategoria() == TipoDeCategoria.DESPESA && (!l.isPago()
+						|| l.isPago())
 						? (-l.getValorLancamento().doubleValue()) : 0 ).sum();
 		
 		return new BigDecimal(saldo);
