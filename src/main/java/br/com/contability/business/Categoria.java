@@ -23,7 +23,7 @@ import br.com.contability.comum.BeanIdentificavel;
 @Entity
 @Table(name = "categoria", indexes = { @Index(name = "index_categoria", columnList = "id", unique = false),
 		@Index(name = "unique_descricao_usuario", columnList = "descricao,usuario_id", unique = true) })
-public class Categoria extends BeanIdentificavel {
+public class Categoria extends BeanIdentificavel /*implements Comparable<TipoDeCategoria>*/ {
 
 	@JsonIgnore
 	@ManyToOne(optional = false)
@@ -86,5 +86,12 @@ public class Categoria extends BeanIdentificavel {
 	public void setLancamentos(List<Lancamento> lancamentos) {
 		this.lancamentos = lancamentos;
 	}
+	
+	/*@Override
+	public int compareTo(TipoDeCategoria o) {
+		
+		return o.compareTo(this.getTipoDeCategoria());
+		
+	}*/
 	
 }

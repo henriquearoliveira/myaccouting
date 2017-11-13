@@ -6,9 +6,11 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpSession;
 
@@ -656,6 +658,30 @@ public class LancamentoServices extends ServicesAbstract<Lancamento, LancamentoR
 		
 		return new BigDecimal(saldo);
 		
+	}
+
+	public List<Lancamento> listaPorCategoriaDataDescricao(List<Lancamento> listaLancamentos) {
+		
+		// FAÇO O COMPARATOR LEVANDO EM CONSIDERAÇÃO A CATEGORIA, DATA_HORA E POR ULTIMO A DESCRIÇÃO.
+		Comparator<Lancamento> com = (l1, l2) -> {
+			
+			int categoria = l2.getCategoria().getTipoDeCategoria().compareTo(l1.getCategoria().getTipoDeCategoria());
+			int dataHora = l1.getDataHoraLancamento().compareTo(l2.getDataHoraLancamento());
+			int descricao = l1.getDescricao().compareTo(l2.getDescricao());
+			
+			if (categoria != 0) {
+				return categoria;
+			} else if (dataHora != 0) {
+				return dataHora;
+			} else if (descricao != 0) {
+				return descricao;
+			} else {
+				return 0;
+			}
+			
+		};
+		
+		return listaLancamentos.stream().sorted(com).collect(Collectors.toList());
 	}
 
 }

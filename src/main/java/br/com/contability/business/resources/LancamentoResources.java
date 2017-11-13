@@ -7,7 +7,6 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -301,8 +300,10 @@ public class LancamentoResources {
 		
 		BigDecimal saldoProvavel = lancamentoServices.getSaldoProvavel(listaLancamentos);
 		
-		List<Lancamento> lancamentosOrdenadosAndMesAtual = listaLancamentos.stream()
-				.sorted(Comparator.comparing(Lancamento::getDataHoraLancamento).thenComparing(Lancamento::getDescricao))
+		List<Lancamento> listaOrganizada = lancamentoServices.listaPorCategoriaDataDescricao(listaLancamentos);
+		
+		List<Lancamento> lancamentosOrdenadosAndMesAtual = listaOrganizada.stream()
+				/*.sorted(com) FICA NO SERVICES AGORA /* Comparator.comparing(Lancamento::getDataHoraLancamento).thenComparing(Lancamento::getDescricao) */
 				.filter(l -> l.getDataHoraLancamento().getMonth() == localDate.getMonth())
 				.collect(Collectors.toList());
 		
