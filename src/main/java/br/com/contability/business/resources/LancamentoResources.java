@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,9 +34,11 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import br.com.contability.business.Categoria;
 import br.com.contability.business.Conta;
 import br.com.contability.business.Lancamento;
 import br.com.contability.business.Lancamentos;
+import br.com.contability.business.TipoDeCategoria;
 import br.com.contability.business.TipoDeOpcoes;
 import br.com.contability.business.Usuario;
 import br.com.contability.business.services.CategoriaServices;
@@ -74,7 +77,8 @@ public class LancamentoResources {
 		Usuario usuario = auth.getAutenticacao();
 		
 		ModelAndView mv = new ModelAndView("lancamento/Lancamento");
-		mv.addObject("categorias", categoriaServices.seleciona(usuario));
+		mv.addObject("categorias", categoriaServices.seleciona(usuario)
+				.stream().sorted(Comparator.comparing(Categoria::getDescricao)).collect(Collectors.toList()));
 		mv.addObject("contas", contaServices.seleciona(usuario));
 
 		return mv;
@@ -307,6 +311,16 @@ public class LancamentoResources {
 				.filter(l -> l.getDataHoraLancamento().getMonth() == localDate.getMonth())
 				.collect(Collectors.toList());
 		
+		Double totalDebitos = lancamentosOrdenadosAndMesAtual.stream().mapToDouble(
+				l -> l.getCategoria().getTipoDeCategoria() == TipoDeCategoria.DESPESA
+				? l.getValorLancamento().doubleValue() 
+				: 0.00).sum();
+		
+		Double totalReceitas = lancamentosOrdenadosAndMesAtual.stream().mapToDouble(
+				l -> l.getCategoria().getTipoDeCategoria() == TipoDeCategoria.RECEITA
+				? l.getValorLancamento().doubleValue() 
+				: 0.00).sum();
+		
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
@@ -314,6 +328,8 @@ public class LancamentoResources {
 		}
 		
 		model.addAttribute("lancamentos", lancamentosOrdenadosAndMesAtual);
+		model.addAttribute("receitas", totalReceitas);
+		model.addAttribute("debitos", totalDebitos);
 		model.addAttribute("saldo", saldo);
 		model.addAttribute("saldoProvavel", saldoProvavel);
 		model.addAttribute("contas", contaServices.selecionaComOpcaoTodas(usuario));

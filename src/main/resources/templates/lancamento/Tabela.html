@@ -39,6 +39,19 @@
 			
 		</table>
 		
+		<div class="row" th:unless="${receitas == null}">
+			<div class="col-xs-offset-6 col-xs-6 col-md-offset-6 col-md-6 text-right">
+				<span style= "color: gray;">Total das receitas: </span>
+				<strong style= "font-size: 20px; color: #00C49D;" th:text="${receitas != null} ? ${'R$ ' + #numbers.formatDecimal(receitas, 1, 'POINT', 2, 'COMMA')} : 0.00">0,00</strong>
+			</div>
+		</div>
+		
+		<div class="row" th:unless="${debitos == null}">
+			<div class="col-xs-offset-6 col-xs-6 col-md-offset-8 col-md-4 text-right">
+				<span style= "color: gray;">Total dos débitos: </span>
+				<strong style= "font-size: 20px; color: #00C49D;" th:text="${debitos != null} ? ${'R$ ' + #numbers.formatDecimal(debitos, 1, 'POINT', 2, 'COMMA')} : 0.00">0,00</strong>
+			</div>
+		</div>
 		
 		<div class="row" th:unless="${saldo == null}">
 			<div th:class="${saldo &gt; 0} ? 'col-xs-offset-5 col-xs-6 col-md-offset-7 col-md-4 text-right' : 'col-xs-offset-5 col-xs-7 col-md-offset-7 col-md-5 text-right' ">
@@ -66,7 +79,7 @@
 		
 		<div class="row" th:unless="${saldoProvavel == null}">
 			<div class="col-xs-offset-5 col-xs-7 col-md-offset-7 col-md-5 text-right">
-				<span style= "color: gray;">Probabilidade Saldo: </span>
+				<span style= "color: gray;">Probabilidade saldo: </span>
 				<strong style= "font-size: 20px; color: #00C49D;" th:text="${saldoProvavel != null} ? ${'R$ ' + #numbers.formatDecimal(saldoProvavel, 1, 'POINT', 2, 'COMMA')} : 0.00">0,00</strong>
 			</div>
 		</div>

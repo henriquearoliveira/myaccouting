@@ -156,7 +156,8 @@ public class LancamentoServices extends ServicesAbstract<Lancamento, LancamentoR
 
 		if (super.atualiza(lancamento, null) != null) {
 //			saldoFacade.atualizaSaldoUsuario(lancamento);
-			if (lancamento.getDataHoraVencimento().isBefore(LocalDate.now())) {
+			if (lancamento.getDataHoraVencimento() != null &&
+					lancamento.getDataHoraVencimento().isBefore(LocalDate.now())) {
 				sessionServices.atualizaVencidos(session,
 						this.selecionaVencidosAnteriorA(lancamento.getUsuario(), LocalDate.now()));
 			}
