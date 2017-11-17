@@ -54,26 +54,35 @@
 		</div>
 		
 		<div class="row" th:unless="${saldo == null}">
-			<div th:class="${saldo &gt; 0} ? 'col-xs-offset-5 col-xs-6 col-md-offset-7 col-md-4 text-right' : 'col-xs-offset-5 col-xs-7 col-md-offset-7 col-md-5 text-right' ">
+		
+			<div th:class="${saldo &gt; 0} ? 'col-xs-offset-6 col-xs-6 col-md-offset-8 col-md-4 text-right' : 'col-xs-offset-5 col-xs-7 col-md-offset-7 col-md-5 text-right' ">
+				
 				<span style= "color: gray;">Saldo Atual: </span>
 	
 				<strong style= "font-size: 20px; color: #00C49D;" th:text="${saldo != null} ? ${'R$ ' + #numbers.formatDecimal(saldo, 1, 'POINT', 2, 'COMMA')} : 0.00">0,00</strong>
 				
+				<button type="button" class="btn btn-default dropdown-toggle personalized-color" id="idDeposito" data-toggle="dropdown"><span class="fa fa-caret-down"></span></button>
+		        
+		        <ul class="dropdown-menu pull-right" id="idDeposito">
+			        <li><a data-target="#confirmaLancamentoOuDeposito" data-toggle="modal"
+			        	href="#confirmaLancamentoOuDeposito">Opções de depósitos</a></li>
+		        </ul>
 			</div>
 			
-			<div th:if="${saldo &gt; 0 and #lists.size(contas) &gt; 2}" id="idDeposito" class="input-group-btn dropdown">
-			
-	        	<button type="button" class="btn btn-default dropdown-toggle personalized-color" id="teste" data-toggle="dropdown"><span class="fa fa-caret-down"></span></button>
+			<!-- <div th:if="${saldo &gt; 0 and #lists.size(contas) &gt; 2}" id="idDeposito" class="input-group-btn dropdown"> -->
+				
+				<!-- id= teste -->
+	        	<!-- <button type="button" class="btn btn-default dropdown-toggle personalized-color" id="idDeposito" data-toggle="dropdown"><span class="fa fa-caret-down"></span></button>
 		        
 		        <ul class="dropdown-menu pull-right">
 			        <li><a data-target="#confirmaLancamentoOuDeposito" data-toggle="modal"
-			        	href="#confirmaLancamentoOuDeposito">Opções de depósitos</a></li>
+			        	href="#confirmaLancamentoOuDeposito">Opções de depósitos</a></li> -->
 			        <!--<li class="divider"></li>
 			        <li><a data-target="#confirmaLancamentoProximoMes" data-toggle="modal"
 			        	href="#confirmaLancamentoProximoMes">Lançamento próximo mês</a></li> -->
 			        <!-- <li><a href="#">Separated link</a></li> -->
-		        </ul>
-	       	</div>
+		        <!-- </ul> -->
+	       	<!-- </div> -->
 	       	
 		</div>
 		

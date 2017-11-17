@@ -172,6 +172,10 @@ html {
 	background-color: #e6e6e6;
 }
 
+.open .dropdown-menu {
+	background-color: #EDEDED;
+}
+
 /* EFEITO SLOW MOTION DOS DROPDOWN's */
 .dropdown .dropdown-menu {
     -webkit-transition: all 0.5s; /*PADRÃO ERA 0.3s*/
