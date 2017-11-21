@@ -45,25 +45,33 @@
 							<div th:replace="mensagensutils/Erros :: erros" th:remove="tag"></div>
 
 							<div class="row">
+							
+								<!-- Conta -->
+								<div class="col-sm-12 col-md-offset-2 col-md-4">
+					                <div class="form-group">
+					                  <label>Selecione: </label>
+					                  <select id="idContaVencidos" class="form-control" th:field="*{conta}">
+					                    <option value="">Seleciona a conta</option>
+					                    <option th:each="conta : ${contas}" th:value="${conta.id}" th:text="${conta.descricao}"></option>
+					                  </select>
+					                </div>
+					            </div>
 
-								<!-- date -->
-								<div class="col-sm-offset-4 col-sm-4">
+								<!-- Date -->
+								<div class="col-sm-12 col-md-4">
 									<div class="form-group">
+									
 										<label>Vencidos:</label>
-
-										<div class="col-md-12 input-group date" id="dataListagem">
-											
-											<select id="inputDateVencidos" class="form-control" th:field="*{dataHoraVencimento}">
-							                	<option value="">Selecione a Data</option>
-							                	<option th:each="lancamentoVencido : ${lancamentosVencidos}" th:value="${lancamentoVencido.dataHoraVencimento}" th:text="${#temporals.format(lancamentoVencido.dataHoraVencimento,'dd/MM/yyyy')}">
-							                	</option>
-							                </select>
+										<select id="inputDateVencidos" class="form-control" th:field="*{dataHoraVencimento}">
+						                	<option value="">Selecione a Data</option>
+						                	<option th:each="lancamentoVencido : ${lancamentosVencidos}" th:value="${lancamentoVencido.dataHoraVencimento}" th:text="${#temporals.format(lancamentoVencido.dataHoraVencimento,'dd/MM/yyyy')}">
+						                	</option>
+						                </select>
 							                
-										</div>
 									</div>
 									<!-- /.form group -->
 								</div>
-
+								
 							</div>
 
 						</form>

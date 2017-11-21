@@ -44,6 +44,7 @@ import br.com.contability.business.Usuario;
 import br.com.contability.business.services.CategoriaServices;
 import br.com.contability.business.services.ContaServices;
 import br.com.contability.business.services.LancamentoServices;
+import br.com.contability.business.services.TrataParametrosServices;
 import br.com.contability.comum.AuthenticationAbstract;
 import br.com.contability.comum.ModelConstruct;
 import br.com.contability.comum.StringPaginasAndRedirect;
@@ -66,6 +67,9 @@ public class LancamentoResources {
 	private LancamentoServices lancamentoServices;
 	
 	private List<Lancamento> listaLancamentos = new ArrayList<>();
+	
+	@Autowired
+	private TrataParametrosServices parametrosServices;
 	
 	/*@Autowired
 	private SaldoServices saldoServices;*/
@@ -269,18 +273,35 @@ public class LancamentoResources {
 
 		ModelConstruct.setAttributes(model, "activeLiLancamento", "activeListagemVencidos");
 		
-		List<Lancamento> lancamentosVencidos = lancamentoServices.selecionaVencidosAnteriorA(usuario, LocalDate.now());
+		/* ISSO FOI ALTERADO DEVIDO A EU NÃO PRECISAR MAIS DO OBJETO INTEIRO, E SIM APENAS DA DATA,
+		 * CONSEQUENTEMENTE CONSIGO FAZER COM O FILTER NORMAL.
+		 * 
+		 * COM O FILTER NORMAL ESTÁ NO MÉTODO ABAIXO.
+		 * 
+		 * List<Lancamento> lancamentosVencidos = lancamentoServices.selecionaVencidosAnteriorA(usuario, LocalDate.now());
 		
 		// Function<Lancamento, LocalDate> teste = l -> l.getDataHoraLancamento(); MONTADO SEPARADAMENTE
-		
 		List<Lancamento> lancamentosVencidosDintinctosPorData = lancamentosVencidos.stream()
 				.filter(CaixaDeFerramentas.distinctByKey(Lancamento::getDataHoraVencimento)).collect(Collectors.toList());
 														// É OGRIGADO A USAR ASSSIM DEVIDO ESTAR EM OUTRA CLASSE
-		
+*/		
 		ModelAndView mv = new ModelAndView("lancamento/ListagemVencidos");
-		mv.addObject("lancamentosVencidos", lancamentosVencidosDintinctosPorData);
+		mv.addObject("contas", contaServices.selecionaComOpcaoTodas(usuario));
+		mv.addObject("lancamentosVencidos", new ArrayList<>());
 
 		return mv;
+	}
+	
+	@GetMapping("/vencidosComConta")
+	public ResponseEntity<List<LocalDate>> vencidosComConta(@RequestParam Object conta){
+		
+		Usuario usuario = auth.getAutenticacao();
+		
+		List<Lancamento> lancamentosVencidos = lancamentoServices.selecionaVencidosAnteriorA(usuario, LocalDate.now());
+		
+		return ResponseEntity.ok(
+				lancamentosVencidos.stream().map(l -> l.getDataHoraAtualizacao().toLocalDate())
+				.distinct().collect(Collectors.toList()));
 	}
 	
 	/* APLICAR O SEGUINTE: QUANDO CLICAR EM TODAS OS LANÇAMENTOS ABRIR UMA LISTA COM ASPENAS AS PENDENTES
@@ -339,26 +360,34 @@ public class LancamentoResources {
 
 	}
 	
+	
+	private Conta contaUsuario = null;
 	@GetMapping("/tabelaVencidos")
 	public String mostraTabelaVencidos(Model model, @RequestParam("dataVencido") String calendarString,
-			@RequestParam(value = "mobile", required = false) String mobile) {
+			@RequestParam Object conta, @RequestParam(value = "mobile", required = false) String mobile) {
 		
 		Usuario usuario = auth.getAutenticacao();
 
 		LocalDate localDate = CaixaDeFerramentas.calendarFromStringDiaMesAnoDate(calendarString);
 		
-		List<Lancamento> listaLancamentos = lancamentoServices.selecionaVencidosDa(usuario, localDate);
+		List<Lancamento> listaLancamentos = lancamentoServices.selecionaVencidosDa(usuario, localDate, conta);
 		
-		if (listaLancamentos.isEmpty()) {
+		if (listaLancamentos.isEmpty())
 			return "lancamento/TabelasVazias :: listaVazia";
-		}
 		
-		model.addAttribute("lancamentos", listaLancamentos);
+		Long idConta = parametrosServices.trataParametroLongException(conta);
+		
+		if (idConta != 0)
+			contaUsuario = contaServices.get(idConta, null);
+		
+		model.addAttribute("lancamentos", contaUsuario == null ? listaLancamentos :
+			listaLancamentos.stream().filter(l -> l.getConta() == contaUsuario).collect(Collectors.toList()));
 		model.addAttribute("total", listaLancamentos == null ? null : listaLancamentos.stream()
-				.map(l -> l.getValorLancamento()).reduce(BigDecimal.ZERO, BigDecimal::add)); // MANEIRA DIFERENTE DE SOMAR
-																							 // FAÇO COM O MAPTOLONG NO INDEX RESOURCEs
-					// NO FUNCTION <T, R> O PRIMEIRO É O TIPO QUE ELE VAI TRABALHAR, E O SEGUNDO É
-					// O QUE ELE VAI RETORNAR
+				.map(l -> l.getValorLancamento()).reduce(BigDecimal.ZERO, BigDecimal::add));
+											// MANEIRA DIFERENTE DE SOMAR
+											// FAÇO COM O MAPTOLONG NO INDEX RESOURCEs
+											// NO FUNCTION <T, R> O PRIMEIRO É O TIPO QUE ELE VAI TRABALHAR, E O SEGUNDO É
+											// O QUE ELE VAI RETORNAR
 		
 		return mobile == null ? "lancamento/Tabela :: tabelaLancamento"
 				: "lancamento/TabelaMobile :: tabelaLancamentoMobile";

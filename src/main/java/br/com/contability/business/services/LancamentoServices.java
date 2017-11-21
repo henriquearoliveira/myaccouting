@@ -286,7 +286,12 @@ public class LancamentoServices extends ServicesAbstract<Lancamento, LancamentoR
 	 * @param calendar
 	 * @return
 	 */
-	public List<Lancamento> selecionaVencidosDa(Usuario usuario, LocalDate localDate) {
+	public List<Lancamento> selecionaVencidosDa(Usuario usuario, LocalDate localDate, Object conta) {
+		
+		Long idConta = parametroServices.trataParametroLongException(conta);
+		
+		verificaContaAoUsuario(usuario, idConta);
+		
 		return super.getJpa().selecionaVencidosDa(usuario.getId(), localDate);
 	}
 

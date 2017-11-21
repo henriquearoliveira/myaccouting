@@ -503,16 +503,38 @@ function configuraComboConta(conta){
 /* FAZ O PROCESSO DINAMICO, CARREGAMENTO DAS TABELAS VENCIDAS */
 $('#inputDateVencidos').on("change", function(){
 	
-	enviaVencidos();
+	var date = this.value;
+	var conta = $('#idContaVencidos').val();
+	
+	if (conta == '' || date == ''){
+		return;
+	}
+	
+	deletaTabelaSeNecessário();
+	enviaVencidos(date, conta);
 	
 });
 
-function enviaVencidos(){
+$('#idContaVencidos').on("change", function(e){
+	
+	conta = this.value;
+	var date = $('#inputMonthYear').val();
+	
+	if (conta == '' || date == ''){
+		return;
+	}
+	
+	deletaTabelaSeNecessário();
+	enviaVencidos(date, conta);
+	
+});
+
+function enviaVencidos(date, conta){
 	
 	var urlTabela = '/lancamento/tabelaVencidos';
 	
 	if($('#inputDateVencidos').val() != ''){
-		urlTabela = urlTabela + '?dataVencido=' + encodeURIComponent($('#inputDateVencidos').val());
+		urlTabela = urlTabela + '?dataVencido=' + encodeURIComponent(date) + '&conta=' + conta;
 	}
 	
 	$("#ajax-loading").html(" <img src='/layout/imgs/loading-gif/spinner-loading5.gif' alt='loading...' /> ");
