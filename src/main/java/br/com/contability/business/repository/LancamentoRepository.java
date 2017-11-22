@@ -34,8 +34,16 @@ public interface LancamentoRepository extends JpaRepository<Lancamento, Long> {
 	@Query("SELECT l FROM Lancamento l WHERE l.usuario.id = ?1 AND YEAR(l.dataHoraCadastro) = YEAR(NOW())")
 	public List<Lancamento> selecionaLancamentosAnoAtual(Long idUsuario);
 
+	@Query(value = "SELECT lancamento.* FROM lancamento"
+			+ " INNER JOIN usuario ON lancamento.usuario_id = usuario.id" 
+			+ " INNER JOIN conta ON lancamento.conta_id = conta.id"
+			+ " WHERE lancamento.usuario_id = ?1 AND lancamento.data_hora_vencimento <= ?2"
+			+ " AND lancamento.pago IS FALSE"
+			+ " AND IF(?3 = 0, lancamento.id IS NOT NULL, conta.id = ?3);", nativeQuery = true)
+	public List<Lancamento> selecionaVencidos(Long idUsuario, LocalDate dataVencimento, Long idConta);
+	
 	@Query("SELECT l FROM Lancamento l WHERE l.usuario.id = ?1 AND l.dataHoraVencimento < ?2 AND l.pago IS FALSE")
-	public List<Lancamento> selecionaVencidos(Long idUsuario, LocalDate dataVencimento);
+	public List<Lancamento> selecionaVencidosTodasContas(Long idUsuario, LocalDate dataVencimento);
 
 	@Query("SELECT l FROM Lancamento l WHERE l.usuario.id = ?1 AND l.dataHoraVencimento = ?2 AND l.pago IS FALSE")
 	public List<Lancamento> selecionaVencidosDa(Long id, LocalDate dataVencimento);

@@ -517,17 +517,117 @@ $('#inputDateVencidos').on("change", function(){
 
 $('#idContaVencidos').on("change", function(e){
 	
-	conta = this.value;
-	var date = $('#inputMonthYear').val();
+	var contaVencida = this.value;
+	exibeDatas(contaVencida);
 	
-	if (conta == '' || date == ''){
+});
+
+function exibeDatas(contaVencida) {
+	
+	if (contaVencida == null || contaVencida == '')
+		return;
+	
+	var endereco = "vencidosComConta";
+	
+	$.ajax({
+		
+		url : endereco+'?conta='+contaVencida,
+		type : "GET",
+
+		beforeSend : function(xhr) {
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		},
+
+		success : function(data) {
+			
+			preencheDatasAndExibeContas(data, contaVencida);
+		},
+
+		error : function(e) {
+
+			$('#bodyteste').append(erroInsersao); // VARIÁVEL LOCALIZADA EM OUTRO ARQUIVO -> erroDivMessage.js
+
+		}
+	});
+	
+}
+
+function preencheDatasAndExibeContas(datesVencidas, contaVencida){
+	
+	if (datesVencidas == '') {
+		
+		$('#inputDateVencidos')
+			.find('option')
+			.remove();
+		
+		$('#idDateVencidos').hide('slow');
+		$('#idContaVencidas').removeClass();
+		$('#idContaVencidas').addClass('col-sm-12 col-md-offset-2 col-md-8');
+		deletaTabelaSeNecessário();
+
+		return;
+	}
+	
+	$('#idDateVencidos').show('slow');
+	
+	$('#idContaVencidas').removeClass(); // SE UMA HORA NECESSÁRIO TER UM EFEITO DE FADE .fadeOut(0).fadeIn(1000);
+	$('#idContaVencidas').addClass('col-sm-12 col-md-offset-2 col-md-4');
+	
+	$('#inputDateVencidos')
+		.find('option')
+		.remove();
+
+	$.each(datesVencidas, function (index, value) {
+		
+		var valueOption = formataDateValue(value);
+		var valueText = formataDateText(value);
+		
+		
+		$('#inputDateVencidos').append($('<option>', {
+		    value: valueOption,
+		    text: valueText
+		}));;
+		  
+	});
+	
+	var date = $('#inputDateVencidos').val();
+
+	console.log(date);
+	if (contaVencida == '' || date == null || date == ''){
 		return;
 	}
 	
 	deletaTabelaSeNecessário();
-	enviaVencidos(date, conta);
 	
-});
+	enviaVencidos(date, contaVencida);
+	
+}
+
+function formataDateValue(value) {
+	
+	var valorFormatado = value.toString().replace(/\,/g, '/');
+	
+	var dateValueFormatada = new Date(valorFormatado);
+	
+	var mes = ('0' + (dateValueFormatada.getMonth()+1)).slice(-2);
+	
+	return dateValueFormatada.getFullYear() + '-' + mes + '-' + dateValueFormatada.getDate();
+
+}
+
+function formataDateText(value) {
+	
+	var valorFormatado = value.toString().replace(/\,/g, '/');
+	
+	var dateFormatada = new Date(valorFormatado);
+	
+	var mes = ('0' + (dateFormatada.getMonth()+1)).slice(-2); // MENOS DOIS PRA PULAR DE TRAS PRA FRENTE
+															  // ASSIM O MES 9 FICA 09 E O MES 10 CONTINUA 10.
+	return dateFormatada.getDate() + '/' + mes + '/' + dateFormatada.getFullYear();
+	
+	
+}
 
 function enviaVencidos(date, conta){
 	

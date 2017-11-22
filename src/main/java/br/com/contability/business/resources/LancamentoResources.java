@@ -110,8 +110,6 @@ public class LancamentoResources {
 		
 		List<Lancamento> lancamentosPlanilha = lancamentoServices.configuraPlanilha(file);
 		
-		System.out.println(lancamentosPlanilha.size());
-		
 		Lancamentos lancamentos = new Lancamentos();
 		lancamentos.setLancamentos(lancamentosPlanilha);
 		
@@ -274,7 +272,7 @@ public class LancamentoResources {
 		ModelConstruct.setAttributes(model, "activeLiLancamento", "activeListagemVencidos");
 		
 		/* ISSO FOI ALTERADO DEVIDO A EU NÃO PRECISAR MAIS DO OBJETO INTEIRO, E SIM APENAS DA DATA,
-		 * CONSEQUENTEMENTE CONSIGO FAZER COM O FILTER NORMAL.
+		 * CONSEQUENTEMENTE CONSIGO FAZER COM O MAP NORMAL.
 		 * 
 		 * COM O FILTER NORMAL ESTÁ NO MÉTODO ABAIXO.
 		 * 
@@ -297,10 +295,11 @@ public class LancamentoResources {
 		
 		Usuario usuario = auth.getAutenticacao();
 		
-		List<Lancamento> lancamentosVencidos = lancamentoServices.selecionaVencidosAnteriorA(usuario, LocalDate.now());
+		List<Lancamento> lancamentosVencidos = lancamentoServices
+				.selecionaVencidosAnteriorA(usuario, LocalDate.now(), conta);
 		
 		return ResponseEntity.ok(
-				lancamentosVencidos.stream().map(l -> l.getDataHoraAtualizacao().toLocalDate())
+				lancamentosVencidos.stream().map(l -> l.getDataHoraLancamento())
 				.distinct().collect(Collectors.toList()));
 	}
 	
@@ -360,14 +359,14 @@ public class LancamentoResources {
 
 	}
 	
-	
 	private Conta contaUsuario = null;
 	@GetMapping("/tabelaVencidos")
 	public String mostraTabelaVencidos(Model model, @RequestParam("dataVencido") String calendarString,
 			@RequestParam Object conta, @RequestParam(value = "mobile", required = false) String mobile) {
 		
+		contaUsuario = null; // NECESSÁRIO DEVIDO AO ATRIBUTO ESTAR DECLARADO NA CLASSE E NÃO NO MÉTODO.
 		Usuario usuario = auth.getAutenticacao();
-
+		
 		LocalDate localDate = CaixaDeFerramentas.calendarFromStringDiaMesAnoDate(calendarString);
 		
 		List<Lancamento> listaLancamentos = lancamentoServices.selecionaVencidosDa(usuario, localDate, conta);

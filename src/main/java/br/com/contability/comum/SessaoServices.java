@@ -48,7 +48,7 @@ public class SessaoServices {
 				: usuario.getUploadImage().getSecureUrl());
 		session.setAttribute("userDate", usuario.getDataHoraCadastro());
 		session.setAttribute("lancamentosVencidos",
-				lancamentoServices.selecionaVencidosAnteriorA(usuario, LocalDate.now()));
+				lancamentoServices.selecionaVencidosAnteriorA(usuario, LocalDate.now(), null));
 		
 	}
 	

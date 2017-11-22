@@ -159,7 +159,7 @@ public class LancamentoServices extends ServicesAbstract<Lancamento, LancamentoR
 			if (lancamento.getDataHoraVencimento() != null &&
 					lancamento.getDataHoraVencimento().isBefore(LocalDate.now())) {
 				sessionServices.atualizaVencidos(session,
-						this.selecionaVencidosAnteriorA(lancamento.getUsuario(), LocalDate.now()));
+						this.selecionaVencidosAnteriorA(lancamento.getUsuario(), LocalDate.now(), null));
 			}
 		}
 		
@@ -300,8 +300,17 @@ public class LancamentoServices extends ServicesAbstract<Lancamento, LancamentoR
 	 * @param localDate
 	 * @return
 	 */
-	public List<Lancamento> selecionaVencidosAnteriorA(Usuario usuario, LocalDate localDate) {
-		return super.getJpa().selecionaVencidos(usuario.getId(), localDate);
+	public List<Lancamento> selecionaVencidosAnteriorA(Usuario usuario, LocalDate localDate, Object id) {
+		
+		if (id == null) {
+			return super.getJpa().selecionaVencidosTodasContas(usuario.getId(), localDate);
+		}
+		
+		Long idConta = parametroServices.trataParametroLongException(id);
+		
+		verificaContaAoUsuario(usuario, idConta);
+		
+		return super.getJpa().selecionaVencidos(usuario.getId(), localDate, idConta);
 	}
 
 	/**
