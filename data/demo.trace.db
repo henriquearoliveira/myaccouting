@@ -1,3 +1,15 @@
 2024-03-26 23:19:23.678945-03:00 jdbc[3]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PERSISTENT_LOGINS" not found; SQL statement:
 delete from persistent_logins where username = ? [42102-224]
+2024-03-26 23:29:14.085561-03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PERSISTENT_LOGINS" not found; SQL statement:
+delete from persistent_logins where username = ? [42102-224]
+2024-03-26 23:49:40.950962-03:00 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT lancamento.* FROM lancamento INNER JOIN usuario ON lancamento.usuario_id = usuario.id LEFT JOIN conta ON lancamento.conta_id = conta.id WHERE lancamento.usuario_id = ? AND MONTH(lancamento.data_hora_lancamento) <= ? AND YEAR(lancamento.data_hora_lancamento) <= ? AND [*]IF(? = 0 OR ? IS NULL, lancamento.id IS NOT NULL, conta.id = ?);"; expected "INTERSECTS (, NOT, EXISTS, UNIQUE, INTERSECTS"; SQL statement:
+SELECT lancamento.* FROM lancamento INNER JOIN usuario ON lancamento.usuario_id = usuario.id LEFT JOIN conta ON lancamento.conta_id = conta.id WHERE lancamento.usuario_id = ? AND MONTH(lancamento.data_hora_lancamento) <= ? AND YEAR(lancamento.data_hora_lancamento) <= ? AND IF(? = 0 OR ? IS NULL, lancamento.id IS NOT NULL, conta.id = ?); [42001-224]
+2024-03-26 23:49:40.950966-03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT lancamento.* FROM lancamento INNER JOIN usuario ON lancamento.usuario_id = usuario.id LEFT JOIN conta ON lancamento.conta_id = conta.id WHERE lancamento.usuario_id = ? AND MONTH(lancamento.data_hora_lancamento) <= ? AND YEAR(lancamento.data_hora_lancamento) <= ? AND [*]IF(? = 0 OR ? IS NULL, lancamento.id IS NOT NULL, conta.id = ?);"; expected "INTERSECTS (, NOT, EXISTS, UNIQUE, INTERSECTS"; SQL statement:
+SELECT lancamento.* FROM lancamento INNER JOIN usuario ON lancamento.usuario_id = usuario.id LEFT JOIN conta ON lancamento.conta_id = conta.id WHERE lancamento.usuario_id = ? AND MONTH(lancamento.data_hora_lancamento) <= ? AND YEAR(lancamento.data_hora_lancamento) <= ? AND IF(? = 0 OR ? IS NULL, lancamento.id IS NOT NULL, conta.id = ?); [42001-224]
+2024-03-27 09:16:33.988389-03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PERSISTENT_LOGINS" not found; SQL statement:
+delete from persistent_logins where username = ? [42102-224]

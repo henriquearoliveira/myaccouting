@@ -3,7 +3,7 @@
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorator="layout/LayoutSimples">
+	layout:decorate="layout/LayoutSimples">
 
 <th:block layout:fragment="conteudo">
 
@@ -72,7 +72,7 @@
 			</div>
 		</div>
 
-		<form method="POST" th:object="${cadastro}" th:action="@{/cadastrar}"
+		<form method="POST" th:object="${cadastroDTO}" th:action="@{/cadastrar}"
 			role="form">
 
 			<div class="mat-in">

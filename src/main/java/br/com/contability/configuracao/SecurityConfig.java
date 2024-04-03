@@ -1,40 +1,49 @@
 package br.com.contability.configuracao;
 
-import javax.sql.DataSource;
-
+import br.com.contability.business.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import br.com.contability.comum.ShaPasswordEncoder;
+import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig /*extends WebSecurityConfigurerAdapter*/ {
 
-	@Autowired
-	private DataSource dataSource;
+    private final DataSource dataSource;
 
-	@Autowired
-	public void configAuthentication(AuthenticationManagerBuilder auth/*, AuthenticationManagerBuilder authMaster*/)
-			throws Exception {
+    public SecurityConfig(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
-		auth.jdbcAuthentication().dataSource(dataSource).passwordEncoder(passwordEncoder())
-			.usersByUsernameQuery(
-				"SELECT email AS username, senha AS password, ativo AS enabled FROM usuario WHERE email = ?")
-			.authoritiesByUsernameQuery(
-				"SELECT email AS username, IF(administrador = true, 'ADMINISTRADOR', 'ADMIN') AS role FROM usuario WHERE email = ?");
-	
-	}
+//	@Autowired TODO ISSO DÁ REFERENCIA CIRCULAR
+//	public void configAuthentication(AuthenticationManagerBuilder auth/*, AuthenticationManagerBuilder authMaster*/)
+//			throws Exception {
+//
+//		auth.jdbcAuthentication().dataSource(dataSource).passwordEncoder(passwordEncoder())
+//			.usersByUsernameQuery(
+//				"SELECT email AS username, senha AS password, ativo AS enabled FROM usuario WHERE email = ?")
+//			.authoritiesByUsernameQuery(
+//				"SELECT email AS username, IF(administrador = true, 'ADMINISTRADOR', 'ADMIN') AS role FROM usuario WHERE email = ?");
+//
+//	}
 	 /* auth.inMemoryAuthentication()
 	 .withUser("joao").password("joao").roles("CADASTRAR_VINHO").and()
 	 .withUser("maria").password("maria").roles("CADASTRAR_VINHO",
@@ -75,91 +84,167 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 	*/
 
-	@Override
-	public void configure(WebSecurity web) throws Exception {
-		web.ignoring().antMatchers("/layout/**");
-	}
+    @Bean
+    public UserDetailsService userDetailsService(UsuarioRepository usuarioJpaRepository) {
+        return username -> usuarioJpaRepository.getByEmail(username).orElseThrow(() ->
+                new UsernameNotFoundException(String.format("Username '%s' not found", username)));
+    }
 
-	@Bean
-	public PasswordEncoder passwordEncoder() {
-		PasswordEncoder passwordEncoder = new ShaPasswordEncoder();
-		return passwordEncoder;
-	}
+//    @Override
+//    public void configure(WebSecurity web) throws Exception {
+//        web.ignoring().antMatchers("/layout/**");
+//    }
 
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
+//    @Bean
+//    public WebSecurityCustomizer webSecurityCustomizer() {
+//        return web -> web.ignoring().requestMatchers("/layout/**");
+//    }
 
-		http.authorizeRequests().antMatchers("/login/**", "/teste/**", "/cadastrar/**", "/esqueceusenha/**", "/alterasenha/**").permitAll().anyRequest().authenticated()
-				.and().httpBasic()
-				.and().formLogin().loginPage("/login")/*.failureUrl("/login")*/.usernameParameter("username").passwordParameter("password")
-				.defaultSuccessUrl("/", true)
-				.and().rememberMe()
-						.tokenValiditySeconds(1209600)
-						.tokenRepository(persistentTokenRepository())
-				.and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-						.logoutSuccessUrl("/login").deleteCookies("auth_code", "JSESSIONID").invalidateHttpSession(true);
-		
-		http.csrf().disable();
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
+    }
 
-		/*
-		 * http.logout().logoutUrl("/logout").invalidateHttpSession(true).
-		 * clearAuthentication(true);
-		 * 
-		 * http.logout().logoutRequestMatcher(new
-		 * AntPathRequestMatcher("/logout"));
-		 * 
-		 * http.logout().logoutUrl("/logout").clearAuthentication(true).
-		 * logoutSuccessUrl("/login");
-		 * 
-		 * 
-		 * http .authorizeRequests() .antMatchers("/usuario").hasRole("USER")
-		 * .anyRequest().authenticated() .and() .formLogin()
-		 * .loginPage("/login") .permitAll() .and() .logout()
-		 * .logoutRequestMatcher(new AntPathRequestMatcher("/logout"));
-		 * 
-		 * 
-		 * http.csrf().disable(); começo teste
-		 * 
-		 * 
-		 * http.authorizeRequests()
-		 * .antMatchers("/usuario").access("hasRole('ROLE_USER')") .and()
-		 * .formLogin().loginPage("/login") .defaultSuccessUrl("/usuario")
-		 * .failureUrl("/login?error")
-		 * .usernameParameter("username").passwordParameter("password") .and()
-		 * .logout().logoutSuccessUrl("/login");
-		 * 
-		 * final teste
-		 * 
-		 * http.authorizeRequests().antMatchers("/usuario/**").permitAll().
-		 * anyRequest().authenticated(); //.and().httpBasic();
-		 * 
-		 * http.authorizeRequests().antMatchers("/login/**").permitAll().and().
-		 * httpBasic();
-		 * 
-		 * http .authorizeRequests()
-		 * .antMatchers("/usuario").hasRole("USER").anyRequest().authenticated()
-		 * ;
-		 * 
-		 * http.logout() .logoutRequestMatcher(new
-		 * AntPathRequestMatcher("/logout")) .logoutSuccessUrl("/login");
-		 * 
-		 * http .authorizeRequests()
-		 * .antMatchers("/usuario").hasRole("USER").anyRequest().authenticated()
-		 * http .authorizeRequests().antMatchers("/usuario",
-		 * "/login").permitAll().anyRequest().authenticated().and().httpBasic()
-		 * .and() .formLogin() .loginPage("/login") .permitAll() .and()
-		 * .logout() .logoutRequestMatcher(new
-		 * AntPathRequestMatcher("/logout"));
-		 */
+//    @Bean
+//    public PasswordEncoder passwordEncoder() {
+//        return new ShaPasswordEncoder();
+//    }
 
-	}
-	
-	/* REMEMBER ME DAS PÁGINAS, NÃO FICA DESLOGANDO */
-	@Bean
-	public PersistentTokenRepository persistentTokenRepository() {
-        JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl();
+    @Bean
+    public PasswordEncoder getPasswordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
+        http
+                .csrf(AbstractHttpConfigurer::disable)
+                .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/login/**", "/teste/**", "/cadastrar/**", "/esqueceusenha/**", "/alterasenha/**", "/h2-console/**", "/layout/**")
+                        .permitAll()
+                        .anyRequest()
+                        .authenticated()
+                )
+                .httpBasic(Customizer.withDefaults())
+                .formLogin(formLogin -> formLogin
+                        .loginPage("/login")
+                        .usernameParameter("username")
+                        .passwordParameter("password"))
+                .rememberMe(rememberMeConfigurer -> rememberMeConfigurer
+                        .tokenValiditySeconds(1209600)
+                        .tokenRepository(persistentTokenRepository()))
+                .logout(logoutConfigurer -> logoutConfigurer
+                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                        .logoutSuccessUrl("/login")
+                        .deleteCookies("auth_code", "JSESSIONID")
+                        .invalidateHttpSession(true));
+
+//        http.authorizeRequests().antMatchers("/login/**", "/teste/**", "/cadastrar/**", "/esqueceusenha/**", "/alterasenha/**", "/h2-console/**").permitAll().anyRequest().authenticated()
+//                .and().httpBasic()
+//                .and().formLogin().loginPage("/login")/*.failureUrl("/login")*/.usernameParameter("username").passwordParameter("password")
+//                .defaultSuccessUrl("/", true)
+//                .and().rememberMe()
+//                .tokenValiditySeconds(1209600)
+//                .tokenRepository(persistentTokenRepository())
+//                .and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+//                .logoutSuccessUrl("/login").deleteCookies("auth_code", "JSESSIONID").invalidateHttpSession(true);
+
+        //http.csrf(AbstractHttpConfigurer::disable);
+        //http.csrf().disable();
+//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//                .and().addFilterBefore(new AutenticacaoTokenFilter(tokenService, usuarioRepository), UsernamePasswordAuthenticationFilter.class);
+        //http.headers().frameOptions().disable();
+        //http.headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable));
+
+
+//        http.authorizeRequests()
+//                .antMatchers("/h2-console/*").permitAll()
+//                .antMatchers("/auth").permitAll()
+//                .anyRequest().authenticated()
+//                .and().csrf().disable()
+//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+        return http.build();
+    }
+
+//    @Override
+//    protected void configure(HttpSecurity http) throws Exception {
+//
+//        http.authorizeRequests().antMatchers("/login/**", "/teste/**", "/cadastrar/**", "/esqueceusenha/**", "/alterasenha/**", "/h2-console/**").permitAll().anyRequest().authenticated()
+//                .and().httpBasic()
+//                .and().formLogin().loginPage("/login")/*.failureUrl("/login")*/.usernameParameter("username").passwordParameter("password")
+//                .defaultSuccessUrl("/", true)
+//                .and().rememberMe()
+//                .tokenValiditySeconds(1209600)
+//                .tokenRepository(persistentTokenRepository())
+//                .and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+//                .logoutSuccessUrl("/login").deleteCookies("auth_code", "JSESSIONID").invalidateHttpSession(true);
+//
+//        http.csrf().disable()
+//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//                .and().addFilterBefore(new AutenticacaoTokenFilter(tokenService, usuarioRepository), UsernamePasswordAuthenticationFilter.class);
+//        http.headers().frameOptions().disable();
+
+        /*
+         * http.logout().logoutUrl("/logout").invalidateHttpSession(true).
+         * clearAuthentication(true);
+         *
+         * http.logout().logoutRequestMatcher(new
+         * AntPathRequestMatcher("/logout"));
+         *
+         * http.logout().logoutUrl("/logout").clearAuthentication(true).
+         * logoutSuccessUrl("/login");
+         *
+         *
+         * http .authorizeRequests() .antMatchers("/usuario").hasRole("USER")
+         * .anyRequest().authenticated() .and() .formLogin()
+         * .loginPage("/login") .permitAll() .and() .logout()
+         * .logoutRequestMatcher(new AntPathRequestMatcher("/logout"));
+         *
+         *
+         * http.csrf().disable(); começo teste
+         *
+         *
+         * http.authorizeRequests()
+         * .antMatchers("/usuario").access("hasRole('ROLE_USER')") .and()
+         * .formLogin().loginPage("/login") .defaultSuccessUrl("/usuario")
+         * .failureUrl("/login?error")
+         * .usernameParameter("username").passwordParameter("password") .and()
+         * .logout().logoutSuccessUrl("/login");
+         *
+         * final teste
+         *
+         * http.authorizeRequests().antMatchers("/usuario/**").permitAll().
+         * anyRequest().authenticated(); //.and().httpBasic();
+         *
+         * http.authorizeRequests().antMatchers("/login/**").permitAll().and().
+         * httpBasic();
+         *
+         * http .authorizeRequests()
+         * .antMatchers("/usuario").hasRole("USER").anyRequest().authenticated()
+         * ;
+         *
+         * http.logout() .logoutRequestMatcher(new
+         * AntPathRequestMatcher("/logout")) .logoutSuccessUrl("/login");
+         *
+         * http .authorizeRequests()
+         * .antMatchers("/usuario").hasRole("USER").anyRequest().authenticated()
+         * http .authorizeRequests().antMatchers("/usuario",
+         * "/login").permitAll().anyRequest().authenticated().and().httpBasic()
+         * .and() .formLogin() .loginPage("/login") .permitAll() .and()
+         * .logout() .logoutRequestMatcher(new
+         * AntPathRequestMatcher("/logout"));
+         */
+
+//    }
+
+    /* REMEMBER ME DAS PÁGINAS, NÃO FICA DESLOGANDO */
+    @Bean
+    public PersistentTokenRepository persistentTokenRepository() {
+        final JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl();
         tokenRepository.setDataSource(dataSource);
         return tokenRepository;
     }
-
 }

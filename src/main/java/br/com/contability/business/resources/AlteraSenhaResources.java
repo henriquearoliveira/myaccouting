@@ -1,8 +1,10 @@
 package br.com.contability.business.resources;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-
+import br.com.contability.business.dto.AlteraSenhaDTO;
+import br.com.contability.business.services.CodigoUsuarioServices;
+import br.com.contability.comum.StringPaginasAndRedirect;
+import br.com.contability.exceptions.ObjetoInexistenteExceptionMessage;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -13,49 +15,44 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import br.com.contability.business.AlteraSenha;
-import br.com.contability.business.services.CodigoUsuarioServices;
-import br.com.contability.comum.StringPaginasAndRedirect;
-import br.com.contability.exceptions.ObjetoInexistenteExceptionMessage;
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/alterasenha")
 public class AlteraSenhaResources {
-	
-	@Autowired
-	private CodigoUsuarioServices services;
 
-	@GetMapping
-	public ModelAndView solicitaAlterarSenha(@RequestParam("email") String email, @RequestParam("codigo") String codigo) {
+    @Autowired
+    private CodigoUsuarioServices services;
 
-		// CONFIGURO DESSA FORMA DEVIDO SER NECESSÁRIO SETAR O EMAIL E CÓDIGO
-		// CASO CONTRARIO BASTARIA NOS PARAMETROS DO MÉTODO COLOCAR UM
-		// AlteraSenha alteraSenhas
-		AlteraSenha alteraSenha = new AlteraSenha();
-		alteraSenha.setEmail(email);
-		alteraSenha.setCodigo(codigo);
+    @GetMapping
+    public ModelAndView solicitaAlterarSenha(@RequestParam("email") String email, @RequestParam("codigo") String codigo) {
 
-		ModelAndView mv = new ModelAndView("AlteraSenha");
-		mv.addObject("alteraSenha", alteraSenha);
+        // CONFIGURO DESSA FORMA DEVIDO SER NECESSÁRIO SETAR O EMAIL E CÓDIGO
+        // CASO CONTRARIO BASTARIA NOS PARAMETROS DO MÉTODO COLOCAR UM
+        // AlteraSenha alteraSenhas
+        final AlteraSenhaDTO alteraSenhaDTO = new AlteraSenhaDTO();
+        alteraSenhaDTO.setEmail(email);
+        alteraSenhaDTO.setCodigo(codigo);
 
-		return mv;
-	}
-	
-	@PostMapping
-	public ModelAndView alteraSenha(@Valid AlteraSenha alteraSenha, BindingResult result,
-			RedirectAttributes redirect, HttpServletRequest request){
-		
-		// FAREI DIFERENTE DEVIDO AO HTML NÃO ESTAR VINCULADO AO BOOTSTRAP NAS TELAS DE LOGIN
-		if(result.hasErrors()){
-			throw new ObjetoInexistenteExceptionMessage("/alterasenha?email=" +
-					alteraSenha.getEmail() + "&codigo=" + alteraSenha.getCodigo(), "Os campos não podem ser nulos");
-		}
-		
-		services.alteraSenha(alteraSenha);
-		
-		redirect.addFlashAttribute("mensagem", "Senha alterada com sucesso");
-		
-		return new ModelAndView(StringPaginasAndRedirect.LOGIN);
-	}
+        final ModelAndView mv = new ModelAndView("AlteraSenha");
+        mv.addObject("alteraSenha", alteraSenhaDTO);
+
+        return mv;
+    }
+
+    @PostMapping
+    public ModelAndView alteraSenha(@Valid AlteraSenhaDTO alteraSenhaDTO, BindingResult result,
+                                    RedirectAttributes redirect, HttpServletRequest request) {
+
+        // FAREI DIFERENTE DEVIDO AO HTML NÃO ESTAR VINCULADO AO BOOTSTRAP NAS TELAS DE LOGIN
+        if (result.hasErrors()) {
+            throw new ObjetoInexistenteExceptionMessage("/alterasenha?email=" +
+                    alteraSenhaDTO.getEmail() + "&codigo=" + alteraSenhaDTO.getCodigo(), "Os campos não podem ser nulos");
+        }
+
+        services.alteraSenha(alteraSenhaDTO);
+        redirect.addFlashAttribute("mensagem", "Senha alterada com sucesso");
+        return new ModelAndView(StringPaginasAndRedirect.LOGIN);
+    }
 
 }

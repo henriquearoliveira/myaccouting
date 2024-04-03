@@ -1,68 +1,42 @@
 package br.com.contability.business;
 
+import br.com.contability.comum.BeanIdentificavel;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Index;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Index;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-
-import org.springframework.format.annotation.DateTimeFormat;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import br.com.contability.comum.BeanIdentificavel;
-
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name = "saldo", indexes = { @Index(name = "index_saldo", columnList = "id", unique = false)})
+@Table(name = "saldo", indexes = {@Index(name = "index_saldo", columnList = "id")})
 public class Saldo extends BeanIdentificavel {
-	
-	@JsonIgnore
-	@ManyToOne(optional = false)
-	private Usuario usuario;
-	
-	@Column(nullable = true)
-	private BigDecimal saldoAtual;
-	
-	@Column(nullable = true)
-	private BigDecimal saldoProvavel;
-	
-	@Column(nullable = true)
-	@DateTimeFormat(pattern="dd/MM/yyyy")
-	private LocalDateTime dataHoraLancamento;
 
-	public Usuario getUsuario() {
-		return usuario;
-	}
+    @JsonIgnore
+    @ManyToOne(optional = false)
+    private Usuario usuario;
 
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
-	}
+    @Column
+    private BigDecimal saldoAtual;
 
-	public BigDecimal getSaldoAtual() {
-		return saldoAtual;
-	}
+    @Column
+    private BigDecimal saldoProvavel;
 
-	public void setSaldoAtual(BigDecimal saldoAtual) {
-		this.saldoAtual = saldoAtual;
-	}
-
-	public LocalDateTime getDataHoraLancamento() {
-		return dataHoraLancamento;
-	}
-
-	public void setDataHoraLancamento(LocalDateTime dataHoraLancamento) {
-		this.dataHoraLancamento = dataHoraLancamento;
-	}
-	
-	public BigDecimal getSaldoProvavel() {
-		return saldoProvavel;
-	}
-	
-	public void setSaldoProvavel(BigDecimal saldoProvavel) {
-		this.saldoProvavel = saldoProvavel;
-	}
-	
+    @Column
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
+    private LocalDateTime dataHoraLancamento;
 }

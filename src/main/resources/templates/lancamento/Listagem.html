@@ -3,7 +3,7 @@
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorator="layout/LayoutPadrao">
+	layout:decorate="layout/LayoutPadrao">
 
 <th:block layout:fragment="conteudo">
 
@@ -38,11 +38,11 @@
 					
 						<div id="bodyteste"></div>
 
-						<div th:replace="mensagensutils/MensagensAlertas :: alert" th:remove="tag"></div>
+						<div th:replace="~{mensagensutils/MensagensAlertas :: alert}" th:remove="tag"></div>
 
 						<form method="POST" th:object="${lancamento}" th:action="@{/lancamento}" role="form">
 
-							<div th:replace="mensagensutils/Erros :: erros" th:remove="tag"></div>
+							<div th:replace="~{mensagensutils/Erros :: erros}" th:remove="tag"></div>
 
 							<div class="row">
 
@@ -144,8 +144,8 @@
 		
 	</script>
 	
-	<div th:replace="modals/Exclusao :: alert" th:remove="tag"></div>
-	<div th:replace="modals/LancamentoProximoMes :: alert" th:remove="tag"></div>
+	<div th:replace="~{modals/Exclusao :: alert}" th:remove="tag"></div>
+	<div th:replace="~{modals/LancamentoProximoMes :: alert}" th:remove="tag"></div>
 
 </th:block>
 

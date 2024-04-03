@@ -14,7 +14,6 @@ public class ConfiguraArquivosServices {
 	
 	/**
 	 * @param file
-	 * @param imagem
 	 * @return
 	 */
 	public File configuraArquivo(MultipartFile file) {

@@ -11,12 +11,11 @@ import br.com.contability.business.Usuario;
 public interface CodigoUsuarioRepository extends JpaRepository<CodigoUsuario, Long> {
 
 	@Query("SELECT c FROM CodigoUsuario c WHERE c.usuario = ?1 AND c.ativo = TRUE")
-	public Optional<CodigoUsuario> verificaCodigoAtivo(Usuario usuario);
+    Optional<CodigoUsuario> verificaCodigoAtivo(Usuario usuario);
 
 	@Query("SELECT c FROM CodigoUsuario c WHERE c.codigo = ?1")
-	public Optional<CodigoUsuario> verificaJaExistente(String codigo);
+    Optional<CodigoUsuario> verificaJaExistente(String codigo);
 	
 	@Query("SELECT c FROM CodigoUsuario c WHERE c.usuario = ?1 AND c.codigo = ?2 AND c.ativo = TRUE")
-	public Optional<CodigoUsuario> get(Usuario usuario, String codigo);
-
+    Optional<CodigoUsuario> get(Usuario usuario, String codigo);
 }

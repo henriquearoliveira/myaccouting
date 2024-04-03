@@ -1,63 +1,62 @@
 package br.com.contability.business.services;
 
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.ModelAndView;
-
 import br.com.contability.business.Conta;
 import br.com.contability.business.Usuario;
 import br.com.contability.business.repository.ContaRepository;
 import br.com.contability.comum.ServicesAbstract;
 import br.com.contability.exceptions.ObjetoInexistenteException;
 import br.com.contability.exceptions.ObjetoInexistenteExceptionMessage;
+import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ContaServices extends ServicesAbstract<Conta, ContaRepository> {
-	
-	@Autowired
-	private TrataParametrosServices parametroServices;
 
-	/**
-	 * @param usuario
-	 * @param conta
-	 */
-	public void gravaConta(Usuario usuario, Conta conta) {
+    private final TrataParametrosServices parametroServices;
 
-		conta.setUsuario(usuario);
+    public ContaServices(TrataParametrosServices parametroServices) {
+        this.parametroServices = parametroServices;
+    }
 
-		if (conta.getId() == null) {
-			super.insere(conta, null);
-		} else {
-			super.atualiza(conta, null);
-		}
+    /**
+     * @param usuario
+     * @param conta
+     */
+    public void gravaConta(Usuario usuario, Conta conta) {
 
-	}
+        conta.setUsuario(usuario);
 
-	/**
-	 * @param usuario
-	 * @return
-	 */
-	public List<Conta> seleciona(Usuario usuario) {
+        if (conta.getId() == null) {
+            super.insere(conta, null);
+        } else {
+            super.atualiza(conta, null);
+        }
 
-		List<Conta> contas = super.getJpa().selecionaPelo(usuario.getId());
+    }
 
-		return contas;
-	}
-	
-	public List<Conta> selecionaComOpcaoTodas(Usuario usuario) {
-		
-		Conta conta = new Conta();
-		conta.setId(new Long(0));
-		conta.setDescricao("TODAS");
-		
-		List<Conta> contas = super.getJpa().selecionaPelo(usuario.getId());
-		contas.add(0, conta);
+    /**
+     * @param usuario
+     * @return
+     */
+    public List<Conta> seleciona(Usuario usuario) {
 
-		return contas;
-	}
+        return super.getJpa().selecionaPelo(usuario.getId());
+    }
+
+    public List<Conta> selecionaComOpcaoTodas(Usuario usuario) {
+
+        Conta conta = new Conta();
+        conta.setId(0L);
+        conta.setDescricao("TODAS");
+
+        List<Conta> contas = super.getJpa().selecionaPelo(usuario.getId());
+        contas.add(0, conta);
+
+        return contas;
+    }
 	
 	/*public List<Conta> selecionaRetirandoContaInformada(Usuario usuario, Object id) {
 		
@@ -79,58 +78,58 @@ public class ContaServices extends ServicesAbstract<Conta, ContaRepository> {
 		
 	}*/
 
-	/**
-	 * @param usuario
-	 * @param mv
-	 * @param id
-	 * @return
-	 */
-	public ModelAndView getConta(Usuario usuario, ModelAndView mv, Object id) {
-		
-		Long idConta = parametroServices.trataParametroLongMessage(id, "/conta");
-		
-		Optional<Conta> conta = super.getJpa().getConta(usuario.getId(), idConta);
+    /**
+     * @param usuario
+     * @param mv
+     * @param id
+     * @return
+     */
+    public ModelAndView getConta(Usuario usuario, ModelAndView mv, Object id) {
 
-		conta.orElseThrow(() -> new ObjetoInexistenteExceptionMessage("/conta", "Conta não encontrada"));
+        Long idConta = parametroServices.trataParametroLongMessage(id, "/conta");
 
-		mv.addObject("conta", conta.get());
+        Optional<Conta> conta = super.getJpa().getConta(usuario.getId(), idConta);
 
-		return mv;
+        conta.orElseThrow(() -> new ObjetoInexistenteExceptionMessage("/conta", "Conta não encontrada"));
 
-	}
-	
-	public Conta getContaPelo(Usuario usuario, Long idConta) {
-		
-		Optional<Conta> conta = super.getJpa().getConta(usuario.getId(), idConta);
+        mv.addObject("conta", conta.get());
 
-		return conta.orElseThrow(() -> new ObjetoInexistenteExceptionMessage("/conta", "Conta não encontrada"));
+        return mv;
 
-	}
+    }
 
-	public void removeConta(Usuario usuario, Long id) {
+    public Conta getContaPelo(Usuario usuario, Long idConta) {
 
-		if (id == null || confirmaVinculo(usuario, id))
-			throw new ObjetoInexistenteException();
+        Optional<Conta> conta = super.getJpa().getConta(usuario.getId(), idConta);
 
-		super.remove(id, null);
+        return conta.orElseThrow(() -> new ObjetoInexistenteExceptionMessage("/conta", "Conta não encontrada"));
 
-	}
+    }
 
-	private boolean confirmaVinculo(Usuario usuario, Long id) {
+    public void removeConta(Usuario usuario, Long id) {
 
-		Optional<Conta> conta = super.getJpa().getConta(usuario.getId(), id);
+        if (id == null || confirmaVinculo(usuario, id))
+            throw new ObjetoInexistenteException();
 
-		return !conta.isPresent();
-		
-	}
+        super.remove(id, null);
 
-	public Conta getPeloLancamento(Long idLancamento) {
-		return super.getJpa().getPeloLancamento(idLancamento);
-	}
+    }
 
-	public Integer selecionaNumeroContasDo(Usuario usuario) {
-		
-		return super.getJpa().selecionaNumeroContasDo(usuario.getId());
-	}
+    private boolean confirmaVinculo(Usuario usuario, Long id) {
+
+        Optional<Conta> conta = super.getJpa().getConta(usuario.getId(), id);
+
+        return !conta.isPresent();
+
+    }
+
+    public Conta getPeloLancamento(Long idLancamento) {
+        return super.getJpa().getPeloLancamento(idLancamento);
+    }
+
+    public Integer selecionaNumeroContasDo(Usuario usuario) {
+
+        return super.getJpa().selecionaNumeroContasDo(usuario.getId());
+    }
 
 }

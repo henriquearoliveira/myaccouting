@@ -39,29 +39,23 @@ public class ContaResources {
 		ModelConstruct.setAttributes(model, "activeLiConta", "activeNovo");
 		auth.getAutenticacao();
 		
-		ModelAndView mv = new ModelAndView("conta/Conta");
-		
-		return mv;
+		return new ModelAndView("conta/Conta");
 	}
 	
 	@GetMapping("/{idConta}")
 	public ModelAndView get(@PathVariable Object idConta, Model model, Conta conta){
 		ModelConstruct.setAttributes(model, "activeLiConta", "activeNovo");
-		
-		Usuario usuario = auth.getAutenticacao();
-		
-		ModelAndView mv = new ModelAndView("conta/Conta");
-		
+		final Usuario usuario = auth.getAutenticacao();
+		final ModelAndView mv = new ModelAndView("conta/Conta");
 		return contaServices.getConta(usuario, mv, idConta);
-		
 	}
 	
 	@PostMapping()
 	public ModelAndView novo(@Valid Conta conta, BindingResult result, RedirectAttributes attributes, Model model){
 		if(result.hasErrors())
 			return novo(model, conta);
-		
-		Usuario usuario = auth.getAutenticacao();
+
+		final Usuario usuario = auth.getAutenticacao();
 		
 		contaServices.gravaConta(usuario, conta);
 		
@@ -71,14 +65,10 @@ public class ContaResources {
 	
 	@GetMapping("lista")
 	public ModelAndView lista(Model model){
-		
 		ModelConstruct.setAttributes(model, "activeLiConta", "activeListagem");
-		
-		Usuario usuario = auth.getAutenticacao();
-		
-		List<Conta> contas = contaServices.seleciona(usuario);
-		
-		ModelAndView mv = new ModelAndView("conta/Listagem");
+		final Usuario usuario = auth.getAutenticacao();
+		final List<Conta> contas = contaServices.seleciona(usuario);
+		final ModelAndView mv = new ModelAndView("conta/Listagem");
 		mv.addObject("contas", contas);
 		
 		return mv;
@@ -86,12 +76,8 @@ public class ContaResources {
 	
 	@DeleteMapping("/remover/{id}")
 	public ResponseEntity<Void> remove(@PathVariable Long id){
-		
-		Usuario usuario = auth.getAutenticacao();
-		
+		final Usuario usuario = auth.getAutenticacao();
 		contaServices.removeConta(usuario, id);
-		
 		return ResponseEntity.ok().build();
 	}
-	
 }

@@ -1,103 +1,96 @@
 package br.com.contability.business.services;
 
+import br.com.contability.business.UploadImage;
+import br.com.contability.business.repository.UploadImageRepository;
+import br.com.contability.comum.ServicesAbstract;
+import br.com.contability.utilitario.CaixaDeFerramentas;
+import com.cloudinary.Cloudinary;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
-import com.cloudinary.Cloudinary;
-
-import br.com.contability.business.UploadImage;
-import br.com.contability.business.repository.UploadImageRepository;
-import br.com.contability.comum.ServicesAbstract;
-import br.com.contability.exceptions.ObjetoNaoAutorizadoMessage;
-import br.com.contability.utilitario.CaixaDeFerramentas;
-
 @Service
 public class UploadImageServices extends ServicesAbstract<UploadImage, UploadImageRepository> {
 
-	private final String cloudName = "dznde0ht5";
-	private final String apiKey = "538862271882227";
-	private final String apiSecret = "UKxwkpSI-SQp2gzZ65AMzCj8Vkc";
-	
-	@Autowired
-	private ConfiguraArquivosServices arquivosServices;
+    @Value("${cloudinary.cloudname}")
+    private String cloudName;
 
-	public UploadImage uploadImageCloudinary(MultipartFile file) {
+    @Value("${cloudinary.apikey}")
+    private String apiKey;
 
-		// OBTEM A AUTENTICAÇÃO NECESSÁRIA PARA O UPLOAD
-		Map<String, String> configuracao = getAuthentication();
+    @Value("${cloudinary.apisecret}")
+    private String apiSecret;
 
-		Cloudinary cloudinary = new Cloudinary(configuracao);
+    private final ConfiguraArquivosServices arquivosServices;
 
-		File imagem = arquivosServices.configuraArquivo(file);
+    public UploadImageServices(ConfiguraArquivosServices arquivosServices) {
+        this.arquivosServices = arquivosServices;
+    }
 
-		Map<String, Object> resultado = uploadImagem(cloudinary, imagem);
+    public UploadImage uploadImageCloudinary(MultipartFile file) {
 
-		return converterToUploadImage(resultado);
+        // OBTEM A AUTENTICAÇÃO NECESSÁRIA PARA O UPLOAD
+        final Map<String, String> configuracao = getAuthentication();
+        final Cloudinary cloudinary = new Cloudinary(configuracao);
+        final File imagem = arquivosServices.configuraArquivo(file);
+        final Map<String, Object> resultado = uploadImagem(cloudinary, imagem);
 
-		/*
-		 * KEYSET É O CONJUNTO DE KEY, JÁ O ENTRYSET É O CONJUNTO DE KEY X VALOR for
-		 * (String strings : resultado.keySet()) { } resultado.keySet().forEach(action);
-		 */
+        return converterToUploadImage(resultado);
 
-	}
+        /*
+         * KEYSET É O CONJUNTO DE KEY, JÁ O ENTRYSET É O CONJUNTO DE KEY X VALOR for
+         * (String strings : resultado.keySet()) { } resultado.keySet().forEach(action);
+         */
+    }
 
-	private UploadImage converterToUploadImage(Map<String, Object> resultado) {
+    private UploadImage converterToUploadImage(Map<String, Object> resultado) {
 
-		UploadImage uploadImage = new UploadImage();
-		uploadImage.setPublicID((String) resultado.get("public_id"));
-		uploadImage.setSignature((String) resultado.get("signature"));
-		uploadImage.setWidth((long) resultado.get("width"));
-		uploadImage.setHeight((long) resultado.get("height"));
-		uploadImage.setFormat((String) resultado.get("format"));
-		uploadImage.setResourceType((String) resultado.get("resource_type"));
-		uploadImage.setCreateAt(CaixaDeFerramentas.stringToLocalDateTime((String) resultado.get("created_at")));
-		uploadImage.setBytes((long) (resultado.get("bytes")));
-		uploadImage.setUrl((String) resultado.get("url"));
-		uploadImage.setSecureUrl((String) resultado.get("secure_url"));
+        final UploadImage uploadImage = new UploadImage();
+        uploadImage.setPublicID((String) resultado.get("public_id"));
+        uploadImage.setSignature((String) resultado.get("signature"));
+        uploadImage.setWidth((long) resultado.get("width"));
+        uploadImage.setHeight((long) resultado.get("height"));
+        uploadImage.setFormat((String) resultado.get("format"));
+        uploadImage.setResourceType((String) resultado.get("resource_type"));
+        uploadImage.setCreateAt(CaixaDeFerramentas.stringToLocalDateTime((String) resultado.get("created_at")));
+        uploadImage.setBytes((long) (resultado.get("bytes")));
+        uploadImage.setUrl((String) resultado.get("url"));
+        uploadImage.setSecureUrl((String) resultado.get("secure_url"));
 
-		return uploadImage;
+        return uploadImage;
 
-	}
+    }
 
-	@SuppressWarnings("unchecked")
-	private Map<String, Object> uploadImagem(Cloudinary cloudinary, File imagem) {
+    private Map<String, Object> uploadImagem(Cloudinary cloudinary, File imagem) {
 
-		Map<String, Object> resultado = new HashMap<>();
+        final Map<String, Object> mapVazioCloudinary = new HashMap<>();
+        final Map<String, Object> resultado;
+        try {
+            resultado = cloudinary.uploader().upload(imagem, mapVazioCloudinary);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
-		try {
+        return resultado;
+    }
 
-			Map<String, Object> mapVazioCloudinary = new HashMap<>();
-			resultado = cloudinary.uploader().upload(imagem, mapVazioCloudinary);
 
-		} catch (IOException e) {
+    /**
+     * @return
+     */
+    private Map<String, String> getAuthentication() {
 
-			e.printStackTrace();
-			throw new ObjetoNaoAutorizadoMessage();
+        final Map<String, String> configuracao = new HashMap<>();
+        configuracao.put("cloud_name", cloudName);
+        configuracao.put("api_key", apiKey);
+        configuracao.put("api_secret", apiSecret);
 
-		}
-
-		return resultado;
-	}
-
-	
-
-	/**
-	 * @return
-	 */
-	private Map<String, String> getAuthentication() {
-
-		Map<String, String> configuracao = new HashMap<>();
-		configuracao.put("cloud_name", cloudName);
-		configuracao.put("api_key", apiKey);
-		configuracao.put("api_secret", apiSecret);
-
-		return configuracao;
-	}
+        return configuracao;
+    }
 
 }

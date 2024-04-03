@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  app:
+    image: 'eclipse-temurin:21'
+    container_name: app
+    volumes:
+      - ./../target/contability-2.0.1.jar:/../target/contability-2.0.1.jar
+#     environment:
+#       - POSTGRES_USER=$YOUR_USERNAME
+#       - POSTGRES_PASSWORD=$YOUR_PASSWORD
+#       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/$YOUR_DB_NAME
+#       - SPRING_DATASOURCE_USERNAME=$YOUR_USERNAME
+#       - SPRING_DATASOURCE_PASSWORD=$YOUR_PASSWORD
+#       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    network_mode: bridge
+    ports:
+      - "8080:8080"
+    entrypoint:
+      - "java"
+      - "-server"
+      - "-XX:MetaspaceSize=64M"
+      - "-XX:MaxMetaspaceSize=300M"
+      - "-Xmx300m"
+      - "-Xms300m"
+      - "-jar"
+      - "/../target/contability-2.0.1.jar"

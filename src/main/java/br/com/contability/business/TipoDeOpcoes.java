@@ -1,21 +1,17 @@
 package br.com.contability.business;
 
-public enum TipoDeOpcoes {
-	
-	DEPOSITO_CONTA("Deposito em conta")/*, LANCAMENTO_PROXIMO_MES("Lançamento próximo mês")*/;
-	
-	private String descricao;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-	private TipoDeOpcoes(String descricao) {
-		this.descricao = descricao;
-	}
-	
-	public String getDescricao() {
-		return descricao;
-	}
-	
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
-	}
-	
+@Getter
+@NoArgsConstructor
+public enum TipoDeOpcoes {
+
+    DEPOSITO_CONTA("Deposito em conta")/*, LANCAMENTO_PROXIMO_MES("Lançamento próximo mês")*/;
+
+    private String descricao;
+
+    TipoDeOpcoes(String descricao) {
+        this.descricao = descricao;
+    }
 }

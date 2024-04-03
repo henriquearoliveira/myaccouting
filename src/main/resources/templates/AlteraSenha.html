@@ -3,7 +3,7 @@
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorator="layout/LayoutSimples">
+	layout:decorate="layout/LayoutSimples">
 
 <th:block layout:fragment="conteudo">
 
@@ -72,17 +72,17 @@
 			</div>
 		</div>
 
-		<form method="POST" th:object="${alteraSenha}" th:action="@{/alterasenha}"
+		<form method="POST" th:object="${alteraSenhaDTO}" th:action="@{/alterasenha}"
 			role="form">
 			
 			<div class="mat-in hidden">
-				<input id="email" type="text" th:value="${alteraSenha.email}" th:field="*{email}" required="true"></input>
+				<input id="email" type="text" th:value="${alteraSenhaDTO.email}" th:field="*{email}" required="true"></input>
 				<span class="bar"></span>
 				<label for="email">Email</label>
 			</div>
 			
 			<div class="mat-in hidden">
-				<input id="codigo" type="text" th:value="${alteraSenha.codigo}" th:field="*{codigo}" required="true"></input>
+				<input id="codigo" type="text" th:value="${alteraSenhaDTO.codigo}" th:field="*{codigo}" required="true"></input>
 				<span class="bar"></span>
 				<label for="email">Codigo</label>
 			</div>
@@ -101,7 +101,7 @@
 
 			<button type="submit" value="submit" id="cadastrar">Enviar</button>
 			
-			<div th:replace="mensagensutils/MensagensAlertas :: alert"></div>
+			<div th:replace="~{mensagensutils/MensagensAlertas :: alert}"></div>
 
 		</form>
 

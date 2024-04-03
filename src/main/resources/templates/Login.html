@@ -3,7 +3,7 @@
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorator="layout/LayoutSimples">
+	layout:decorate="layout/LayoutSimples">
 
 <th:block layout:fragment="conteudo">
 
@@ -72,9 +72,6 @@
 			</div>
 		</div>
 
-
-
-
 		<!-- <div id="block-top">
 			<h4>Accounting</h4>
 		</div> -->
@@ -97,40 +94,22 @@
 			<button type="submit" name="submit" id="login">Login</button>
 
 			<div class="center">
-				<a class="esqueceuSenha" th:href="@{/esqueceusenha}">Esqueceu a
+				<a class="esqueceuSenhaDTO" th:href="@{/esqueceusenha}">Esqueceu a
 					senha</a>
 			</div>
 
 			<div class="center button">
 				<a class="link" th:href="@{/cadastrar}">Cadastrar-se</a>
 			</div>
-			
+
 			<div class="center line"> <input type="checkbox" name="remember-me" /> Remember Me </div>
 
 			<div id="senhaIncorreta" style="color: red; text-align: center;">
 				<p th:if="${param.error}">Email ou senha inválidos</p>
 			</div>
 
-			<!-- <div id="senhaIncorreta" layout:include="/mensagensutils/MensagensAlertas" th:remove="tag"></div> -->
-			<div th:replace="mensagensutils/MensagensAlertas :: alert"></div>
-
-			<!-- <span sec:authentication="name"></span> -->
-
+			<div th:replace="~{mensagensutils/MensagensAlertas :: alert}"></div>
 		</form>
-		<!-- <div id="senhaIncorreta">
-				<h5 th:if="${#bools.isTrue(incorrect)}"
-					style="color: red; text-align: center">email ou senha
-					incorreta</h5>
-			</div> -->
-		<!-- )<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-			<h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>-->
-		<!--<span sec:authorize="hasRole('ROLE_ADMIN')">Teste</span> -->
-
-		<!--<form th:action="@{/logout}" method="POST">
-			<button type="submit" name="submit" id="logout">Logout</button>
-		</form>-->
 	</div>
-
 </th:block>
-
 </html>

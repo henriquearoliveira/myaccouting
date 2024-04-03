@@ -23,16 +23,16 @@ public interface LancamentoRepository extends JpaRepository<Lancamento, Long> {
 			+ " WHERE lancamento.usuario_id = ?1 AND MONTH(lancamento.data_hora_lancamento) <= ?3" 
 			+ " AND YEAR(lancamento.data_hora_lancamento) <= ?4"
 			+ " AND IF(?2 = 0 OR ?2 IS NULL, lancamento.id IS NOT NULL, conta.id = ?2);", nativeQuery = true)
-	public List<Lancamento> selecionaLancamentos(Long usuario, Long idConta, int month, int year);
+    List<Lancamento> selecionaLancamentos(Long usuario, Long idConta, int month, int year);
 	
 	@Query("SELECT l FROM Lancamento l WHERE l.usuario.id = ?1 AND l.id = ?2")
-	public Optional<Lancamento> getLancamento(Long idUsuario, Long idLancamento);
+    Optional<Lancamento> getLancamento(Long idUsuario, Long idLancamento);
 
-	@Query("SELECT DISTINCT(DATE(l.dataHoraCadastro)) FROM Lancamento l WHERE l.usuario.id = ?1 AND YEAR(l.dataHoraCadastro) = YEAR(NOW())")
-	public List<Date> selecionaMesesDosLancamentosAnoAtual(Long idUsuario);
+//	@Query("SELECT DISTINCT(DATE(l.dataHoraCadastro)) FROM Lancamento l WHERE l.usuario.id = ?1 AND YEAR(l.dataHoraCadastro) = YEAR(NOW())")
+//    List<Date> selecionaMesesDosLancamentosAnoAtual(Long idUsuario);
 
 	@Query("SELECT l FROM Lancamento l WHERE l.usuario.id = ?1 AND YEAR(l.dataHoraCadastro) = YEAR(NOW())")
-	public List<Lancamento> selecionaLancamentosAnoAtual(Long idUsuario);
+    List<Lancamento> selecionaLancamentosAnoAtual(Long idUsuario);
 
 	@Query(value = "SELECT lancamento.* FROM lancamento"
 			+ " INNER JOIN usuario ON lancamento.usuario_id = usuario.id" 
@@ -40,13 +40,13 @@ public interface LancamentoRepository extends JpaRepository<Lancamento, Long> {
 			+ " WHERE lancamento.usuario_id = ?1 AND lancamento.data_hora_vencimento <= ?2"
 			+ " AND lancamento.pago IS FALSE"
 			+ " AND IF(?3 = 0, lancamento.id IS NOT NULL, conta.id = ?3);", nativeQuery = true)
-	public List<Lancamento> selecionaVencidos(Long idUsuario, LocalDate dataVencimento, Long idConta);
+    List<Lancamento> selecionaVencidos(Long idUsuario, LocalDate dataVencimento, Long idConta);
 	
 	@Query("SELECT l FROM Lancamento l WHERE l.usuario.id = ?1 AND l.dataHoraVencimento < ?2 AND l.pago IS FALSE")
-	public List<Lancamento> selecionaVencidosTodasContas(Long idUsuario, LocalDate dataVencimento);
+    List<Lancamento> selecionaVencidosTodasContas(Long idUsuario, LocalDate dataVencimento);
 
 	@Query("SELECT l FROM Lancamento l WHERE l.usuario.id = ?1 AND l.dataHoraVencimento = ?2 AND l.pago IS FALSE")
-	public List<Lancamento> selecionaVencidosDa(Long id, LocalDate dataVencimento);
+    List<Lancamento> selecionaVencidosDa(Long id, LocalDate dataVencimento);
 	
 	/*@Query("SELECT l FROM Lancamento l WHERE l.usuario.id = ?1 AND MONTH(l.dataHoraLancamento) = ?2 AND YEAR(l.dataHoraLancamento) =?3 ")
 	public List<Lancamento> selecionaLancamentosPuroStream(Long id, int month, int year);*/
@@ -77,5 +77,4 @@ public interface LancamentoRepository extends JpaRepository<Lancamento, Long> {
 			+ " FROM lancamento WHERE usuario_id = ?1 AND MONTH(data_hora_lancamento) = ?2 AND YEAR(data_hora_lancamento) = ?3"
 			+ " GROUP BY resultado", nativeQuery = true)
 	public BigDecimal getSaldoProvavel(Long id, int monthValue, int year);*/
-
 }

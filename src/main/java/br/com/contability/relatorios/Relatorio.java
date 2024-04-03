@@ -2,10 +2,9 @@ package br.com.contability.relatorios;
 
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Map;
+
 public interface Relatorio {
 	
-	public void putParam(String nameParam, Object valueParam);
-	
-	public ModelAndView criaRelatorio(String nomeRelatorio);
-
+	ModelAndView criaRelatorio(Map<String, Object> parametros, String nomeRelatorio);
 }

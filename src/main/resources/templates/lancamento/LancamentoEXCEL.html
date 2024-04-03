@@ -1,7 +1,7 @@
 <div th:fragment="lancamentoEXCEL" xmlns:th="http://www.thymeleaf.org"
 	th:remove="tag" th:unless="${#lists.isEmpty(lancamentos)}">
 
-	<div th:replace="mensagensutils/MensagensAlertas :: alert"></div>
+	<div th:replace="~{mensagensutils/MensagensAlertas :: alert}"></div>
 
 	<form method="POST" th:object="${lancamentos}"
 		th:action="@{/lancamento/importlancamentos}" role="form">

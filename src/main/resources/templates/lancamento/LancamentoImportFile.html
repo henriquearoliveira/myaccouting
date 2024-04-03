@@ -3,7 +3,7 @@
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorator="layout/LayoutPadrao">
+	layout:decorate="layout/LayoutPadrao">
 
 <th:block layout:fragment="conteudo">
 
@@ -25,11 +25,11 @@
 							<a th:href="@{|/lancamento/arquivoexemplo|}"><strong>Baixar Exemplo</strong></a>
 						</div>
 					
-						<div th:replace="mensagensutils/MensagensAlertas :: alert"></div>
+						<div th:replace="~{mensagensutils/MensagensAlertas :: alert}"></div>
 					
 						<form method="POST" th:object="${lancamento}" th:action="@{/lancamento/import}" enctype="multipart/form-data" role="form">
 						
-							<div th:replace="mensagensutils/Erros :: erros"></div>
+							<div th:replace="~{mensagensutils/Erros :: erros}"></div>
 							
 							<div class="row">
 							
@@ -55,7 +55,7 @@
 
 						</form>
 						
-						<div th:replace="lancamento/LancamentoEXCEL :: lancamentoEXCEL"></div>
+						<div th:replace="~{lancamento/LancamentoEXCEL :: lancamentoEXCEL}"></div>
 						
 					</div>
 

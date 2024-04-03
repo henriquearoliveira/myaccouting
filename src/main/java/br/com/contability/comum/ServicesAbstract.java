@@ -1,89 +1,94 @@
 package br.com.contability.comum;
 
-import java.time.LocalDateTime;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.data.jpa.repository.JpaRepository;
-
 import br.com.contability.exceptions.ObjetoComDependenciaException;
 import br.com.contability.exceptions.ObjetoExistenteException;
 import br.com.contability.exceptions.ObjetoExistenteExceptionModel;
 import br.com.contability.exceptions.ObjetoInexistenteException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.time.LocalDateTime;
+import java.util.Optional;
 
 public class ServicesAbstract<T extends BeanIdentificavel, E extends JpaRepository<T, Long>> implements IServices<T> {
 
-	@Autowired
-	private E jpa;
-	
-	@Override
-	public T atualiza(T objeto, Boolean isApiProgram) {
-		Optional<Boolean> optional = Optional.ofNullable(isApiProgram);
-		
-		verificaExistencia(objeto, isApiProgram);
-		LocalDateTime dataCadastro = get(objeto.getId(), isApiProgram).getDataHoraCadastro();
-		objeto.setDataHoraAtualizacao(LocalDateTime.now());
-		objeto.setDataHoraCadastro(dataCadastro);
+    @Autowired
+    private E jpa;
 
-		try {
-			return jpa.save(objeto);
-		} catch (DataIntegrityViolationException e) {
-			optional.orElseThrow(() -> new ObjetoExistenteExceptionModel("O objeto não é possível ser atualizado."));
-			throw new ObjetoExistenteException("O objeto não é possível ser atualizado.");
-		}
-	}
+    @Override
+    public T atualiza(T objeto, Boolean isApiProgram) {
+        final Optional<Boolean> optional = Optional.ofNullable(isApiProgram);
 
-	@Override
-	public T get(Long id, Boolean isApiProgram) {
-		Optional<Boolean> optional = Optional.ofNullable(isApiProgram);
+        verificaExistencia(objeto, isApiProgram);
 
-		T objeto = jpa.findOne(id);
+        final LocalDateTime dataCadastro = get(objeto.getId(), isApiProgram).getDataHoraCadastro();
+        objeto.setDataHoraAtualizacao(LocalDateTime.now());
+        objeto.setDataHoraCadastro(dataCadastro);
 
-		if (objeto == null){
-			optional.orElseThrow(() -> new ObjetoExistenteExceptionModel("O objeto requisitado não existe."));
-			
-			throw new ObjetoInexistenteException("O objeto requisitado não existe.");
-			
-		}
+        try {
+            return jpa.save(objeto);
+        } catch (DataIntegrityViolationException e) {
+            if (optional.isEmpty()) {
+                throw new ObjetoExistenteException("O objeto chegou vazio, por favor tente novamente.");
+            }
+            throw new ObjetoExistenteException("O objeto não é possível ser atualizado.");
+        }
+    }
 
-		return objeto;
-	}
+    @Override
+    public T get(Long id, Boolean isApiProgram) {
+        final Optional<Boolean> optional = Optional.ofNullable(isApiProgram);
 
-	@Override
-	public T insere(T objeto, Boolean isApiProgram) {
-		Optional<Boolean> optional = Optional.ofNullable(isApiProgram);
+        final Optional<T> objeto = jpa.findById(id);
 
-		objeto.setId(null);
-		objeto.setDataHoraCadastro(LocalDateTime.now());
+        if (objeto.isEmpty()) {
+            if (optional.isEmpty())
+                throw new ObjetoExistenteException("O objeto requisitado não existe.");
 
-		try {
+            throw new ObjetoInexistenteException("O objeto requisitado não existe.");
+        }
 
-			return jpa.save(objeto);
+        return objeto.get();
+    }
 
-		} catch (DataIntegrityViolationException e) {
-			optional.orElseThrow(() -> new ObjetoExistenteExceptionModel("Objeto já existente."));
-			throw new ObjetoExistenteException("Objeto já existente.");
-		}
+    @Override
+    public T insere(T objeto, Boolean isApiProgram) {
+        final Optional<Boolean> optional = Optional.ofNullable(isApiProgram);
 
-	}
+        objeto.setId(null);
+        objeto.setDataHoraCadastro(LocalDateTime.now());
 
-	@Override
-	public void remove(Long id, Boolean isApiProgram) {
-		T objeto = get(id, isApiProgram);
-		Optional<Boolean> optional = Optional.ofNullable(isApiProgram);
+        try {
 
-		try {
-			jpa.delete(objeto);
-		} catch (DataIntegrityViolationException e) {
-			optional.orElseThrow(() -> new ObjetoExistenteExceptionModel("Objeto com dependencias."));
-			throw new ObjetoComDependenciaException("Objeto com dependencias.");
-		}
+            return jpa.save(objeto);
 
-	}
+        } catch (DataIntegrityViolationException e) {
+            if (optional.isEmpty()) {
+                throw new ObjetoExistenteExceptionModel("Objeto já existente.");
+            }
+            throw new ObjetoExistenteException("Objeto já existente.");
+        }
 
-	public E getJpa() {
-		return jpa;
-	}
+    }
 
+    @Override
+    public void remove(Long id, Boolean isApiProgram) {
+        final T objeto = get(id, isApiProgram);
+        Optional<Boolean> optional = Optional.ofNullable(isApiProgram);
+
+        try {
+            jpa.delete(objeto);
+        } catch (DataIntegrityViolationException e) {
+            if (optional.isEmpty()) {
+                throw new ObjetoExistenteExceptionModel("Objeto com dependencias.");
+            }
+            throw new ObjetoComDependenciaException("Objeto com dependencias.");
+        }
+
+    }
+
+    public E getJpa() {
+        return jpa;
+    }
 }

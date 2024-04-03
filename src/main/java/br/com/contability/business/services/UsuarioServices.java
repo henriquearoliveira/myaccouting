@@ -1,75 +1,76 @@
 package br.com.contability.business.services;
 
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import br.com.contability.business.Cadastro;
+import br.com.contability.business.dto.CadastroDTO;
 import br.com.contability.business.Usuario;
 import br.com.contability.business.repository.UsuarioRepository;
-import br.com.contability.comum.AuthenticationAbstract;
 import br.com.contability.comum.ServicesAbstract;
 import br.com.contability.exceptions.ObjetoInexistenteExceptionMessage;
+import br.com.contability.exceptions.ObjetoNaoAutorizadoException;
+import br.com.contability.utilitario.Util;
+import org.springframework.stereotype.Service;
+import org.thymeleaf.util.StringUtils;
+
+import java.util.Optional;
 
 @Service
 public class UsuarioServices extends ServicesAbstract<Usuario, UsuarioRepository> {
 
-	@Autowired
-	private AuthenticationAbstract auth;
+    /**
+     * @param email
+     * @return
+     */
+    public Usuario getPelo(String email, String paginaRedirecionamento) {
 
-	/**
-	 * @param email
-	 * @return
-	 */
-	public Usuario getPelo(String email, String paginaRedirecionamento) {
+        final Optional<Usuario> usuario = super.getJpa().getByEmail(email);
 
-		Optional<Usuario> usuario = super.getJpa().getPelo(email);
+        return usuario.orElseThrow(() -> new ObjetoInexistenteExceptionMessage(paginaRedirecionamento,
+                "Usuario inexistente para o email"));
+    }
 
-		return usuario.orElseThrow(() -> new ObjetoInexistenteExceptionMessage(paginaRedirecionamento,
-				"Usuario inexistente para o email"));
-	}
+    /**
+     * @param cadastro
+     */
+    public Usuario insere(CadastroDTO cadastro) {
 
-	/**
-	 * @param cadastro
-	 */
-	public Usuario insere(Cadastro cadastro) {
+        final Usuario usuario = new Usuario();
+        usuario.getUsuarioByCadastro(cadastro, true);
 
-		Usuario usuario = new Usuario();
-		usuario.getUsuarioByCadastro(cadastro, false);
+        return super.insere(usuario, null);
+    }
 
-		return super.insere(usuario, null);
-	}
+    /**
+     * @param codigo
+     * @return
+     */
+    public Usuario getUsuarioPelo(String codigo) {
 
-	/**
-	 * @param codigo
-	 * @return
-	 */
-	public Usuario getUsuarioPelo(String codigo) {
+        final Optional<Usuario> usuario = super.getJpa().getByCodigo(codigo);
 
-		Optional<Usuario> usuario = super.getJpa().getUsuarioPelo(codigo);
+        return usuario.orElseThrow(() -> new ObjetoInexistenteExceptionMessage("/login",
+                "Codigo não encontrado por favor requisite outro codigo"));
 
-		return usuario.orElseThrow(() -> new ObjetoInexistenteExceptionMessage("/login",
-				"Codigo não encontrado por favor requisite outro codigo"));
+    }
 
-	}
+    /**
+     * @param usuario
+     */
+    public void preenche(Usuario usuario) {
 
-	/**
-	 * @param usuario
-	 */
-	public void preenche(Usuario usuario) {
+        final String emailAutenticado = Util.getEmailPelaAutenticacao();
 
-		Usuario usuarioAutenticado = auth.getAutenticacao();
+        if (StringUtils.isEmpty(emailAutenticado)) {
+            throw new ObjetoNaoAutorizadoException();
+        }
 
-		usuario.setId(usuarioAutenticado.getId());
-		usuario.setSenha(usuarioAutenticado.getSenha());
-		usuario.setEmail(usuarioAutenticado.getEmail());
-		usuario.setSenhaMaster(
-				usuarioAutenticado.getSenhaMaster() == null ? null : usuarioAutenticado.getSenhaMaster());
-		usuario.setAtivo(usuarioAutenticado.isAtivo());
-		usuario.setAdministrador(usuarioAutenticado.isAdministrador());
-		usuario.setUploadImage(usuarioAutenticado.getUploadImage() == null ? null : usuarioAutenticado.getUploadImage());
+        final Usuario usuarioAutenticado = this.getPelo(emailAutenticado, "/login");
 
-	}
-
+        usuario.setId(usuarioAutenticado.getId());
+        usuario.setSenha(usuarioAutenticado.getSenha());
+        usuario.setEmail(usuarioAutenticado.getEmail());
+        usuario.setSenhaMaster(
+                usuarioAutenticado.getSenhaMaster() == null ? null : usuarioAutenticado.getSenhaMaster());
+        usuario.setAtivo(usuarioAutenticado.isAtivo());
+        usuario.setAdministrador(usuarioAutenticado.isAdministrador());
+        usuario.setUploadImage(usuarioAutenticado.getUploadImage() == null ? null : usuarioAutenticado.getUploadImage());
+    }
 }

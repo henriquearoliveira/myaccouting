@@ -3,7 +3,7 @@
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorator="layout/LayoutPadrao">
+	layout:decorate="layout/LayoutPadrao">
 
 <th:block layout:fragment="conteudo">
 
@@ -26,7 +26,7 @@
 					
 					<!-- /.box-header -->
 					<div class="box-body">
-						<table id="tabela1" class="table table-bordered table-striped">
+						<table id="tabelaCategoria" class="table table-bordered table-striped">
 							<thead>
 								<tr>
 									<th class="text-center">Código</th>
@@ -37,22 +37,26 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr th:each="categoria : ${categorias}" th:id="tr+${categoria.id}">
+								<tr th:if="${!categorias.isEmpty()}" th:each="categoria : ${categorias}" th:id="tr+${categoria.id}">
 									<td th:text="${categoria.id}"></td>
 									<td><a th:href="@{/categoria/{id}(id=${categoria.id})}" th:text="${categoria.descricao}"></a></td>
 									<td th:text="${categoria.tipoDeCategoria.descricao}"></td>
 									<td th:text="${categoria.observacao}"></td>
 									<td class="col-xs-2 text-center">
-									
+
 										<a th:href="@{/categoria/} + ${categoria.id}" style="padding: 6px 10px" class="glyphicon glyphicon-edit" role="button"></a>
 										<!-- <a th:href="@{/categoria/remove/} + ${categoria.id}" style="padding: 6px 8px" class="btn btn-danger" role="button">Remover</a> -->
 										<!-- <a th:href="@{/categoria/remove/} + ${categoria.id}" style="padding: 6px 8px" class="btn btn-danger" role="button">Remover</a> -->
 										<button th:id="${categoria.id}" th:value="${categoria.id}" type="button" data-toggle="modal" data-target="#confirmaExclusaoModal" style="background:none;border:none;padding:0;" ><i class="glyphicon glyphicon-trash"></i></button>
-										
+
 									</td>
 								</tr>
-								<tr th:if="${categorias.empty}">
-									<td colspan="12">Nenhuma categoria cadastrada.</td>
+								<tr th:if="${categorias.isEmpty()}">
+									<td colspan="2">Nenhuma categoria cadastrada.</td>
+									<td colspan="2"></td>
+									<td colspan="2"></td>
+									<td colspan="2"></td>
+									<td colspan="2"></td>
 								</tr>
 							</tbody>
 							<!-- <tfoot>
@@ -76,7 +80,7 @@
 	          
 	            <div class="box-body">
 	
-	              <ul class="list-group list-group-unbordered" id="tabela1">
+	              <ul class="list-group list-group-unbordered" id="tabelaCategoriaSmall">
 	                <li class="list-group-item" th:each="categoria : ${categorias}" th:id="li+${categoria.id}">
 	                  <div class="row">
 	                  
@@ -108,7 +112,7 @@
 		</div>
 	</div>
 	
-	<div th:replace="modals/Exclusao :: alert" th:remove="tag"></div>
+	<div th:replace="~{modals/Exclusao :: alert}" th:remove="tag"></div>
 	
 </th:block>
 
